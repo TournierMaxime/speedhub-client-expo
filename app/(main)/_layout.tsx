@@ -1,9 +1,9 @@
-import { Tabs } from "expo-router";
+import { Stack } from "expo-router";
 
 export default function MainLayout() {
   return (
-    <Tabs>
-      <Tabs.Screen name="home" />
-    </Tabs>
+    <Stack initialRouteName="home">
+      <Stack.Screen name="home" />
+    </Stack>
   );
 }

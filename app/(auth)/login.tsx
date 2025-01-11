@@ -10,7 +10,7 @@ export default function Login() {
         const user = { email: "tourniermaxime@orange.fr", password: "Jslogcndmenptein@06" };
 
         await login(user); // Simule la connexion
-        router.replace("/home"); // Redirige vers la page principale
+        router.replace("/(main)"); // Redirige vers la page principale
     };
 
     return (

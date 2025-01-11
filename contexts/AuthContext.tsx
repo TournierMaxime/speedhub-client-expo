@@ -31,6 +31,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             if (storedUser) {
                 setUser(JSON.parse(storedUser));
             }
+
         };
 
         loadUserFromStorage();
@@ -38,7 +39,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const login = async (data: Data) => {
         const connection = await authService.login(data)
-
         setUser(connection.user);
         await AsyncStorage.setItem("user", JSON.stringify(connection.user));
     };
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
                 user,
                 login,
                 logout,
-                isAuthenticated: !!user,
+                isAuthenticated: !!user
             }}
         >
             {children}
