@@ -7,13 +7,9 @@ import {
     Switch,
     Image,
 } from "react-native"
-import tw from "twrnc"
-import useOnChange from "../hooks/utils/useOnChange"
-import { useDynamicThemeStyles } from "../../styles/theme"
-import { useSelector } from "react-redux"
+import useOnChange from "../../hooks/utils/useOnChange"
 import Utils from "./Utils"
-import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
-import { RootState } from "../../../../store"
+import useResponsive from "../../hooks/utils/useResponsive"
 
 type FormData = {
     [key: string]: any
@@ -32,13 +28,10 @@ class Form {
     ) => {
         const { onChange } = useOnChange({ data, setData })
 
-        const darkMode = useSelector((state: RootState) => state.theme.darkMode)
-        const { text } = useDynamicThemeStyles(darkMode)
-
         const { fontSize, placeholder } = useResponsive()
         return (
-            <View style={tw`w-full mb-4`}>
-                <Text style={fontSize(text)}>{label}</Text>
+            <View style={""}>
+                <Text style={""}>{label}</Text>
                 <TextInput
                     placeholder={label}
                     onChangeText={(value) => onChange({ name, value })}
@@ -59,13 +52,10 @@ class Form {
     ) => {
         const { onChange } = useOnChange({ data, setData })
 
-        const darkMode = useSelector((state: RootState) => state.theme.darkMode)
-        const { text } = useDynamicThemeStyles(darkMode)
-
         const { fontSize, placeholder } = useResponsive()
         return (
-            <View style={tw`w-11/12`}>
-                <Text style={fontSize(text)}>{label}</Text>
+            <View style={""}>
+                <Text style={""}>{label}</Text>
                 <TextInput
                     placeholder={label}
                     onChangeText={(value) => onChange({ name, value: Number(value) })}
@@ -96,7 +86,7 @@ class Form {
         const { btnSubmit } = useResponsive()
 
         return (
-            <View style={tw`flex flex-row justify-between items-center mb-4`}>
+            <View style={""}>
                 <View>
                     <Image
                         source={{
@@ -110,7 +100,7 @@ class Form {
                 </View>
                 <View>
                     <TouchableOpacity
-                        style={tw`bg-indigo-600 rounded-md`}
+                        style={""}
                         onPress={() => fct()}
                     >
                         <Text style={btnSubmit()}>{t("utils.changeAvatar")}</Text>
@@ -129,8 +119,7 @@ class Form {
 
         return (
             <TouchableOpacity
-                style={tw`w-full ml-auto mr-auto flex-row justify-center items-center ${disabled ? `bg-indigo-100` : `bg-indigo-600`
-                    } rounded-lg`}
+                style={""}
                 onPress={async () => await fct()}
                 disabled={disabled}
             >

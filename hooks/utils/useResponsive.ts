@@ -1,5 +1,4 @@
-import tw from "twrnc"
-import Utils from "../../class/Utils"
+import Utils from "../../components/lib/Utils"
 import { Dimensions } from "react-native"
 
 const useResponsive = () => {

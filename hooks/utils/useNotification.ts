@@ -1,16 +1,13 @@
 import { useEffect } from "react"
 import * as Notifications from "expo-notifications"
-import registerForPushNotificationsAsync from "../../components/utils/Notifications"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useSelector } from "react-redux"
-import { RootState } from "store"
-import { MainStackParamList } from "navigators/MainStackNavigator"
+import registerForPushNotificationsAsync from "../../components/lib/Notifications"
+import { useRouter } from "expo-router"
+import { useAuth } from "@/contexts/AuthContext"
 
 const useNotification = () => {
-  const navigation = useNavigation<NavigationProp<MainStackParamList>>()
+  const router = useRouter()
+  const { user } = useAuth()
   const lastNotificationResponse = Notifications.useLastNotificationResponse()
-
-  const user = useSelector((state: RootState) => state.auth.data?.user)
 
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -73,12 +70,12 @@ const useNotification = () => {
 
   const handleNotificationRedirect = (data: any) => {
     if (data) {
-      navigation.navigate(data.redirect, {
-        userId: data.userId ? data.userId : null,
-        recommendationId: data.recommendationId ? data.recommendationId : null,
-        screen: data.screen ? data.screen : null,
+      router.push({
+        pathname: data.redirect,
         params: {
-          articleId: data.articleId ? data.articleId : null,
+          userId: data.userId ?? null,
+          screen: data.screen ?? null,
+          articleId: data.articleId ?? null,
         },
       })
     }

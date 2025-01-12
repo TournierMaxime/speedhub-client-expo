@@ -1,32 +1,21 @@
-import { authorize } from "react-native-app-auth"
+import { authorize, AuthConfiguration } from "react-native-app-auth"
 import axios from "axios"
-import { GOOGLE_AUTH_CLIENT_ID, GOOGLE_REDIRECT_URI } from "@env"
-import { register, loginUser } from "../../../redux/actions/auth"
-import { searchUsers } from "@mod/mobile-user/redux/actions/users"
-import { useDispatch } from "react-redux"
 import { useState } from "react"
-import registerForPushNotificationsAsync from "@mod/mobile-common/lib/components/utils/Notifications"
-import { toast } from "@mod/mobile-common/lib/toast"
-import { AuthStackParamList } from "../../../navigators/AuthStackNavigator"
-import { AppDispatch } from "../../../../../store"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { useTranslation } from "react-i18next"
+import registerForPushNotificationsAsync from "@/components/lib/Notifications"
+import { toast } from "@/components/lib/toast"
+import { useRouter } from "expo-router"
+import { userService } from "@/services/speedhub"
+import { authService } from "@/services/speedhub"
 
 const useHandleAuthGoogle = () => {
-  const dispatch: AppDispatch = useDispatch()
-  const navigation = useNavigation<NavigationProp<AuthStackParamList>>()
-
-  const { t, i18n } = useTranslation()
-
-  const language = i18n.language
-  const lang = language.slice(0, 2)
+  const router = useRouter()
 
   const [isProcessing, setIsProcessing] = useState(false)
 
-  const config = {
+  const config: AuthConfiguration = {
     issuer: "https://accounts.google.com",
-    clientId: GOOGLE_AUTH_CLIENT_ID,
-    redirectUrl: GOOGLE_REDIRECT_URI,
+    clientId: process.env.GOOGLE_AUTH_CLIENT_ID || "",
+    redirectUrl: process.env.GOOGLE_REDIRECT_URI || "",
     scopes: ["openid", "profile", "email"],
     serviceConfiguration: {
       authorizationEndpoint: "https://accounts.google.com/o/oauth2/auth",
@@ -61,42 +50,35 @@ const useHandleAuthGoogle = () => {
       const userData = response.data
       const email = userData.email.toString()
 
-      const users = await dispatch(
-        searchUsers({ email: email, page: 1, size: 1 })
+      const users = await userService.searchUsers(
+        { email: email },
+        { page: 1, size: 1 }
       )
 
       if (users.users && users.users.length > 0) {
         const userId = users.users[0].userId
 
-        await dispatch(loginUser({ userId })).then(() => {
-          navigation.navigate("MainStackNavigator", {
-            screen: "Home",
-            params: {},
-          })
-        })
+        await authService.login({ userId })
+
+        router.push({ pathname: "/(main)/home" })
 
         setIsProcessing(false)
       } else {
         const token = await registerForPushNotificationsAsync()
-        await dispatch(
-          register({
-            pseudo: userData.name,
-            email: userData.email,
-            password: userData.sub,
-            image: userData.picture,
-            provider: "Google",
-            verified: true,
-            expoPushToken: token,
-            lang,
-          })
-        ).then((response: any) => {
-          dispatch(loginUser({ userId: response.user.userId })).then(() => {
-            navigation.navigate("MainStackNavigator", {
-              screen: "Home",
-              params: {},
-            })
-          })
+        const response = await authService.register({
+          pseudo: userData.name,
+          email: userData.email,
+          password: userData.sub,
+          image: userData.picture,
+          provider: "Google",
+          verified: true,
+          expoPushToken: token,
+          lang: "en",
         })
+
+        authService.login({ userId: response.user.userId })
+
+        router.push({ pathname: "/(main)/home" })
 
         setIsProcessing(false)
       }
@@ -105,7 +87,7 @@ const useHandleAuthGoogle = () => {
       throw new Error(error)
     }
     return {
-      toastMessage: t("actions.youAreNowLoggedWithYourGoogleAccount"),
+      toastMessage: "You are now logged with your Google account",
     }
   })
 

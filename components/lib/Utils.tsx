@@ -1,5 +1,4 @@
-import { Dimensions, TouchableOpacity, Text, View } from "react-native"
-import tw from "twrnc"
+import { Dimensions } from "react-native"
 
 class Utils {
     static ITEM_WIDTH = 280

@@ -1,4 +1,8 @@
 import { useState } from "react"
+import { authService, userService } from "@/services/speedhub"
+import registerForPushNotificationsAsync from "@/components/lib/Notifications"
+import { useRouter } from "expo-router"
+import { toast } from "@/components/lib/toast"
 
 interface DataState {
   email: string
@@ -6,6 +10,8 @@ interface DataState {
   pseudo: string
   expoPushToken?: string
 }
+
+const router = useRouter()
 
 const useHandleAuth = () => {
   const [data, setData] = useState<DataState>({
@@ -19,13 +25,14 @@ const useHandleAuth = () => {
 
   const searchUser = toast(async () => {
     try {
-      const response = await dispatch(
-        searchUsers({
-          email: data.email,
+      const response = await userService.searchUsers(
+        { email: data.email },
+        {
           page: 1,
           size: 1,
-        })
+        }
       )
+
       if (response && response.users.length > 0) setExistingUser(true)
     } catch (error: any) {
       throw new Error(error.message)
@@ -35,17 +42,10 @@ const useHandleAuth = () => {
   const handleLogin = toast(async () => {
     try {
       if (!data.email || !data.password) {
-        throw new Error(t("errors.emailPasswordMissingOrInvalid"))
+        throw new Error("Email/Password missing or invalid")
       }
 
-      await dispatch(
-        loginUser({ email: data.email, password: data.password })
-      ).then(() => {
-        navigation.navigate("MainStackNavigator", {
-          screen: "Home",
-          params: {},
-        })
-      })
+      await authService.login({ email: data.email, password: data.password })
     } catch (error: any) {
       throw new Error(error.message)
     }
@@ -55,7 +55,7 @@ const useHandleAuth = () => {
       pseudo: "",
     })
     return {
-      toastMessage: t("actions.successfullyConnected"),
+      toastMessage: "Successfully connected",
     }
   })
 
@@ -67,13 +67,17 @@ const useHandleAuth = () => {
         throw new Error("All fields are mandatory")
       }
 
-      await dispatch(register({ ...data, lang, expoPushToken: token })).then(
-        (response: any) => {
-          navigation.navigate("ConfirmEmail", {
-            userId: response.user.userId,
-          })
-        }
-      )
+      const response = await authService.register({
+        ...data,
+        expoPushToken: token,
+      })
+
+      router.push({
+        pathname: "/(auth)/confirm-email",
+        params: {
+          userId: response.user.userId,
+        },
+      })
     } catch (error: any) {
       throw new Error(error.message)
     }

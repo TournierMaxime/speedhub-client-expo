@@ -1,5 +1,3 @@
-import { SetStateAction } from "react"
-
 interface Data {
   [key: string]: any
 }

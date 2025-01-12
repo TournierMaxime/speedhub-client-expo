@@ -10,7 +10,9 @@ interface Data {
 interface User {
     userId: string
     pseudo: string
-    email: string;
+    email: string
+    image: string
+    expoPushToken: string
 }
 
 interface AuthContextProps {
