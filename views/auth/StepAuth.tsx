@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from "react"
 import useHandleAuth from "@/hooks/auth/useHandleAuth"
-import { TextInput, Text, TouchableOpacity } from "react-native"
+import { Text, TouchableOpacity, StyleSheet } from "react-native"
+import Form from "@/components/lib/Form"
+import Utils from "@/components/lib/Utils"
 
 const StepAuth: React.FC = () => {
     const {
@@ -20,14 +22,7 @@ const StepAuth: React.FC = () => {
                 if (existingUser) {
                     return (
                         <Fragment>
-                            <Text style={""}>Password</Text>
-                            <TextInput
-                                placeholder={"Password"}
-                                onChangeText={(text) => setData({ ...data, password: text })}
-                                value={data.password}
-                                secureTextEntry={true}
-                                style={""}
-                            />
+                            {Form.inputText(data, setData, "Password", "password", data.password, true, false)}
                             <TouchableOpacity
                                 style={""}
                                 onPress={handleLogin}
@@ -40,13 +35,7 @@ const StepAuth: React.FC = () => {
                 } else {
                     return (
                         <Fragment>
-                            <Text style={""}>Username</Text>
-                            <TextInput
-                                placeholder={"Username"}
-                                onChangeText={(text) => setData({ ...data, pseudo: text })}
-                                value={data.pseudo}
-                                style={""}
-                            />
+                            {Form.inputText(data, setData, "Username", "pseudo", data.pseudo, false, false)}
                             <TouchableOpacity
                                 style={""}
                                 onPress={() => setStep(3)}
@@ -61,14 +50,7 @@ const StepAuth: React.FC = () => {
                 if (!existingUser) {
                     return (
                         <Fragment>
-                            <Text style={""}>Password</Text>
-                            <TextInput
-                                placeholder={"Password"}
-                                onChangeText={(text) => setData({ ...data, password: text })}
-                                value={data.password}
-                                secureTextEntry={true}
-                                style={""}
-                            />
+                            {Form.inputText(data, setData, "Password", "password", data.password, true, false)}
                             <TouchableOpacity
                                 style={""}
                                 onPress={handleRegister}
@@ -82,22 +64,12 @@ const StepAuth: React.FC = () => {
             default:
                 return (
                     <Fragment>
-                        <Text style={""}>Email</Text>
-                        <TextInput
-                            placeholder={"Email"}
-                            onChangeText={(text) => setData({ ...data, email: text })}
-                            value={data.email}
-                            style={""}
-                        />
-                        <TouchableOpacity
-                            style={""}
-                            onPress={() => {
-                                searchUser(), setStep(2)
-                            }}
-                            disabled={!data.email}
-                        >
-                            <Text style={""}>Next</Text>
-                        </TouchableOpacity>
+                        {Form.inputText(data, setData, "Email", "email", data.email, false, false)}
+                        {Form.submit("info", "Next", async () => {
+                            searchUser();
+                            setStep(2);
+                        }, !data.email)}
+
                     </Fragment>
                 )
         }
@@ -105,5 +77,11 @@ const StepAuth: React.FC = () => {
 
     return renderForm()
 }
+
+const style = StyleSheet.create({
+    text: {
+        fontSize: Utils.moderateScale(20)
+    },
+})
 
 export default StepAuth

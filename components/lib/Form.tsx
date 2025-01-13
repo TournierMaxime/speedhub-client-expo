@@ -6,67 +6,71 @@ import {
     TouchableOpacity,
     Switch,
     Image,
+    StyleSheet
 } from "react-native"
 import useOnChange from "../../hooks/utils/useOnChange"
 import Utils from "./Utils"
-import useResponsive from "../../hooks/utils/useResponsive"
+import { DataState } from "@/hooks/auth/useHandleAuth"
 
-type FormData = {
-    [key: string]: any
-}
+type SetFormData = React.Dispatch<React.SetStateAction<DataState>>;
 
-type SetFormData = React.Dispatch<React.SetStateAction<FormData>>
+const TypeSubmitStyles = {
+    info: { backgroundColor: "blue", color: "white" },
+    success: { backgroundColor: "green", color: "white" },
+    warning: { backgroundColor: "orange", color: "white" },
+    error: { backgroundColor: "red", color: "white" },
+} as const;
+
+type TypeSubmit = keyof typeof TypeSubmitStyles;
 
 class Form {
     static inputText = (
-        data: FormData,
+        data: DataState,
         setData: SetFormData,
         label: string,
-        name: string,
+        name: keyof DataState,
         value: string,
-        readOnly: boolean,
+        secure: boolean,
+        readOnly: boolean
     ) => {
-        const { onChange } = useOnChange({ data, setData })
+        const { onChange } = useOnChange({ data, setData });
 
-        const { fontSize, placeholder } = useResponsive()
         return (
-            <View style={""}>
-                <Text style={""}>{label}</Text>
+            <View style={style.inputContainer}>
                 <TextInput
                     placeholder={label}
-                    onChangeText={(value) => onChange({ name, value })}
+                    onChangeText={(text) => onChange({ name, value: text })}
                     value={value}
                     editable={!readOnly}
-                    style={placeholder()}
+                    style={style.textInput}
+                    secureTextEntry={secure}
                 />
             </View>
-        )
-    }
+        );
+    };
 
     static inputNumber = (
-        data: FormData,
+        data: DataState,
         setData: SetFormData,
         label: string,
-        value: string,
-        name: string,
+        name: keyof DataState,
+        value: string
     ) => {
-        const { onChange } = useOnChange({ data, setData })
+        const { onChange } = useOnChange({ data, setData });
 
-        const { fontSize, placeholder } = useResponsive()
         return (
-            <View style={""}>
-                <Text style={""}>{label}</Text>
+            <View style={style.inputContainer}>
                 <TextInput
                     placeholder={label}
-                    onChangeText={(value) => onChange({ name, value: Number(value) })}
+                    onChangeText={(text) => onChange({ name, value: Number(text) })}
                     value={value}
                     keyboardType="numeric"
                     maxLength={6}
-                    style={placeholder()}
+                    style={style.textInput}
                 />
             </View>
-        )
-    }
+        );
+    };
 
     static inputSwitch = (
         value: boolean,
@@ -83,7 +87,6 @@ class Form {
         fct: () => void,
         t: (key: string) => string,
     ) => {
-        const { btnSubmit } = useResponsive()
 
         return (
             <View style={""}>
@@ -103,7 +106,7 @@ class Form {
                         style={""}
                         onPress={() => fct()}
                     >
-                        <Text style={btnSubmit()}>{t("utils.changeAvatar")}</Text>
+                        <Text style={""}>Change avatar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -111,22 +114,62 @@ class Form {
     }
 
     static submit = (
+        type: TypeSubmit,
         label: string,
-        fct: () => Promise<any>,
-        disabled: boolean,
+        fct: () => Promise<void>,
+        disabled: boolean
     ) => {
-        const { btnSubmit } = useResponsive()
+
+        const { backgroundColor, color } = TypeSubmitStyles[type];
 
         return (
             <TouchableOpacity
-                style={""}
-                onPress={async () => await fct()}
+                style={[
+                    style.btnContainer,
+                    { backgroundColor },
+                    disabled && { opacity: 0.5 },
+                ]}
+                onPress={async () => {
+                    if (!disabled) {
+                        await fct();
+                    }
+                }}
                 disabled={disabled}
             >
-                <Text style={btnSubmit()}>{label}</Text>
+                <Text style={[style.btnLabel, { color }]}>{label}</Text>
             </TouchableOpacity>
-        )
-    }
+        );
+    };
 }
+
+const style = StyleSheet.create({
+    inputContainer: {
+        display: "flex",
+        marginVertical: Utils.moderateScale(10),
+        width: "90%"
+    },
+    textLabel: {
+        fontSize: Utils.moderateScale(20),
+        fontWeight: "bold"
+    },
+    textInput: {
+        fontSize: Utils.moderateScale(18),
+        borderWidth: Utils.moderateScale(1),
+        borderColor: "black",
+        borderRadius: Utils.moderateScale(5)
+    },
+    btnContainer: {
+        display: "flex",
+        borderRadius: Utils.moderateScale(5),
+        width: "90%",
+        alignItems: "center",
+        marginVertical: Utils.moderateScale(10)
+    },
+    btnLabel: {
+        fontSize: Utils.moderateScale(18),
+        fontWeight: "bold",
+        marginVertical: Utils.moderateScale(10)
+    }
+})
 
 export default Form

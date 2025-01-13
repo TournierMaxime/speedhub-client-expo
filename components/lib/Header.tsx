@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({
 
     const { user, isAuthenticated } = useAuth()
 
-    const logo = require("../../../../../assets/images/videotek_logo.webp")
+    const logo = require("../../assets/images/videotek_logo.webp")
 
     const [modalVisible, setModalVisible] = useState(false)
 

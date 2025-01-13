@@ -1,19 +1,12 @@
-interface Data {
-  [key: string]: any
-}
-
-interface ChangeEvent {
-  name: string
-  value: any
-}
+import { DataState } from "../auth/useHandleAuth"
 
 interface Props {
-  data: Data
-  setData: React.Dispatch<React.SetStateAction<Data>>
+  data: DataState
+  setData: React.Dispatch<React.SetStateAction<DataState>>
 }
 
 const useOnChange = ({ data, setData }: Props) => {
-  const onChange = ({ name, value }: ChangeEvent) => {
+  const onChange = ({ name, value }: { name: keyof DataState; value: any }) => {
     setData((prevData) => ({
       ...prevData,
       [name]: value,

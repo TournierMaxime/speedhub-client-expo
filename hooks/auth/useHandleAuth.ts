@@ -5,7 +5,7 @@ import { useRouter } from "expo-router"
 import { toast } from "@/components/lib/toast"
 import { useAuth } from "@/contexts/AuthContext"
 
-interface DataState {
+export interface DataState {
   email: string
   password: string
   pseudo: string
