@@ -3,6 +3,7 @@ import { authService, userService } from "@/services/speedhub"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
 import { useRouter } from "expo-router"
 import { toast } from "@/components/lib/toast"
+import { useAuth } from "@/contexts/AuthContext"
 
 interface DataState {
   email: string
@@ -11,9 +12,10 @@ interface DataState {
   expoPushToken?: string
 }
 
-const router = useRouter()
-
 const useHandleAuth = () => {
+  const router = useRouter()
+  const { login } = useAuth()
+
   const [data, setData] = useState<DataState>({
     email: "",
     password: "",
@@ -46,6 +48,7 @@ const useHandleAuth = () => {
       }
 
       await authService.login({ email: data.email, password: data.password })
+      await login({ email: data.email, password: data.password })
     } catch (error: any) {
       throw new Error(error.message)
     }

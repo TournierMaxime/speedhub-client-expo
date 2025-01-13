@@ -8,7 +8,7 @@ type FormData = {
 }
 
 interface HandleConfirmEmailProps {
-  userId: string
+  userId: string | string[]
 }
 
 const useHandleConfirmEmail = ({ userId }: HandleConfirmEmailProps) => {

@@ -1,24 +1,9 @@
 import React from "react"
 import { View, Text, TextInput, TouchableOpacity } from "react-native"
-import { useTranslation } from "react-i18next"
-import tw from "twrnc"
-import useHandleForgetPassword from "../../lib/hooks/auth/useHandleForgetPassword"
-import useOnChange from "@mod/mobile-common/lib/hooks/utils/useOnChange"
-import { useSelector } from "react-redux"
-import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
-import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
-import { RootState } from "../../../../store"
-import { AuthStackParamList } from "../../navigators/AuthStackNavigator"
-import { NavigationProp } from "@react-navigation/native"
+import useHandleForgetPassword from "@/hooks/auth/useHandleForgetPassword"
+import useOnChange from "@/hooks/utils/useOnChange"
 
-interface ForgetPasswordProps {
-    i18n: any
-    t: any
-    navigation: NavigationProp<AuthStackParamList, "ForgetPassword">
-}
-
-const ForgetPasswordScreen: React.FC<ForgetPasswordProps> = () => {
-    const { t } = useTranslation()
+const ForgetPasswordScreen: React.FC = () => {
 
     const {
         data,
@@ -31,42 +16,37 @@ const ForgetPasswordScreen: React.FC<ForgetPasswordProps> = () => {
 
     const { onChange } = useOnChange({ data, setData })
 
-    const darkMode = useSelector((state: RootState) => state.theme.darkMode)
-    const { background, text } = useDynamicThemeStyles(darkMode)
-
-    const { fontSize, widthAspectRatio, placeholder, btnSubmit } = useResponsive()
-
     return (
-        <View style={tw`items-center`}>
-            <View style={widthAspectRatio()}>
+        <View style={""}>
+            <View style={""}>
                 {step === 1 && (
-                    <View style={tw`${background} p-4 h-full mb-2`}>
-                        <Text style={fontSize(text)}>
-                            {t("utils.enterYourEmailAddress")}
+                    <View style={""}>
+                        <Text style={""}>
+                            Enter your email address
                         </Text>
                         <TextInput
-                            style={placeholder()}
-                            placeholder={t("utils.email")}
+                            style={""}
+                            placeholder={"Email"}
                             value={data.email}
                             onChangeText={(value) => onChange({ name: "email", value })}
                         />
 
                         <TouchableOpacity
-                            style={tw`flex-row justify-center mt-4 mb-8 bg-indigo-600 rounded-lg`}
+                            style={""}
                             onPress={handleForgetPassword}
                         >
-                            <Text style={btnSubmit()}>{t("utils.confirm")}</Text>
+                            <Text style={""}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
                 )}
                 {step === 2 && (
-                    <View style={tw`${background} p-4 rounded-md h-full`}>
-                        <Text style={fontSize(text)}>
-                            {t("utils.enterYourVerificationCode")}
+                    <View style={""}>
+                        <Text style={""}>
+                            Enter your verification code
                         </Text>
                         <TextInput
-                            placeholder={t("utils.verificationCode")}
-                            style={placeholder()}
+                            placeholder={"Verification code"}
+                            style={""}
                             value={data.code !== null ? data.code.toString() : ""}
                             maxLength={6}
                             keyboardType="numeric"
@@ -76,29 +56,29 @@ const ForgetPasswordScreen: React.FC<ForgetPasswordProps> = () => {
                         />
 
                         <TouchableOpacity
-                            style={tw`flex-row justify-center mt-4 mb-8 bg-indigo-600 rounded-lg`}
+                            style={""}
                             onPress={handleCheckForgetPasswordCode}
                         >
-                            <Text style={btnSubmit()}>{t("utils.confirm")}</Text>
+                            <Text style={""}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
                 )}
 
                 {step === 3 && (
-                    <View style={tw`${background} p-4 rounded-md h-full`}>
-                        <Text style={fontSize(text)}>
-                            {t("utils.enterYourNewPassword")}
+                    <View style={""}>
+                        <Text style={""}>
+                            Enter your new password
                         </Text>
                         <TextInput
-                            style={placeholder()}
-                            placeholder={t("utils.password")}
+                            style={""}
+                            placeholder={"Password"}
                             secureTextEntry={true}
                             value={data.password}
                             onChangeText={(value) => onChange({ name: "password", value })}
                         />
                         <TextInput
-                            style={placeholder()}
-                            placeholder={t("utils.confirmYourPassword")}
+                            style={""}
+                            placeholder={"Confirm your password"}
                             secureTextEntry={true}
                             value={data.confirmPassword}
                             onChangeText={(value) =>
@@ -107,10 +87,10 @@ const ForgetPasswordScreen: React.FC<ForgetPasswordProps> = () => {
                         />
 
                         <TouchableOpacity
-                            style={tw`flex-row justify-center mt-4 mb-8 bg-indigo-600 rounded-lg`}
+                            style={""}
                             onPress={handleResetPassword}
                         >
-                            <Text style={btnSubmit()}>{t("utils.confirm")}</Text>
+                            <Text style={""}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
                 )}

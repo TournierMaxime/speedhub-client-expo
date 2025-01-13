@@ -1,12 +1,6 @@
 import React, { Fragment, useState } from "react"
-import useHandleAuth from "../../lib/hooks/auth/useHandleAuth"
+import useHandleAuth from "@/hooks/auth/useHandleAuth"
 import { TextInput, Text, TouchableOpacity } from "react-native"
-import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
-import { useSelector } from "react-redux"
-import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
-import { useTranslation } from "react-i18next"
-import tw from "twrnc"
-import { RootState } from "../../../../store"
 
 const StepAuth: React.FC = () => {
     const {
@@ -18,13 +12,6 @@ const StepAuth: React.FC = () => {
         setData,
     } = useHandleAuth()
 
-    const darkMode = useSelector((state: RootState) => state.theme.darkMode)
-    const { text } = useDynamicThemeStyles(darkMode)
-
-    const { t } = useTranslation()
-
-    const { fontSize, placeholder, btnSubmit } = useResponsive()
-
     const [step, setStep] = useState(1)
 
     const renderForm = () => {
@@ -33,41 +20,39 @@ const StepAuth: React.FC = () => {
                 if (existingUser) {
                     return (
                         <Fragment>
-                            <Text style={fontSize(text)}>{t("utils.password")}</Text>
+                            <Text style={""}>Password</Text>
                             <TextInput
-                                placeholder={t("utils.password")}
+                                placeholder={"Password"}
                                 onChangeText={(text) => setData({ ...data, password: text })}
                                 value={data.password}
                                 secureTextEntry={true}
-                                style={placeholder()}
+                                style={""}
                             />
                             <TouchableOpacity
-                                style={tw`flex-row justify-center mt-4 mb-8 ${!data.password ? `bg-slate-200` : `bg-indigo-600`
-                                    } rounded-lg`}
+                                style={""}
                                 onPress={handleLogin}
                                 disabled={!data.password}
                             >
-                                <Text style={btnSubmit()}>{t("utils.signIn")}</Text>
+                                <Text style={""}>SignIn</Text>
                             </TouchableOpacity>
                         </Fragment>
                     )
                 } else {
                     return (
                         <Fragment>
-                            <Text style={fontSize(text)}>{t("utils.userName")}</Text>
+                            <Text style={""}>Username</Text>
                             <TextInput
-                                placeholder={t("utils.userName")}
+                                placeholder={"Username"}
                                 onChangeText={(text) => setData({ ...data, pseudo: text })}
                                 value={data.pseudo}
-                                style={placeholder()}
+                                style={""}
                             />
                             <TouchableOpacity
-                                style={tw`flex-row justify-center mt-4 mb-8 ${!data.pseudo ? `bg-slate-200` : `bg-indigo-600`
-                                    } rounded-lg`}
+                                style={""}
                                 onPress={() => setStep(3)}
                                 disabled={!data.pseudo}
                             >
-                                <Text style={btnSubmit()}>{t("utils.next")}</Text>
+                                <Text style={""}>Next</Text>
                             </TouchableOpacity>
                         </Fragment>
                     )
@@ -76,21 +61,20 @@ const StepAuth: React.FC = () => {
                 if (!existingUser) {
                     return (
                         <Fragment>
-                            <Text style={fontSize(text)}>{t("utils.password")}</Text>
+                            <Text style={""}>Password</Text>
                             <TextInput
-                                placeholder={t("utils.password")}
+                                placeholder={"Password"}
                                 onChangeText={(text) => setData({ ...data, password: text })}
                                 value={data.password}
                                 secureTextEntry={true}
-                                style={placeholder()}
+                                style={""}
                             />
                             <TouchableOpacity
-                                style={tw`flex-row justify-center mt-4 mb-8 ${!data.password ? `bg-slate-200` : `bg-indigo-600`
-                                    } rounded-lg`}
+                                style={""}
                                 onPress={handleRegister}
                                 disabled={!data.password}
                             >
-                                <Text style={btnSubmit()}>{t("utils.signUp")}</Text>
+                                <Text style={""}>SignUp</Text>
                             </TouchableOpacity>
                         </Fragment>
                     )
@@ -98,22 +82,21 @@ const StepAuth: React.FC = () => {
             default:
                 return (
                     <Fragment>
-                        <Text style={fontSize(text)}>{t("utils.email")}</Text>
+                        <Text style={""}>Email</Text>
                         <TextInput
-                            placeholder={t("utils.email")}
+                            placeholder={"Email"}
                             onChangeText={(text) => setData({ ...data, email: text })}
                             value={data.email}
-                            style={placeholder()}
+                            style={""}
                         />
                         <TouchableOpacity
-                            style={tw`flex-row justify-center mt-4 mb-8 ${!data.email ? `bg-slate-200` : `bg-indigo-600`
-                                } rounded-lg`}
+                            style={""}
                             onPress={() => {
                                 searchUser(), setStep(2)
                             }}
                             disabled={!data.email}
                         >
-                            <Text style={btnSubmit()}>{t("utils.next")}</Text>
+                            <Text style={""}>Next</Text>
                         </TouchableOpacity>
                     </Fragment>
                 )
