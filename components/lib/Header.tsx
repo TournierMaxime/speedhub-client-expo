@@ -1,25 +1,23 @@
 import React, { useState } from "react"
-import { View, Text, TouchableOpacity, Image } from "react-native"
+import { View, TouchableOpacity, Image, StyleSheet } from "react-native"
 import { FontAwesome5, FontAwesome, Ionicons } from "@expo/vector-icons"
 import Utils from "./Utils"
-import useResponsive from "../../hooks/utils/useResponsive"
 import { useAuth } from "@/contexts/AuthContext"
+import { useRouter } from "expo-router"
 
 interface HeaderProps {
     backButton: boolean
     title: string
-    type: string
 }
 
 const Header: React.FC<HeaderProps> = ({
     backButton,
-    title,
-    type,
+    title
 }) => {
 
     const { user, isAuthenticated } = useAuth()
 
-    const logo = require("../../assets/images/videotek_logo.webp")
+    const logo = require("../../assets/images/speedhub.webp")
 
     const [modalVisible, setModalVisible] = useState(false)
 
@@ -27,38 +25,44 @@ const Header: React.FC<HeaderProps> = ({
         setModalVisible(!modalVisible)
     }
 
-    const { userIcon } = useResponsive()
+    const router = useRouter()
 
     const NotAuthenticatedUser = () => {
         if (isAuthenticated === false) {
             return (
-                <View>
-                    <View
-                        style={""}
-                    >
-                        {backButton ? (
-                            <View style={""}>
-                                <TouchableOpacity
-                                    style={""}
-                                >
-                                    <Ionicons
-                                        name="arrow-back-outline"
-                                        size={Utils.moderateScale(25)}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        ) : (
-                            <View />
-                        )}
 
-                        <Text
-                            style={""}
-                        >
-                            {title}
-                        </Text>
-                        <View style={""}></View>
-                    </View>
+                <View
+                    style={style.header}
+                >
+                    {backButton ? (
+                        <View style={{ marginLeft: Utils.moderateScale(10) }}>
+                            <TouchableOpacity
+                                style={""}
+                                onPress={() => router.back()}
+                            >
+                                <Ionicons
+                                    name="arrow-back-outline"
+                                    size={Utils.moderateScale(25)}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <View />
+                    )}
+
+                    <Image
+                        style={{
+                            resizeMode: "contain",
+                            width: Utils.moderateScale(120),
+                            height: Utils.moderateScale(80),
+                        }}
+                        source={logo}
+                    />
+
+                    <View />
+
                 </View>
+
             )
         }
     }
@@ -87,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({
                                     style={""}
                                 >
                                     {user?.image ? (
-                                        <Image source={{ uri: user?.image }} style={userIcon()} />
+                                        <Image source={{ uri: user?.image }} style={""} />
                                     ) : (
                                         <FontAwesome5
                                             name="user"
@@ -127,5 +131,15 @@ const Header: React.FC<HeaderProps> = ({
 
     return isAuthenticated === true ? AuthenticatedUser() : NotAuthenticatedUser()
 }
+
+const style = StyleSheet.create({
+    header: {
+        display: "flex",
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginTop: Utils.moderateScale(20),
+    },
+})
 
 export default Header

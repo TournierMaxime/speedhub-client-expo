@@ -1,7 +1,9 @@
-import React from "react"
-import { View, Text, TextInput, TouchableOpacity } from "react-native"
+import React, { Fragment } from "react"
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native"
 import useHandleForgetPassword from "@/hooks/auth/useHandleForgetPassword"
-import useOnChange from "@/hooks/utils/useOnChange"
+import Form from "@/components/lib/Form"
+import Utils from "@/components/lib/Utils"
+import Header from "@/components/lib/Header"
 
 const ForgetPasswordScreen: React.FC = () => {
 
@@ -14,89 +16,99 @@ const ForgetPasswordScreen: React.FC = () => {
         step,
     } = useHandleForgetPassword()
 
-    const { onChange } = useOnChange({ data, setData })
-
     return (
-        <View style={""}>
-            <View style={""}>
+        <View style={style.container}>
+            <Header backButton={true} title="" />
+            <View style={style.section}>
                 {step === 1 && (
-                    <View style={""}>
-                        <Text style={""}>
-                            Enter your email address
-                        </Text>
-                        <TextInput
-                            style={""}
-                            placeholder={"Email"}
-                            value={data.email}
-                            onChangeText={(value) => onChange({ name: "email", value })}
-                        />
-
-                        <TouchableOpacity
-                            style={""}
-                            onPress={handleForgetPassword}
-                        >
-                            <Text style={""}>Confirm</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Fragment>
+                        {Form.inputText(
+                            data,
+                            setData,
+                            "Email",
+                            "email",
+                            data.email ?? "",
+                            false,
+                            false,
+                            "email"
+                        )}
+                        {Form.submit(
+                            "info",
+                            "Confirm",
+                            async () => {
+                                await handleForgetPassword()
+                            },
+                            !data.email || !Utils.isValidEmail(data.email)
+                        )}
+                    </Fragment>
                 )}
                 {step === 2 && (
-                    <View style={""}>
-                        <Text style={""}>
-                            Enter your verification code
-                        </Text>
-                        <TextInput
-                            placeholder={"Verification code"}
-                            style={""}
-                            value={data.code !== null ? data.code.toString() : ""}
-                            maxLength={6}
-                            keyboardType="numeric"
-                            onChangeText={(value) =>
-                                onChange({ name: "code", value: Number(value) })
-                            }
-                        />
-
-                        <TouchableOpacity
-                            style={""}
-                            onPress={handleCheckForgetPasswordCode}
-                        >
-                            <Text style={""}>Confirm</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Fragment>
+                        {Form.inputNumber(
+                            data,
+                            setData,
+                            "Verification code",
+                            "code",
+                            data.code ?? "",
+                            "number"
+                        )}
+                        {Form.submit(
+                            "info",
+                            "Confirm",
+                            async () => {
+                                await handleCheckForgetPasswordCode()
+                            },
+                            !data.code
+                        )}
+                    </Fragment>
                 )}
 
                 {step === 3 && (
-                    <View style={""}>
-                        <Text style={""}>
-                            Enter your new password
-                        </Text>
-                        <TextInput
-                            style={""}
-                            placeholder={"Password"}
-                            secureTextEntry={true}
-                            value={data.password}
-                            onChangeText={(value) => onChange({ name: "password", value })}
-                        />
-                        <TextInput
-                            style={""}
-                            placeholder={"Confirm your password"}
-                            secureTextEntry={true}
-                            value={data.confirmPassword}
-                            onChangeText={(value) =>
-                                onChange({ name: "confirmPassword", value })
-                            }
-                        />
+                    <Fragment>
+                        {Form.inputText(
+                            data,
+                            setData,
+                            "Password",
+                            "password",
+                            data.password ?? "",
+                            true,
+                            false,
+                            "password"
+                        )}
+                        {Form.inputText(
+                            data,
+                            setData,
+                            "Confirm password",
+                            "confirmPassword",
+                            data.confirmPassword ?? "",
+                            true,
+                            false,
+                            "password"
+                        )}
+                        {Form.submit(
+                            "info",
+                            "Confirm",
+                            async () => {
+                                await handleResetPassword()
+                            },
+                            !data.password || !Utils.isValidPassword(data.password) && !data.confirmPassword
+                        )}
 
-                        <TouchableOpacity
-                            style={""}
-                            onPress={handleResetPassword}
-                        >
-                            <Text style={""}>Confirm</Text>
-                        </TouchableOpacity>
-                    </View>
+                    </Fragment>
                 )}
             </View>
         </View>
     )
 }
+
+const style = StyleSheet.create({
+    container: {
+        display: "flex"
+    },
+    section: {
+        display: "flex",
+        alignItems: "center"
+    },
+})
 
 export default ForgetPasswordScreen

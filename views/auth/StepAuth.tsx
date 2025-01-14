@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react"
 import useHandleAuth from "@/hooks/auth/useHandleAuth"
-import { Text, TouchableOpacity, StyleSheet } from "react-native"
 import Form from "@/components/lib/Form"
 import Utils from "@/components/lib/Utils"
 
@@ -22,27 +21,47 @@ const StepAuth: React.FC = () => {
                 if (existingUser) {
                     return (
                         <Fragment>
-                            {Form.inputText(data, setData, "Password", "password", data.password, true, false)}
-                            <TouchableOpacity
-                                style={""}
-                                onPress={handleLogin}
-                                disabled={!data.password}
-                            >
-                                <Text style={""}>SignIn</Text>
-                            </TouchableOpacity>
+                            {Form.inputText(
+                                data,
+                                setData,
+                                "Password",
+                                "password",
+                                data.password ?? "",
+                                true,
+                                false,
+                                "password"
+                            )}
+                            {Form.submit(
+                                "info",
+                                "SignIn",
+                                async () => {
+                                    handleLogin()
+                                },
+                                !data.password || !Utils.isValidPassword(data.password)
+                            )}
                         </Fragment>
                     )
                 } else {
                     return (
                         <Fragment>
-                            {Form.inputText(data, setData, "Username", "pseudo", data.pseudo, false, false)}
-                            <TouchableOpacity
-                                style={""}
-                                onPress={() => setStep(3)}
-                                disabled={!data.pseudo}
-                            >
-                                <Text style={""}>Next</Text>
-                            </TouchableOpacity>
+                            {Form.inputText(
+                                data,
+                                setData,
+                                "Username",
+                                "pseudo",
+                                data.pseudo ?? "",
+                                false,
+                                false,
+                                "text"
+                            )}
+                            {Form.submit(
+                                "info",
+                                "Next",
+                                async () => {
+                                    setStep(3)
+                                },
+                                !data.pseudo
+                            )}
                         </Fragment>
                     )
                 }
@@ -50,26 +69,49 @@ const StepAuth: React.FC = () => {
                 if (!existingUser) {
                     return (
                         <Fragment>
-                            {Form.inputText(data, setData, "Password", "password", data.password, true, false)}
-                            <TouchableOpacity
-                                style={""}
-                                onPress={handleRegister}
-                                disabled={!data.password}
-                            >
-                                <Text style={""}>SignUp</Text>
-                            </TouchableOpacity>
+                            {Form.inputText(
+                                data,
+                                setData,
+                                "Password",
+                                "password",
+                                data.password ?? "",
+                                true,
+                                false,
+                                "password"
+                            )}
+                            {Form.submit(
+                                "info",
+                                "SignUp",
+                                async () => {
+                                    handleRegister()
+                                },
+                                !data.password || !Utils.isValidPassword(data.password)
+                            )}
                         </Fragment>
                     )
                 }
             default:
                 return (
                     <Fragment>
-                        {Form.inputText(data, setData, "Email", "email", data.email, false, false)}
-                        {Form.submit("info", "Next", async () => {
-                            searchUser();
-                            setStep(2);
-                        }, !data.email)}
-
+                        {Form.inputText(
+                            data,
+                            setData,
+                            "Email",
+                            "email",
+                            data.email ?? "",
+                            false,
+                            false,
+                            "email"
+                        )}
+                        {Form.submit(
+                            "info",
+                            "Next",
+                            async () => {
+                                searchUser()
+                                setStep(2)
+                            },
+                            !data.email || !Utils.isValidEmail(data.email)
+                        )}
                     </Fragment>
                 )
         }
@@ -77,11 +119,5 @@ const StepAuth: React.FC = () => {
 
     return renderForm()
 }
-
-const style = StyleSheet.create({
-    text: {
-        fontSize: Utils.moderateScale(20)
-    },
-})
 
 export default StepAuth

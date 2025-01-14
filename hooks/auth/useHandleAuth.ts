@@ -4,13 +4,7 @@ import registerForPushNotificationsAsync from "@/components/lib/Notifications"
 import { useRouter } from "expo-router"
 import { toast } from "@/components/lib/toast"
 import { useAuth } from "@/contexts/AuthContext"
-
-export interface DataState {
-  email: string
-  password: string
-  pseudo: string
-  expoPushToken?: string
-}
+import { DataState } from "./interface"
 
 const useHandleAuth = () => {
   const router = useRouter()

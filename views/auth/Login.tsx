@@ -3,9 +3,7 @@ import {
     View,
     TouchableOpacity,
     Text,
-    ScrollView,
     ActivityIndicator,
-    Image,
     Platform,
     StyleSheet,
 } from "react-native"
@@ -17,6 +15,7 @@ import useHandleAuthApple from "@/hooks/auth/useHandleAuthApple"
 import StepAuth from "./StepAuth"
 import { useRouter } from "expo-router"
 import Form from "@/components/lib/Form"
+import Header from "@/components/lib/Header"
 
 const LoginScreen: React.FC = () => {
     const router = useRouter()
@@ -31,8 +30,6 @@ const LoginScreen: React.FC = () => {
         })
     }
 
-    const logo = require("../../assets/images/videotek_logo.webp")
-
     return (
         <View style={style.container}>
             {isProcessing ? (
@@ -45,16 +42,7 @@ const LoginScreen: React.FC = () => {
                 </View>
             ) : (
                 <Fragment>
-                    <View style={style.header}>
-                        <Image
-                            style={{
-                                resizeMode: "contain",
-                                width: Utils.moderateScale(220),
-                                height: Utils.moderateScale(80),
-                            }}
-                            source={logo}
-                        />
-                    </View>
+                    <Header backButton={false} title="Login" />
 
                     <View style={style.section}>
                         <StepAuth />

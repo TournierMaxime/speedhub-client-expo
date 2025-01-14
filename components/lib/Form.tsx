@@ -10,7 +10,7 @@ import {
 } from "react-native"
 import useOnChange from "../../hooks/utils/useOnChange"
 import Utils from "./Utils"
-import { DataState } from "@/hooks/auth/useHandleAuth"
+import { DataState } from "@/hooks/auth/interface"
 
 type SetFormData = React.Dispatch<React.SetStateAction<DataState>>;
 
@@ -24,6 +24,37 @@ const TypeSubmitStyles = {
 type TypeSubmit = keyof typeof TypeSubmitStyles;
 
 class Form {
+    static validateField(type: string, value: string) {
+        if (!value) {
+            return { isValid: false, error: "This field is required" };
+        }
+
+        switch (type) {
+            case "email":
+                if (!Utils.isValidEmail(value)) {
+                    return { isValid: false, error: "Invalid email format" };
+                }
+                break;
+
+            case "password":
+                if (!Utils.isValidPassword(value)) {
+                    return { isValid: false, error: "Invalid password format" };
+                }
+                break;
+
+            case "number":
+                if (isNaN(Number(value))) {
+                    return { isValid: false, error: "Must be a number" };
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return { isValid: true, error: "" };
+    }
+
     static inputText = (
         data: DataState,
         setData: SetFormData,
@@ -31,9 +62,18 @@ class Form {
         name: keyof DataState,
         value: string,
         secure: boolean,
-        readOnly: boolean
+        readOnly: boolean,
+        type: string
     ) => {
         const { onChange } = useOnChange({ data, setData });
+
+        const { isValid, error } = this.validateField(type, value);
+        const borderColor = !value
+            ? "black"
+            : isValid
+                ? "green"
+                : "red";
+
 
         return (
             <View style={style.inputContainer}>
@@ -42,9 +82,12 @@ class Form {
                     onChangeText={(text) => onChange({ name, value: text })}
                     value={value}
                     editable={!readOnly}
-                    style={style.textInput}
+                    style={[style.textInput, { borderColor }]}
                     secureTextEntry={secure}
                 />
+                <Text style={{ color: "red", fontSize: Utils.moderateScale(14) }}>
+                    {error}
+                </Text>
             </View>
         );
     };
@@ -54,9 +97,18 @@ class Form {
         setData: SetFormData,
         label: string,
         name: keyof DataState,
-        value: string
+        value: string,
+        type: string
     ) => {
         const { onChange } = useOnChange({ data, setData });
+
+
+        const { isValid, error } = this.validateField(type, value);
+        const borderColor = !value
+            ? "black"
+            : isValid
+                ? "green"
+                : "red";
 
         return (
             <View style={style.inputContainer}>
@@ -66,8 +118,11 @@ class Form {
                     value={value}
                     keyboardType="numeric"
                     maxLength={6}
-                    style={style.textInput}
+                    style={[style.textInput, { borderColor }]}
                 />
+                <Text style={{ color: "red", fontSize: Utils.moderateScale(14) }}>
+                    {error}
+                </Text>
             </View>
         );
     };
@@ -155,8 +210,7 @@ const style = StyleSheet.create({
     textInput: {
         fontSize: Utils.moderateScale(18),
         borderWidth: Utils.moderateScale(1),
-        borderColor: "black",
-        borderRadius: Utils.moderateScale(5)
+        borderRadius: Utils.moderateScale(5),
     },
     btnContainer: {
         display: "flex",

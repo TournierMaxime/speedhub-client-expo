@@ -47,6 +47,16 @@ class Utils {
         const match = url.match(/embed\/([a-zA-Z0-9_-]+)/)
         return match ? match[1] : null
     }
+
+    static isValidEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    static isValidPassword(password: string) {
+        const passwordRegex = /^.{8,}$/;
+        return passwordRegex.test(password);
+    }
 }
 
 export default Utils
