@@ -24,7 +24,7 @@ const TypeSubmitStyles = {
 type TypeSubmit = keyof typeof TypeSubmitStyles;
 
 class Form {
-    static validateField(type: string, value: string) {
+    static validateField(type?: string, value?: string) {
         if (!value) {
             return { isValid: false, error: "This field is required" };
         }
@@ -63,7 +63,7 @@ class Form {
         value: string,
         secure: boolean,
         readOnly: boolean,
-        type: string
+        type?: string
     ) => {
         const { onChange } = useOnChange({ data, setData });
 

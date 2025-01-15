@@ -1,4 +1,5 @@
 import { Dimensions } from "react-native"
+import { userService } from "@/services/speedhub"
 
 class Utils {
     static ITEM_WIDTH = 280

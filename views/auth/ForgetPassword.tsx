@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native"
+import { View, StyleSheet } from "react-native"
 import useHandleForgetPassword from "@/hooks/auth/useHandleForgetPassword"
 import Form from "@/components/lib/Form"
 import Utils from "@/components/lib/Utils"
