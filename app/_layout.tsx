@@ -12,6 +12,8 @@ import "react-native-reanimated";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import ToastManager from "toastify-react-native";
+import Utils from "@/components/lib/Utils";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -37,8 +39,9 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <ToastManager width={Utils.moderateScale(350)} height={Utils.moderateScale(100)} showCloseIcon={false} />
         <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          value={colorScheme === "light" ? DarkTheme : DefaultTheme}
         >
           <Navigation />
           <StatusBar style="auto" />

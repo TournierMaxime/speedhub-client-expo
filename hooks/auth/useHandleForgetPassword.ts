@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { toast } from "@/components/lib/toast"
 import { useRouter } from "expo-router"
 import { authService } from "@/services/speedhub"
 import { DataState } from "./interface"
 import { useAuth } from "@/contexts/AuthContext"
+import useHandleToast from "../utils/useHandleToast"
 
 const useHandleForgetPassword = () => {
   const router = useRouter()
@@ -19,41 +19,36 @@ const useHandleForgetPassword = () => {
     confirmPassword: "",
   })
 
-  const handleForgetPassword = toast(async () => {
+  const { handleError, handleSuccess } = useHandleToast()
+
+  const handleForgetPassword = async () => {
     try {
       await authService.forgetPasswordMobile({ email: data.email, lang: "en" })
       setStep(2)
+      handleSuccess("An email has been sent to you containing a 6 digit code")
     } catch (error: any) {
-      console.log("handleForgetPassword", error)
-      throw new Error(error.response.data.errMsg)
+      handleError(error)
     }
-    return {
-      toastMessage: "An email has been sent to you containing a 6 digit code",
-    }
-  })
+  }
 
-  const handleCheckForgetPasswordCode = toast(async () => {
+  const handleCheckForgetPasswordCode = async () => {
     try {
       await authService.checkForgetPasswordCodeMobile({
         email: data.email,
         code: data.code,
       })
-
+      setData({
+        ...data,
+        code: "",
+      })
       setStep(3)
+      handleSuccess("Your verification code has been validated")
     } catch (error: any) {
-      console.log("handleCheckForgetPasswordCode", error)
-      throw new Error(error.response.data.errMsg)
+      handleError(error)
     }
-    setData({
-      ...data,
-      code: "",
-    })
-    return {
-      toastMessage: "Your verification code has been validated",
-    }
-  })
+  }
 
-  const handleResetPassword = toast(async () => {
+  const handleResetPassword = async () => {
     try {
       const response = await authService.resetPasswordMobile({
         email: data.email,
@@ -64,20 +59,17 @@ const useHandleForgetPassword = () => {
       authService.login({ userId: response.userId })
       await login({ email: data.email ?? "", password: data.password ?? "" })
       router.push({ pathname: "/(main)/home" })
-    } catch (error: any) {
-      console.log("handleResetPassword", error)
 
-      throw new Error(error.response.data.errMsg)
+      setData({
+        ...data,
+        password: "",
+        confirmPassword: "",
+      })
+      handleSuccess("Your password has been successfully reset")
+    } catch (error: any) {
+      handleError(error)
     }
-    setData({
-      ...data,
-      password: "",
-      confirmPassword: "",
-    })
-    return {
-      toastMessage: "Your password has been successfully reset",
-    }
-  })
+  }
 
   return {
     handleForgetPassword,

@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { toast } from "@/components/lib/toast"
 import { useRouter } from "expo-router"
 import { authService } from "@/services/speedhub"
+import useHandleToast from "../utils/useHandleToast"
 
 type FormData = {
   [key: string]: any
@@ -16,7 +16,9 @@ const useHandleConfirmEmail = ({ userId }: HandleConfirmEmailProps) => {
 
   const [data, setData] = useState<FormData>({ verificationCode: null })
 
-  const handleConfirmEmail = toast(async () => {
+  const { handleError, handleSuccess } = useHandleToast()
+
+  const handleConfirmEmail = async () => {
     try {
       await authService.confirmEmail(userId, data)
 
@@ -24,16 +26,14 @@ const useHandleConfirmEmail = ({ userId }: HandleConfirmEmailProps) => {
       router.push({
         pathname: "/(main)/home",
       })
+      setData({
+        verificationCode: null,
+      })
+      handleSuccess("Your account has been successfully verified")
     } catch (error: any) {
-      throw new Error(error.response.data.errMsg)
+      handleError(error)
     }
-    setData({
-      verificationCode: null,
-    })
-    return {
-      toastMessage: "Your account has been successfully verified",
-    }
-  })
+  }
 
   return {
     handleConfirmEmail,

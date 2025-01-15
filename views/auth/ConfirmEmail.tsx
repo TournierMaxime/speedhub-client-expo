@@ -21,8 +21,9 @@ const ConfirmEmail: React.FC = () => {
                         data,
                         setData,
                         "Code",
-                        data?.verificationCode,
-                        "verificationCode",
+                        "code",
+                        data?.verificationCode ?? "",
+                        "number"
                     )}
                     <TouchableOpacity
                         style={""}

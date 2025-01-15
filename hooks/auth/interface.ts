@@ -6,4 +6,5 @@ export interface DataState {
   code?: string
   confirmPassword?: string
   userId?: string
+  lang?: string
 }

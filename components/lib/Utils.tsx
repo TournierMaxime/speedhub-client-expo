@@ -57,6 +57,11 @@ class Utils {
         const passwordRegex = /^.{8,}$/;
         return passwordRegex.test(password);
     }
+
+    static isValidCode(code: string) {
+        const codeRegex = /^\d{6}$/;
+        return codeRegex.test(code);
+    }
 }
 
 export default Utils

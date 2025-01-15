@@ -58,7 +58,7 @@ const ForgetPasswordScreen: React.FC = () => {
                             async () => {
                                 await handleCheckForgetPasswordCode()
                             },
-                            !data.code
+                            !data.code || !Utils.isValidCode(data.code)
                         )}
                     </Fragment>
                 )}
@@ -91,7 +91,7 @@ const ForgetPasswordScreen: React.FC = () => {
                             async () => {
                                 await handleResetPassword()
                             },
-                            !data.password || !Utils.isValidPassword(data.password) && !data.confirmPassword
+                            !data.password || !Utils.isValidPassword(data.password) && !data.confirmPassword || !Utils.isValidPassword(data.confirmPassword ?? "")
                         )}
 
                     </Fragment>

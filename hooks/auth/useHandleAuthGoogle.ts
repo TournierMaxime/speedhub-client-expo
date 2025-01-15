@@ -2,7 +2,6 @@ import { authorize, AuthConfiguration } from "react-native-app-auth"
 import axios from "axios"
 import { useState } from "react"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
-import { toast } from "@/components/lib/toast"
 import { useRouter } from "expo-router"
 import { userService } from "@/services/speedhub"
 import { authService } from "@/services/speedhub"
@@ -23,7 +22,7 @@ const useHandleAuthGoogle = () => {
     },
   }
 
-  const loginWithGoogle = toast(async () => {
+  const loginWithGoogle = async () => {
     setIsProcessing(true)
     try {
       const result = await authorize(config)
@@ -89,7 +88,7 @@ const useHandleAuthGoogle = () => {
     return {
       toastMessage: "You are now logged with your Google account",
     }
-  })
+  }
 
   return {
     loginWithGoogle,

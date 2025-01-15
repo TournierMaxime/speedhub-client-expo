@@ -2,9 +2,9 @@ import { useState } from "react"
 import { authService, userService } from "@/services/speedhub"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
 import { useRouter } from "expo-router"
-import { toast } from "@/components/lib/toast"
 import { useAuth } from "@/contexts/AuthContext"
 import { DataState } from "./interface"
+import useHandleToast from "../utils/useHandleToast"
 
 const useHandleAuth = () => {
   const router = useRouter()
@@ -15,11 +15,14 @@ const useHandleAuth = () => {
     password: "",
     pseudo: "",
     expoPushToken: "",
+    lang: "",
   })
 
   const [existingUser, setExistingUser] = useState<boolean>(false)
 
-  const searchUser = toast(async () => {
+  const { handleError, handleSuccess } = useHandleToast()
+
+  const searchUser = async () => {
     try {
       const response = await userService.searchUsers(
         { email: data.email },
@@ -31,42 +34,41 @@ const useHandleAuth = () => {
 
       if (response && response.users.length > 0) setExistingUser(true)
     } catch (error: any) {
-      throw new Error(error.message)
+      handleError(error)
     }
-  })
+  }
 
-  const handleLogin = toast(async () => {
+  const handleLogin = async () => {
     try {
       if (!data.email || !data.password) {
-        throw new Error("Email/Password missing or invalid")
+        handleError("Email/Password missing or invalid")
       }
 
       await authService.login({ email: data.email, password: data.password })
-      await login({ email: data.email, password: data.password })
+      await login({ email: data.email ?? "", password: data.password ?? "" })
+      handleSuccess("Successfully connected")
+      setData({
+        email: "",
+        password: "",
+        pseudo: "",
+      })
     } catch (error: any) {
-      throw new Error(error.message)
+      handleError(error)
     }
-    setData({
-      email: "",
-      password: "",
-      pseudo: "",
-    })
-    return {
-      toastMessage: "Successfully connected",
-    }
-  })
+  }
 
-  const handleRegister = toast(async () => {
+  const handleRegister = async () => {
     try {
       const token = await registerForPushNotificationsAsync()
 
-      if (!data.pseudo || !data.email || !data.password) {
-        throw new Error("All fields are mandatory")
+      if (!data.pseudo || !data.email || !data.password || !data.lang) {
+        handleError("All fields are mandatory")
       }
 
       const response = await authService.register({
         ...data,
         expoPushToken: token,
+        lang: "en",
       })
 
       router.push({
@@ -75,18 +77,16 @@ const useHandleAuth = () => {
           userId: response.user.userId,
         },
       })
+      handleSuccess("Your account has been created")
+      setData({
+        email: "",
+        password: "",
+        pseudo: "",
+      })
     } catch (error: any) {
-      throw new Error(error.message)
+      handleError(error)
     }
-    setData({
-      email: "",
-      password: "",
-      pseudo: "",
-    })
-    return {
-      toastMessage: "Your account has been created",
-    }
-  })
+  }
 
   return {
     handleLogin,

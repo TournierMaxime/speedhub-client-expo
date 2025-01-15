@@ -1,7 +1,6 @@
 import * as AppleAuthentication from "expo-apple-authentication"
 import { useState } from "react"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
-import { toast } from "@/components/lib/toast"
 import { authService } from "@/services/speedhub"
 import { userService } from "@/services/speedhub"
 import { useRouter } from "expo-router"
@@ -10,7 +9,7 @@ const useHandleAuthApple = () => {
   const [isProcessingApple, setIsProcessingApple] = useState<boolean>(false)
   const router = useRouter()
 
-  const onAppleButtonPress = toast(async () => {
+  const onAppleButtonPress = async () => {
     setIsProcessingApple(true)
     let users
     try {
@@ -79,7 +78,7 @@ const useHandleAuthApple = () => {
     return {
       toastMessage: "You are now logged with your Apple account",
     }
-  })
+  }
 
   return {
     onAppleButtonPress,
