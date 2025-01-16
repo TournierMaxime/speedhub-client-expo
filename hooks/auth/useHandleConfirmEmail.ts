@@ -1,33 +1,33 @@
 import { useState } from "react"
-import { useRouter } from "expo-router"
+import { useRouter, useGlobalSearchParams } from "expo-router"
 import { authService } from "@/services/speedhub"
 import useHandleToast from "../utils/useHandleToast"
+import { DataState } from "./interface"
+import { useAuth } from "@/contexts/AuthContext"
 
-type FormData = {
-  [key: string]: any
-}
-
-interface HandleConfirmEmailProps {
-  userId: string | string[]
-}
-
-const useHandleConfirmEmail = ({ userId }: HandleConfirmEmailProps) => {
+const useHandleConfirmEmail = () => {
   const router = useRouter()
+  const { userId } = useGlobalSearchParams()
 
-  const [data, setData] = useState<FormData>({ verificationCode: null })
+  const { login } = useAuth()
+
+  const [data, setData] = useState<DataState>({ verificationCode: "" })
 
   const { handleError, handleSuccess } = useHandleToast()
 
   const handleConfirmEmail = async () => {
     try {
-      await authService.confirmEmail(userId, data)
+      await authService.confirmEmail(userId, {
+        verificationCode: data.verificationCode,
+      })
 
       await authService.login({ userId })
       router.push({
         pathname: "/(main)/home",
       })
+      await login({ userId })
       setData({
-        verificationCode: null,
+        verificationCode: "",
       })
       handleSuccess("Your account has been successfully verified")
     } catch (error: any) {

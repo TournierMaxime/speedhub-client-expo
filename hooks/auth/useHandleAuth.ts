@@ -61,7 +61,7 @@ const useHandleAuth = () => {
     try {
       const token = await registerForPushNotificationsAsync()
 
-      if (!data.pseudo || !data.email || !data.password || !data.lang) {
+      if (!data) {
         handleError("All fields are mandatory")
       }
 

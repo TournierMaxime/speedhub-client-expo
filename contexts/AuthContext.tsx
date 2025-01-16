@@ -3,8 +3,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authService } from "@/services/speedhub";
 
 interface Data {
-    email: string;
-    password: string
+    email?: string;
+    password?: string;
+    userId?: string | string[]
 }
 
 interface User {

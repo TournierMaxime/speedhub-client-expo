@@ -11,6 +11,9 @@ export default function Home() {
     const userId = user?.userId
     const [data, setData] = useState(user)
 
+    console.log("main", data);
+
+
 
     useEffect(() => {
         const fetchUserData = async () => {

@@ -1,9 +1,19 @@
-import React, { Fragment, useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState, useCallback } from "react"
 import useHandleAuth from "@/hooks/auth/useHandleAuth"
 import Form from "@/components/lib/Form"
 import Utils from "@/components/lib/Utils"
 import { userService } from "@/services/speedhub"
 import { Text, ActivityIndicator } from "react-native"
+
+const debounce = (func: Function, delay: number) => {
+    let timer: NodeJS.Timeout;
+    return (...args: any[]) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+};
 
 const StepAuth: React.FC = () => {
     const {
@@ -19,26 +29,31 @@ const StepAuth: React.FC = () => {
     const [checkPseudo, setCheckPseudo] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const isPseudoExist = async (pseudo: string) => {
-        setLoading(true);
-        try {
-            const response = await userService.searchUsers({ pseudo }, { page: 1, size: 1 });
-            setCheckPseudo((response.users.length > 0 && response.users[0].pseudo === pseudo));
-        } catch (error) {
-            console.error("Error checking pseudo:", error);
-            setCheckPseudo(false);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const isPseudoExist = useCallback(
+        async (pseudo: string) => {
+            setLoading(true);
+            try {
+                const response = await userService.searchUsers({ pseudo }, { page: 1, size: 1 });
+                setCheckPseudo((response.users.length > 0 && response.users[0].pseudo === pseudo));
+            } catch (error) {
+                console.error("Error checking pseudo:", error);
+                setCheckPseudo(false);
+            } finally {
+                setLoading(false);
+            }
+        },
+        []
+    );
+
+    const debouncedCheckPseudo = useCallback(debounce(isPseudoExist, 500), [isPseudoExist]);
 
     useEffect(() => {
         if (data.pseudo) {
-            isPseudoExist(data.pseudo);
+            debouncedCheckPseudo(data.pseudo);
         } else {
             setCheckPseudo(false);
         }
-    }, [data.pseudo]);
+    }, [data.pseudo, debouncedCheckPseudo]);
 
     const renderForm = () => {
         switch (step) {
@@ -60,7 +75,7 @@ const StepAuth: React.FC = () => {
                                 "info",
                                 "SignIn",
                                 async () => {
-                                    handleLogin()
+                                    await handleLogin()
                                 },
                                 !data.password || !Utils.isValidPassword(data.password)
                             )}
@@ -114,7 +129,7 @@ const StepAuth: React.FC = () => {
                                 "info",
                                 "SignUp",
                                 async () => {
-                                    handleRegister()
+                                    await handleRegister()
                                 },
                                 !data.password || !Utils.isValidPassword(data.password)
                             )}
@@ -138,7 +153,7 @@ const StepAuth: React.FC = () => {
                             "info",
                             "Next",
                             async () => {
-                                searchUser()
+                                await searchUser()
                                 setStep(2)
                             },
                             !data.email || !Utils.isValidEmail(data.email)

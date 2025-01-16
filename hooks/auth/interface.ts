@@ -4,6 +4,7 @@ export interface DataState {
   pseudo?: string
   expoPushToken?: string
   code?: string
+  verificationCode?: string
   confirmPassword?: string
   userId?: string
   lang?: string
