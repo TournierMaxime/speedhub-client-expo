@@ -50,6 +50,9 @@
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
+    "react-native-youtube-iframe": "^2.3.0",
+    "react-query": "^3.39.3",
+    "react-twitch-embed-video": "^3.1.0",
     "toastify-react-native": "^5.0.3"
   },
   "devDependencies": {

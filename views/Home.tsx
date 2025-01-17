@@ -1,14 +1,12 @@
-import { View, Button, StyleSheet, ScrollView } from "react-native"
+import { StyleSheet, ScrollView } from "react-native"
 import { useAuth } from "@/contexts/AuthContext"
 import { userService } from "@/services/speedhub"
 import { useEffect, useState } from "react"
-import { useRouter } from "expo-router"
 import Header from "@/components/lib/Header"
 import AllRuns from "./sdc/runs/Runs"
 
 const Home = () => {
-    const router = useRouter()
-    const { user, logout } = useAuth()
+    const { user } = useAuth()
 
     const userId = user?.userId
     const [data, setData] = useState(user)
@@ -28,16 +26,10 @@ const Home = () => {
         fetchUserData()
     }, [userId])
 
-    const handleLogout = async () => {
-        await logout()
-        router.replace("/(auth)")
-    }
-
     return (
         <ScrollView style={style.container}>
             <Header backButton={false} title="" />
             <AllRuns />
-            <Button title="Log Out" onPress={handleLogout} />
         </ScrollView>
     )
 }

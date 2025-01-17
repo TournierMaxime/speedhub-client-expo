@@ -27,6 +27,15 @@ const Header: React.FC<HeaderProps> = ({
 
     const router = useRouter()
 
+    const handleRedirectToProfile = () => {
+        router.push({
+            pathname: "/(main)/(profile)/user",
+            params: {
+                userId: user?.userId
+            }
+        })
+    }
+
     const NotAuthenticatedUser = () => {
         if (isAuthenticated === false) {
             return (
@@ -91,6 +100,7 @@ const Header: React.FC<HeaderProps> = ({
                         <View style={""}>
                             <TouchableOpacity
                                 style={""}
+                                onPress={() => handleRedirectToProfile()}
                             >
                                 {user?.image ? (
                                     <Image source={{ uri: user.image }} style={{

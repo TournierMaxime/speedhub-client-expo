@@ -40,7 +40,7 @@ export default function RootLayout() {
       <AuthProvider>
         <ToastManager width={Utils.moderateScale(350)} height={Utils.moderateScale(100)} showCloseIcon={false} />
         <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          value={colorScheme === "light" ? DarkTheme : DefaultTheme}
         >
           <Navigation />
           <StatusBar style="auto" />

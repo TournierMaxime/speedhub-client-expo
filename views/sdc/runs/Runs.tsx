@@ -12,27 +12,34 @@ import { useRouter } from "expo-router"
 import { Runs } from "../interface"
 import Utils from "@/components/lib/Utils"
 import Runtime from "@/components/lib/RunTime"
+import { useInfiniteQuery } from "@tanstack/react-query"
 
 const AllRuns = () => {
-    const [runs, setRuns] = useState<Runs>()
     const router = useRouter()
-    const [loading, setLoading] = useState<boolean>(false)
 
-    const fetchRuns = async () => {
-        setLoading(true)
-        try {
-            const result = await speedRunDotComRunService.getRuns()
-            setRuns(result)
-            setLoading(false)
-        } catch (error) {
-            console.log(error)
-            setLoading(false)
+    const { data, isLoading } = useInfiniteQuery({
+        queryKey: ["getRuns"],
+        queryFn: async () => {
+            return await speedRunDotComRunService.getRuns();
+        },
+        initialPageParam: 1,
+        getNextPageParam: (lastPage) => {
+            return lastPage.nextPage || undefined;
+        },
+    });
+
+    const [runs, setRuns] = useState<Runs["data"]>([]);
+
+    useEffect(() => {
+        if (data?.pages) {
+            const mergedData = data.pages.flatMap((page) => page.data);
+            setRuns(mergedData);
         }
-    }
+    }, [data]);
 
-    const handleRedirectGame = (id: string) => {
+    const handleRedirectRun = (id: string) => {
         router.push({
-            pathname: "/(main)/(games)/game",
+            pathname: "/(main)/(runs)/run",
             params: {
                 id,
             },
@@ -58,38 +65,37 @@ const AllRuns = () => {
     }
 
     const allRuns = () => {
-        if (runs) {
-            const getRuns = runs.data.map((run, idx) => {
+        if (runs.length > 0) {
+            const getRuns = runs.map((run, idx) => {
                 return (
-                    <View key={idx} style={style.card}>
-                        <TouchableOpacity
-                            onPress={() => handleRedirectGame(run.game.data.id)}
-                            style={style.cardImage}
-                        >
+                    <TouchableOpacity
+                        onPress={() => handleRedirectRun(run.id)}
+                        style={style.card}
+                        key={idx}
+                    >
+                        <View style={style.cardImage}>
                             <Image
                                 source={{ uri: run.game.data.assets["cover-large"].uri }}
                                 style={style.image}
                             />
-                        </TouchableOpacity>
+                        </View>
                         <View style={style.cardInfo}>
                             {players(run)}
                             {category(run.category.data.name)}
                             <Runtime time={run.times.primary_t} />
                         </View>
-                    </View>
+
+                    </TouchableOpacity>
                 )
             })
             return getRuns
         }
+        return null
     }
-
-    useEffect(() => {
-        fetchRuns()
-    }, [])
 
     return (
         <View style={style.container}>
-            {loading ? <ActivityIndicator /> : allRuns()}
+            {isLoading ? <ActivityIndicator /> : allRuns()}
         </View>
     )
 }

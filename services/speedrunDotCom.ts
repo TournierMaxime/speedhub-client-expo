@@ -26,7 +26,11 @@ class Runs implements RunInterface {
   }
 
   async getRun(id: string | string[]) {
-    const response = await this.http.get(`/runs/${id}`)
+    const response = await this.http.get(`/runs/${id}`, {
+      params: {
+        embed: "players,game,category,platform",
+      },
+    })
     return response.data
   }
 }
