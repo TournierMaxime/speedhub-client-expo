@@ -5,7 +5,7 @@ import Form from "@/components/lib/Form"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 
-const ForgetPasswordScreen: React.FC = () => {
+const ForgetPasswordScreen = () => {
 
     const {
         data,

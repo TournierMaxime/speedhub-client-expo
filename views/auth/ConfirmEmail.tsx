@@ -5,7 +5,7 @@ import Form from "@/components/lib/Form"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 
-const ConfirmEmail: React.FC = () => {
+const ConfirmEmail = () => {
 
     const { handleConfirmEmail, data, setData } = useHandleConfirmEmail()
 

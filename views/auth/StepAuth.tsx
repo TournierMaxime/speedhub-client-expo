@@ -15,7 +15,7 @@ const debounce = (func: Function, delay: number) => {
     };
 };
 
-const StepAuth: React.FC = () => {
+const StepAuth = () => {
     const {
         handleLogin,
         handleRegister,

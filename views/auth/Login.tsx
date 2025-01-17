@@ -17,7 +17,7 @@ import { useRouter } from "expo-router"
 import Form from "@/components/lib/Form"
 import Header from "@/components/lib/Header"
 
-const LoginScreen: React.FC = () => {
+const LoginScreen = () => {
     const router = useRouter()
 
     const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()

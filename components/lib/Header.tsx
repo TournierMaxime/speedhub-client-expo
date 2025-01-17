@@ -68,63 +68,68 @@ const Header: React.FC<HeaderProps> = ({
     }
 
     const AuthenticatedUser = () => {
+
         if (isAuthenticated === true) {
             return (
-                <View>
-                    <View
-                        style={""}
-                    >
-                        {backButton ? (
-                            <View style={""}>
-                                <TouchableOpacity
-                                    style={""}
-                                >
-                                    <Ionicons
-                                        name="arrow-back-outline"
-                                        size={Utils.moderateScale(25)}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        ) : (
-                            <View style={""}>
-                                <TouchableOpacity
-                                    style={""}
-                                >
-                                    {user?.image ? (
-                                        <Image source={{ uri: user?.image }} style={""} />
-                                    ) : (
-                                        <FontAwesome5
-                                            name="user"
-                                            size={Utils.moderateScale(25)}
-                                        />
-                                    )}
-                                </TouchableOpacity>
-                            </View>
-                        )}
 
-                        <View style={""}>
-                            <Image
-                                style={{
-                                    resizeMode: "contain",
-                                    width: Utils.moderateScale(120),
-                                    height: Utils.moderateScale(80),
-                                }}
-                                source={logo}
-                            />
-                        </View>
-
-                        <View style={""}>
-                            <TouchableOpacity style={""} onPress={handleModal}>
-                                <FontAwesome
-                                    name="search"
+                <View
+                    style={style.header}
+                >
+                    {backButton ? (
+                        <View style={{ marginLeft: Utils.moderateScale(10) }}>
+                            <TouchableOpacity
+                                style={""}
+                                onPress={() => router.back()}
+                            >
+                                <Ionicons
+                                    name="arrow-back-outline"
                                     size={Utils.moderateScale(25)}
-
                                 />
                             </TouchableOpacity>
                         </View>
+                    ) : (
+                        <View style={""}>
+                            <TouchableOpacity
+                                style={""}
+                            >
+                                {user?.image ? (
+                                    <Image source={{ uri: user.image }} style={{
+                                        width: Utils.moderateScale(40),
+                                        height: Utils.moderateScale(40),
+                                    }} />
+                                ) : (
+                                    <FontAwesome5
+                                        name="user"
+                                        size={Utils.moderateScale(25)}
+                                    />
+                                )}
+                            </TouchableOpacity>
+                        </View>
+                    )}
+
+                    <View style={""}>
+                        <Image
+                            style={{
+                                resizeMode: "contain",
+                                width: Utils.moderateScale(120),
+                                height: Utils.moderateScale(80),
+                            }}
+                            source={logo}
+                        />
                     </View>
 
+                    <View style={""}>
+                        <TouchableOpacity style={""} onPress={handleModal}>
+                            <FontAwesome
+                                name="search"
+                                size={Utils.moderateScale(25)}
+
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
+
+
             )
         }
     }
@@ -139,6 +144,14 @@ const style = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         marginTop: Utils.moderateScale(20),
+        padding: Utils.moderateScale(10),
+        backgroundColor: "#fff",
+        width: "100%",
+        shadowColor: "#000",
+        shadowOffset: { width: Utils.moderateScale(0), height: Utils.moderateScale(2) },
+        shadowOpacity: Utils.moderateScale(0.25),
+        shadowRadius: Utils.moderateScale(3.5),
+        elevation: Utils.moderateScale(5),
     },
 })
 

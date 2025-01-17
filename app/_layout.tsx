@@ -15,7 +15,6 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import ToastManager from "toastify-react-native";
 import Utils from "@/components/lib/Utils";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
