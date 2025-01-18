@@ -8,4 +8,5 @@ export interface DataState {
   confirmPassword?: string
   userId?: string
   lang?: string
+  username?: string
 }

@@ -36,6 +36,12 @@ const Header: React.FC<HeaderProps> = ({
         })
     }
 
+    const handleRedirectToSearch = () => {
+        router.push({
+            pathname: "/(main)/(search)/search",
+        })
+    }
+
     const NotAuthenticatedUser = () => {
         if (isAuthenticated === false) {
             return (
@@ -129,7 +135,7 @@ const Header: React.FC<HeaderProps> = ({
                     </View>
 
                     <View style={""}>
-                        <TouchableOpacity style={""} onPress={handleModal}>
+                        <TouchableOpacity style={""} onPress={() => handleRedirectToSearch()}>
                             <FontAwesome
                                 name="search"
                                 size={Utils.moderateScale(25)}
@@ -153,8 +159,8 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: "space-between",
-        marginTop: Utils.moderateScale(20),
-        padding: Utils.moderateScale(10),
+        paddingHorizontal: Utils.moderateScale(10),
+        paddingTop: Utils.moderateScale(30),
         backgroundColor: "#fff",
         width: "100%",
         shadowColor: "#000",

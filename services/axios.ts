@@ -9,4 +9,8 @@ const speedRunDotComApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_SPEEDRUNDOTCOM_API,
 })
 
-export { speedHubApi, speedRunDotComApi }
+const splitIOApi = axios.create({
+  baseURL: process.env.EXPO_PUBLIC_SPLITIO_API,
+})
+
+export { speedHubApi, speedRunDotComApi, splitIOApi }
