@@ -248,4 +248,41 @@ interface PersonalBests {
   }[]
 }
 
-export { Run, Runs, User, PersonalBests }
+interface Splits {
+  run: {
+    attempts: number
+    category: {
+      created_at: string
+      id: number
+      name: string
+      updated_at: string
+    }
+    created_at: string
+    game: {
+      created_at: string
+      id: number
+      name: string
+      shortname: string
+      updated_at: string
+    }
+    id: number
+    image_url: string
+    name: string
+    path: string
+    program: string
+    splits: {
+      best: {
+        duration: number
+      }
+      duration: number
+      finish_time: number
+      gold: boolean
+      history: [number]
+      name: string
+      reduced: boolean
+      skipped: boolean
+    }[]
+  }
+}
+
+export { Run, Runs, User, PersonalBests, Splits }

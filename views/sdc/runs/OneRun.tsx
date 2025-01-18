@@ -7,6 +7,7 @@ import {
     ActivityIndicator,
     Button,
     Linking,
+    ScrollView,
 } from "react-native"
 import Header from "@/components/lib/Header"
 import { useQuery } from "@tanstack/react-query"
@@ -44,7 +45,7 @@ const OneRun = () => {
         if (data) {
             const players = data.map(
                 (player: { names: { international: string } }, idx: string) => {
-                    return <Text key={idx}>{player.names.international}</Text>
+                    return <Text style={style.text} key={idx}>{player.names.international}</Text>
                 }
             )
 
@@ -111,7 +112,7 @@ const OneRun = () => {
                                 size={Utils.moderateScale(24)}
                                 color="black"
                             />
-                            <Text>{data.data.game.data.names.international}</Text>
+                            <Text style={style.text}>{data.data.game.data.names.international}</Text>
                         </View>
                         <View style={style.cardInfoItems}>
                             <MaterialIcons
@@ -119,7 +120,7 @@ const OneRun = () => {
                                 size={Utils.moderateScale(24)}
                                 color="black"
                             />
-                            <Text>{data.data.category.data.name}</Text>
+                            <Text style={style.text}>{data.data.category.data.name}</Text>
                         </View>
                         <View style={style.cardInfoItems}>
                             <MaterialIcons
@@ -138,10 +139,10 @@ const OneRun = () => {
     }
 
     return (
-        <View style={style.container}>
+        <ScrollView style={style.container}>
             <Header backButton={true} title="" />
             {isLoading ? <ActivityIndicator /> : oneRun()}
-        </View>
+        </ScrollView>
     )
 }
 
@@ -171,6 +172,9 @@ const style = StyleSheet.create({
         alignItems: "center",
         marginVertical: Utils.moderateScale(5),
     },
+    text: {
+        fontSize: Utils.moderateScale(16)
+    }
 })
 
 export default OneRun

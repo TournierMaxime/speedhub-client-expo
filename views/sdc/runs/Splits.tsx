@@ -1,17 +1,21 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import Utils from '@/components/lib/Utils'
-import { splitIOService } from '@/services/speedrunDotCom'
-import { useQuery } from '@tanstack/react-query'
+import React, { Fragment } from "react"
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native"
+import Utils from "@/components/lib/Utils"
+import { splitIOService } from "@/services/speedrunDotCom"
+import { useQuery } from "@tanstack/react-query"
+import { Splits } from "../interface"
+import Runtime from "@/components/lib/RunTime"
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons"
 
 interface Props {
     splits: string
 }
 
-const Splits: React.FC<Props> = ({ splits }) => {
+const SplitsSheet: React.FC<Props> = ({ splits }) => {
     if (splits) {
         const id = splits.substring(30)
-        const { data, isLoading, error } = useQuery({
+
+        const { data, isLoading, error } = useQuery<Splits>({
             queryKey: ["getSplit", splits.substring(30)],
             queryFn: async () => {
                 if (!id) throw new Error("Missing ID")
@@ -19,16 +23,42 @@ const Splits: React.FC<Props> = ({ splits }) => {
             },
             enabled: !!id,
         })
-        console.log("split", data);
+
+        const getSplits = () => {
+            if (data) {
+                const splits = data.run.splits.map((split, idx) => {
+                    return (
+                        <View key={idx} style={style.cardSplit}>
+                            <Text style={style.textSplit}>{split.name}</Text>
+                            <Runtime time={split.finish_time} />
+                        </View>
+                    )
+                })
+                return splits
+            }
+        }
 
         return (
-            <View style={style.cardInfo}>
-
-            </View>
+            <Fragment>
+                {isLoading ? (
+                    <ActivityIndicator />
+                ) : (
+                    <View style={style.cardInfo}>
+                        <View style={style.cardTitle}>
+                            <MaterialCommunityIcons
+                                name="clock-fast"
+                                size={Utils.moderateScale(28)}
+                                color="black"
+                            />
+                            <Text style={style.textTitle}>Splits</Text>
+                        </View>
+                        {getSplits()}
+                    </View>
+                )}
+            </Fragment>
         )
     }
     return null
-
 }
 
 const style = StyleSheet.create({
@@ -41,7 +71,25 @@ const style = StyleSheet.create({
         borderRadius: Utils.moderateScale(5),
         borderWidth: Utils.moderateScale(2),
         borderColor: "grey",
-    }
+    },
+    cardSplit: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    textSplit: {
+        fontSize: Utils.moderateScale(16),
+        marginVertical: Utils.moderateScale(5),
+    },
+    textTitle: {
+        fontSize: Utils.moderateScale(18),
+        marginLeft: Utils.moderateScale(5),
+    },
+    cardTitle: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+    },
 })
 
-export default Splits
+export default SplitsSheet

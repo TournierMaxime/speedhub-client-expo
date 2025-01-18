@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { View, StyleSheet, Text, ActivityIndicator, Image } from "react-native"
+import { View, StyleSheet, Text, ActivityIndicator, Image, ScrollView } from "react-native"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
@@ -36,13 +36,13 @@ const OneUser = () => {
                 <View style={style.cardUser}>
                     <View style={style.cardImage}>
                         <Image source={{ uri: data.data.assets.image.uri }} style={style.image} />
-                        <Text>{data.data.names.international}</Text>
+                        <Text style={style.textCard}>{data.data.names.international}</Text>
                     </View>
                     <View style={style.cardInfo}>
-                        <Text>{data.data.location.country.names.international}</Text>
-                        <Text>{data.data.location.region.names.international}</Text>
-                        <Text>{data.data.role}</Text>
-                        <Text>{moment(data.data.signup).format("YYYY-MM-DD h:mm:ss a")}</Text>
+                        <Text style={style.textCard}>{data.data.location?.country.names.international ?? null}</Text>
+                        <Text style={style.textCard}>{data.data.location?.region.names.international ?? null}</Text>
+                        <Text style={style.textCard}>{`role ${data.data.role}`}</Text>
+                        <Text style={style.textCard}>{moment(data.data.signup).format("YYYY-MM-DD h:mm:ss a") ?? null}</Text>
                     </View>
                 </View>
             )
@@ -51,11 +51,11 @@ const OneUser = () => {
     }
 
     return (
-        <View style={style.container}>
+        <ScrollView style={style.container}>
             <Header backButton={true} title="" />
             {isLoading ? <ActivityIndicator /> : oneUser()}
             <PersonalBestsUser />
-        </View>
+        </ScrollView>
     )
 }
 
@@ -79,16 +79,19 @@ const style = StyleSheet.create({
     cardImage: {
         display: "flex",
         flexDirection: "column",
-        width: "30%"
+        width: "40%"
     },
     cardInfo: {
         display: "flex",
         flexDirection: "column",
-        width: "70%"
+        width: "60%"
     },
     image: {
-        width: Utils.moderateScale(40),
-        height: Utils.moderateScale(40)
+        width: Utils.moderateScale(80),
+        height: Utils.moderateScale(80)
+    },
+    textCard: {
+        fontSize: Utils.moderateScale(16)
     }
 })
 
