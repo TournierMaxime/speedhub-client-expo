@@ -11,9 +11,13 @@ import useHandleSearch from "@/hooks/search/useHandleSearch"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useRouter } from "expo-router"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 const Search = () => {
     const { data, setData, handleSearch, result } = useHandleSearch()
+
+    const theme = useColorScheme() ?? 'light';
 
     const router = useRouter()
 
@@ -30,13 +34,13 @@ const Search = () => {
 
         return (
             <TouchableOpacity style={style.card} onPress={() => handleRedirectToUser(item.id)}>
-                <Text style={style.cardItem}>{item.names.international}</Text>
+                <Text style={[style.cardItem, theme === "dark" ? { color: Colors.dark.text, borderColor: Colors.dark.borderColor } : { color: Colors.light.text, borderColor: Colors.light.borderColor }]}>{item.names.international}</Text>
             </TouchableOpacity>
         )
     }
 
     return (
-        <View style={style.container}>
+        <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             <Header backButton={true} title="" />
             <View style={style.searchForm}>
                 {Form.inputText(
@@ -68,7 +72,6 @@ const Search = () => {
 const style = StyleSheet.create({
     container: {
         display: "flex",
-        backgroundColor: "#fff",
         height: "100%"
     },
     searchForm: {

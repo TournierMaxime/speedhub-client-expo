@@ -4,6 +4,8 @@ import useHandleForgetPassword from "@/hooks/auth/useHandleForgetPassword"
 import Form from "@/components/lib/Form"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 const ForgetPasswordScreen = () => {
 
@@ -16,8 +18,10 @@ const ForgetPasswordScreen = () => {
         step,
     } = useHandleForgetPassword()
 
+    const theme = useColorScheme() ?? 'light';
+
     return (
-        <View style={style.container}>
+        <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             <Header backButton={true} title="" />
             <View style={style.section}>
                 {step === 1 && (
@@ -103,7 +107,8 @@ const ForgetPasswordScreen = () => {
 
 const style = StyleSheet.create({
     container: {
-        display: "flex"
+        display: "flex",
+        height: "100%"
     },
     section: {
         display: "flex",

@@ -6,12 +6,16 @@ import { useQuery } from "@tanstack/react-query"
 import { Splits } from "../interface"
 import Runtime from "@/components/lib/RunTime"
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 interface Props {
     splits: string
 }
 
 const SplitsSheet: React.FC<Props> = ({ splits }) => {
+    const theme = useColorScheme() ?? 'light';
+
     if (splits) {
         const id = splits.substring(30)
 
@@ -29,7 +33,7 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
                 const splits = data.run.splits.map((split, idx) => {
                     return (
                         <View key={idx} style={style.cardSplit}>
-                            <Text style={style.textSplit}>{split.name}</Text>
+                            <Text style={[style.textSplit, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.dark.text }]}>{split.name}</Text>
                             <Runtime time={split.finish_time} />
                         </View>
                     )
@@ -48,9 +52,9 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
                             <MaterialCommunityIcons
                                 name="clock-fast"
                                 size={Utils.moderateScale(28)}
-                                color="black"
+                                color={theme == "dark" ? Colors.dark.icon : Colors.light.icon}
                             />
-                            <Text style={style.textTitle}>Splits</Text>
+                            <Text style={[style.textTitle, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>Splits</Text>
                         </View>
                         {getSplits()}
                     </View>

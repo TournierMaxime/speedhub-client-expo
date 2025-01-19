@@ -14,9 +14,13 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { PersonalBests } from "../interface"
 import { userService } from "@/services/speedrunDotCom"
 import Runtime from "@/components/lib/RunTime"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 const PersonalBestsUser = () => {
     const { id } = useGlobalSearchParams()
+
+    const theme = useColorScheme() ?? 'light';
 
     const router = useRouter()
 
@@ -36,13 +40,13 @@ const PersonalBestsUser = () => {
     const getPlace = (place: number) => {
         switch (place) {
             case 1:
-                return <Text style={style.textCard}>{place}st place</Text>
+                return <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{place}st place</Text>
             case 2:
-                return <Text style={style.textCard}>{place}nd place</Text>
+                return <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{place}nd place</Text>
             case 3:
-                return <Text style={style.textCard}>{place}rd place</Text>
+                return <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{place}rd place</Text>
             default:
-                return <Text style={style.textCard}>{place}th place</Text>
+                return <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{place}th place</Text>
 
         }
     }
@@ -66,8 +70,8 @@ const PersonalBestsUser = () => {
                             <Image style={style.image} source={{ uri: pb.game.data.assets["cover-large"].uri }} />
                         </View>
                         <View style={style.cardInfo}>
-                            <Text style={style.textCard}>{pb.game.data.names.international}</Text>
-                            <Text style={style.textCard}>{pb.category.data.name}</Text>
+                            <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{pb.game.data.names.international}</Text>
+                            <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{pb.category.data.name}</Text>
                             <Runtime time={pb.run.times.primary_t} />
                             {getPlace(pb.place)}
                         </View>
@@ -107,6 +111,7 @@ const style = StyleSheet.create({
         marginTop: Utils.moderateScale(10),
         borderRadius: Utils.moderateScale(5),
         padding: Utils.moderateScale(10),
+        borderColor: "grey"
     },
     cardImage: {
         display: "flex",

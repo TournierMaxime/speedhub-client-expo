@@ -19,9 +19,13 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons"
 import Runtime from "@/components/lib/RunTime"
 import Splits from "./Splits"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 const OneRun = () => {
     const { id } = useGlobalSearchParams()
+
+    const theme = useColorScheme() ?? 'light';
 
     const { data, isLoading, error } = useQuery<Run>({
         queryKey: ["getRun", id],
@@ -34,7 +38,7 @@ const OneRun = () => {
 
     if (error) {
         return (
-            <View style={style.container}>
+            <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
                 <Header backButton={true} title="Run Details" />
                 <Text>An error occurred: {error.message}</Text>
             </View>
@@ -45,7 +49,7 @@ const OneRun = () => {
         if (data) {
             const players = data.map(
                 (player: { names: { international: string } }, idx: string) => {
-                    return <Text style={style.text} key={idx}>{player.names.international}</Text>
+                    return <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]} key={idx}>{player.names.international}</Text>
                 }
             )
 
@@ -67,7 +71,7 @@ const OneRun = () => {
 
             let videoComponent
 
-            console.log(videoUri)
+            console.log("OneRun videoUri line 74 - ", videoUri)
 
             switch (platform) {
                 case "youtube":
@@ -102,7 +106,7 @@ const OneRun = () => {
                             <MaterialCommunityIcons
                                 name="run"
                                 size={Utils.moderateScale(28)}
-                                color="black"
+                                color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                             />
                             {getPlayers(data.data.players.data)}
                         </View>
@@ -110,23 +114,23 @@ const OneRun = () => {
                             <MaterialIcons
                                 name="gamepad"
                                 size={Utils.moderateScale(24)}
-                                color="black"
+                                color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                             />
-                            <Text style={style.text}>{data.data.game.data.names.international}</Text>
+                            <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.data.game.data.names.international}</Text>
                         </View>
                         <View style={style.cardInfoItems}>
                             <MaterialIcons
                                 name="category"
                                 size={Utils.moderateScale(24)}
-                                color="black"
+                                color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                             />
-                            <Text style={style.text}>{data.data.category.data.name}</Text>
+                            <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.data.category.data.name}</Text>
                         </View>
                         <View style={style.cardInfoItems}>
                             <MaterialIcons
                                 name="access-time"
                                 size={Utils.moderateScale(24)}
-                                color="black"
+                                color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                             />
                             <Runtime time={data.data.times.primary_t} />
                         </View>
@@ -139,7 +143,7 @@ const OneRun = () => {
     }
 
     return (
-        <ScrollView style={style.container}>
+        <ScrollView style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             <Header backButton={true} title="" />
             {isLoading ? <ActivityIndicator /> : oneRun()}
         </ScrollView>
@@ -149,7 +153,6 @@ const OneRun = () => {
 const style = StyleSheet.create({
     container: {
         display: "flex",
-        backgroundColor: "#fff",
         marginTop: Utils.moderateScale(2),
     },
     card: {

@@ -13,9 +13,12 @@ import { Runs } from "../interface"
 import Utils from "@/components/lib/Utils"
 import Runtime from "@/components/lib/RunTime"
 import { useInfiniteQuery } from "@tanstack/react-query"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 const AllRuns = () => {
     const router = useRouter()
+    const theme = useColorScheme() ?? 'light';
 
     const { data, isLoading } = useInfiniteQuery({
         queryKey: ["getRuns"],
@@ -50,7 +53,7 @@ const AllRuns = () => {
         if (data) {
             const getPlayers = data.players.data.map(
                 (player: { names: { international: string } }, idx: string) => {
-                    return <Text style={{ fontSize: Utils.moderateScale(18), fontWeight: "bold" }} key={idx}>{player?.names?.international}</Text>
+                    return <Text style={[style.username, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]} key={idx}>{player?.names?.international}</Text>
                 }
             )
             return getPlayers
@@ -60,7 +63,7 @@ const AllRuns = () => {
 
     const category = (data: string) => {
         if (data) {
-            return <Text style={{ fontSize: Utils.moderateScale(16) }}>{data}</Text>
+            return <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data}</Text>
         }
     }
 
@@ -70,7 +73,7 @@ const AllRuns = () => {
                 return (
                     <TouchableOpacity
                         onPress={() => handleRedirectRun(run.id)}
-                        style={style.card}
+                        style={[style.card, theme === "dark" ? { backgroundColor: Colors.dark.background, shadowColor: Colors.dark.shadowColor, } : { backgroundColor: Colors.light.background, shadowColor: Colors.light.shadowColor }]}
                         key={idx}
                     >
                         <View style={style.cardImage}>
@@ -94,7 +97,7 @@ const AllRuns = () => {
     }
 
     return (
-        <View style={style.container}>
+        <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             {isLoading ? <ActivityIndicator /> : allRuns()}
         </View>
     )
@@ -103,17 +106,14 @@ const AllRuns = () => {
 const style = StyleSheet.create({
     container: {
         display: "flex",
-        backgroundColor: "#fff",
         marginTop: Utils.moderateScale(2),
     },
     card: {
         display: "flex",
         flexDirection: "row",
-        backgroundColor: "#fff",
         margin: Utils.moderateScale(10),
         padding: Utils.moderateScale(10),
         borderRadius: Utils.moderateScale(5),
-        shadowColor: "#000",
         shadowOffset: { width: Utils.moderateScale(0), height: Utils.moderateScale(2) },
         shadowOpacity: Utils.moderateScale(0.25),
         shadowRadius: Utils.moderateScale(3.5),
@@ -133,6 +133,13 @@ const style = StyleSheet.create({
         resizeMode: "contain",
         borderRadius: Utils.moderateScale(5),
     },
+    username: {
+        fontSize: Utils.moderateScale(18),
+        fontWeight: "bold"
+    },
+    text: {
+        fontSize: Utils.moderateScale(16)
+    }
 })
 
 export default AllRuns

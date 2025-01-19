@@ -4,12 +4,16 @@ import { userService } from "@/services/speedhub"
 import { useEffect, useState } from "react"
 import Header from "@/components/lib/Header"
 import AllRuns from "./sdc/runs/Runs"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 const Home = () => {
     const { user } = useAuth()
 
     const userId = user?.userId
     const [data, setData] = useState(user)
+
+    const theme = useColorScheme() ?? "light";
 
     const fetchUserData = async () => {
         try {
@@ -24,10 +28,10 @@ const Home = () => {
 
     useEffect(() => {
         fetchUserData()
-    }, [userId])
+    }, [userId, theme])
 
     return (
-        <ScrollView style={style.container}>
+        <ScrollView style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             <Header backButton={false} title="" />
             <AllRuns />
         </ScrollView>

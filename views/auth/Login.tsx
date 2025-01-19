@@ -16,9 +16,13 @@ import StepAuth from "./StepAuth"
 import { useRouter } from "expo-router"
 import Form from "@/components/lib/Form"
 import Header from "@/components/lib/Header"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 const LoginScreen = () => {
     const router = useRouter()
+
+    const theme = useColorScheme() ?? 'light';
 
     const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()
 
@@ -31,7 +35,7 @@ const LoginScreen = () => {
     }
 
     return (
-        <View style={style.container}>
+        <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             {isProcessing ? (
                 <View style={""}>
                     <ActivityIndicator size={"large"} />
@@ -53,7 +57,7 @@ const LoginScreen = () => {
                     <View style={style.section}>
                         <TouchableOpacity style={style.googleCard} onPress={() => loginWithGoogle()}>
                             <GoogleSVG />
-                            <Text style={[style.text, { marginLeft: Utils.moderateScale(10) }]}>Continue with Google</Text>
+                            <Text style={[style.text, { marginLeft: Utils.moderateScale(10) }, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>Continue with Google</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -65,7 +69,7 @@ const LoginScreen = () => {
                                     onPress={() => onAppleButtonPress()}
                                 >
                                     <AppleSVG />
-                                    <Text style={style.text}>Continue with Apple</Text>
+                                    <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>Continue with Apple</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -78,7 +82,8 @@ const LoginScreen = () => {
 
 const style = StyleSheet.create({
     container: {
-        display: "flex"
+        display: "flex",
+        height: "100%"
     },
     header: {
         display: "flex",
@@ -99,7 +104,7 @@ const style = StyleSheet.create({
         alignItems: "center",
         margin: Utils.moderateScale(10),
         padding: Utils.moderateScale(10),
-        borderColor: "gray",
+        borderColor: "grey",
         borderWidth: Utils.moderateScale(1),
         width: "90%",
         borderRadius: Utils.moderateScale(5)

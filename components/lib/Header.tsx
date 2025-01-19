@@ -4,6 +4,8 @@ import { FontAwesome5, FontAwesome, Ionicons } from "@expo/vector-icons"
 import Utils from "./Utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "expo-router"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 interface HeaderProps {
     backButton: boolean
@@ -16,6 +18,8 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
 
     const { user, isAuthenticated } = useAuth()
+
+    const theme = useColorScheme() ?? 'light';
 
     const logo = require("../../assets/images/speedhub.webp")
 
@@ -47,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({
             return (
 
                 <View
-                    style={style.header}
+                    style={[style.header, theme === "dark" ? { backgroundColor: Colors.dark.background, shadowColor: Colors.dark.shadowColor } : { backgroundColor: Colors.light.background, shadowColor: Colors.light.shadowColor }]}
                 >
                     {backButton ? (
                         <View style={{ marginLeft: Utils.moderateScale(10) }}>
@@ -58,6 +62,7 @@ const Header: React.FC<HeaderProps> = ({
                                 <Ionicons
                                     name="arrow-back-outline"
                                     size={Utils.moderateScale(25)}
+                                    color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -88,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({
             return (
 
                 <View
-                    style={style.header}
+                    style={[style.header, theme === "dark" ? { backgroundColor: Colors.dark.background, shadowColor: Colors.dark.shadowColor } : { backgroundColor: Colors.light.background, shadowColor: Colors.light.shadowColor }]}
                 >
                     {backButton ? (
                         <View style={{ marginLeft: Utils.moderateScale(10) }}>
@@ -99,6 +104,7 @@ const Header: React.FC<HeaderProps> = ({
                                 <Ionicons
                                     name="arrow-back-outline"
                                     size={Utils.moderateScale(25)}
+                                    color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -117,6 +123,7 @@ const Header: React.FC<HeaderProps> = ({
                                     <FontAwesome5
                                         name="user"
                                         size={Utils.moderateScale(25)}
+                                        color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                                     />
                                 )}
                             </TouchableOpacity>
@@ -139,6 +146,7 @@ const Header: React.FC<HeaderProps> = ({
                             <FontAwesome
                                 name="search"
                                 size={Utils.moderateScale(25)}
+                                color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
 
                             />
                         </TouchableOpacity>
@@ -161,9 +169,7 @@ const style = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: Utils.moderateScale(10),
         paddingTop: Utils.moderateScale(30),
-        backgroundColor: "#fff",
         width: "100%",
-        shadowColor: "#000",
         shadowOffset: { width: Utils.moderateScale(0), height: Utils.moderateScale(2) },
         shadowOpacity: Utils.moderateScale(0.25),
         shadowRadius: Utils.moderateScale(3.5),

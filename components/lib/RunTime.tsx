@@ -1,12 +1,16 @@
 import React from "react"
-import { Text } from "react-native"
+import { StyleSheet, Text } from "react-native"
 import Utils from "./Utils"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 interface Props {
     time: number
 }
 
 const Runtime = ({ time }: Props) => {
+    const theme = useColorScheme() ?? 'light';
+
     if (!time) return null
     if (time === 0) return null
 
@@ -20,7 +24,13 @@ const Runtime = ({ time }: Props) => {
     const result = `${hours > 0 ? `${hours < 10 ? "0" : ""}${hours}H ` : ""}${minutes > 0 ? `${minutes < 10 ? "0" : ""}${minutes}Min ` : ""
         }${seconds > 0 ? `${seconds < 10 ? "0" : ""}${seconds}Sec` : ""}`
 
-    return <Text style={{ fontSize: Utils.moderateScale(16) }}>{result}</Text>
+    return <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{result}</Text>
 }
+
+const style = StyleSheet.create({
+    text: {
+        fontSize: Utils.moderateScale(16)
+    }
+})
 
 export default Runtime

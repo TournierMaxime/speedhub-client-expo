@@ -11,6 +11,8 @@ import {
 import useOnChange from "../../hooks/utils/useOnChange"
 import Utils from "./Utils"
 import { DataState } from "@/hooks/auth/interface"
+import { useColorScheme } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 type SetFormData = React.Dispatch<React.SetStateAction<DataState>>;
 
@@ -24,6 +26,7 @@ const TypeSubmitStyles = {
 type TypeSubmit = keyof typeof TypeSubmitStyles;
 
 class Form {
+
     static validateField(type?: string, value?: string) {
         if (!value) {
             return { isValid: false, error: "This field is required" };
@@ -65,24 +68,25 @@ class Form {
         readOnly: boolean,
         type?: string
     ) => {
+        const theme = useColorScheme() ?? 'light';
         const { onChange } = useOnChange({ data, setData });
 
         const { isValid, error } = this.validateField(type, value);
         const borderColor = !value
-            ? "black"
+            ? "grey"
             : isValid
                 ? "green"
                 : "red";
-
 
         return (
             <View style={style.inputContainer}>
                 <TextInput
                     placeholder={label}
+                    placeholderTextColor={theme === "dark" ? Colors.dark.text : Colors.light.text}
                     onChangeText={(text) => onChange({ name, value: text })}
                     value={value}
                     editable={!readOnly}
-                    style={[style.textInput, { borderColor }]}
+                    style={[style.textInput, { borderColor }, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}
                     secureTextEntry={secure}
                 />
                 <Text style={{ color: "red", fontSize: Utils.moderateScale(14) }}>
@@ -100,12 +104,12 @@ class Form {
         value: string,
         type: string
     ) => {
+        const theme = useColorScheme() ?? 'light';
         const { onChange } = useOnChange({ data, setData });
-
 
         const { isValid, error } = this.validateField(type, value);
         const borderColor = !value
-            ? "black"
+            ? "grey"
             : isValid
                 ? "green"
                 : "red";
@@ -114,11 +118,12 @@ class Form {
             <View style={style.inputContainer}>
                 <TextInput
                     placeholder={label}
+                    placeholderTextColor={theme === "dark" ? Colors.dark.text : Colors.light.text}
                     onChangeText={(text) => onChange({ name, value: Number(text) })}
                     value={value}
                     keyboardType="numeric"
                     maxLength={6}
-                    style={[style.textInput, { borderColor }]}
+                    style={[style.textInput, { borderColor }, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}
                 />
                 <Text style={{ color: "red", fontSize: Utils.moderateScale(14) }}>
                     {error}
@@ -210,7 +215,7 @@ const style = StyleSheet.create({
     textInput: {
         fontSize: Utils.moderateScale(18),
         borderWidth: Utils.moderateScale(1),
-        borderRadius: Utils.moderateScale(5),
+        borderRadius: Utils.moderateScale(5)
     },
     btnContainer: {
         display: "flex",
