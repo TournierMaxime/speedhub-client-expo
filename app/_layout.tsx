@@ -61,12 +61,14 @@ function Navigation() {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push("/home");
+      router.push("/(main)/(tabs)/home")
+    } else if (!isLoading && !isAuthenticated) {
+      router.push("/(auth)/login")
     }
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, isLoading])
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator />
   }
 
   return (

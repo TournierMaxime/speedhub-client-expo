@@ -1,9 +1,10 @@
-import { StyleSheet, ScrollView, Text } from "react-native"
+import AllRuns from "@/views/sdc/runs/Runs"
+import { StyleSheet, ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 
-const Home = () => {
+const Tab = () => {
     const theme = useColorScheme() ?? "light"
 
     return (
@@ -16,7 +17,7 @@ const Home = () => {
             ]}
         >
             <Header backButton={false} title="" />
-            <Text>Home</Text>
+            <AllRuns />
         </ScrollView>
     )
 }
@@ -27,4 +28,4 @@ const style = StyleSheet.create({
     },
 })
 
-export default Home
+export default Tab

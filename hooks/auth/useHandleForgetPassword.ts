@@ -58,7 +58,7 @@ const useHandleForgetPassword = () => {
 
       authService.login({ userId: response.userId })
       await login({ email: data.email ?? "", password: data.password ?? "" })
-      router.push({ pathname: "/(main)/home" })
+      router.push({ pathname: "/(main)/(tabs)/home" })
 
       setData({
         ...data,

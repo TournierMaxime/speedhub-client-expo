@@ -45,7 +45,7 @@ const useHandleAuthApple = () => {
         await authService.login({ userId })
 
         router.push({
-          pathname: "/(main)/home",
+          pathname: "/(main)/(tabs)/home",
         })
 
         setIsProcessingApple(false)
@@ -66,7 +66,7 @@ const useHandleAuthApple = () => {
         authService.login({ userId: response.user.userId })
 
         router.push({
-          pathname: "/(main)/home",
+          pathname: "/(main)/(tabs)/home",
         })
 
         setIsProcessingApple(false)

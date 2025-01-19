@@ -59,7 +59,7 @@ const useHandleAuthGoogle = () => {
 
         await authService.login({ userId })
 
-        router.push({ pathname: "/(main)/home" })
+        router.push({ pathname: "/(main)/(tabs)/home" })
 
         setIsProcessing(false)
       } else {
@@ -77,7 +77,7 @@ const useHandleAuthGoogle = () => {
 
         authService.login({ userId: response.user.userId })
 
-        router.push({ pathname: "/(main)/home" })
+        router.push({ pathname: "/(main)/(tabs)/home" })
 
         setIsProcessing(false)
       }

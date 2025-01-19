@@ -1,6 +1,5 @@
 import Home from "@/views/Home"
 
-export default function HomeScreen() {
+export default function Tab() {
     return <Home />
 }
-

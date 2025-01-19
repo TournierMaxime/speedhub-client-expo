@@ -2,5 +2,5 @@ import { Redirect } from 'expo-router'
 import React from 'react'
 
 export default function IndexMain() {
-    return <Redirect href={"/home"} />
+    return <Redirect href={"/(main)/(tabs)/home"} />
 }

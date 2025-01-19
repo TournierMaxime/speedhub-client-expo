@@ -23,7 +23,7 @@ const useHandleConfirmEmail = () => {
 
       await authService.login({ userId })
       router.push({
-        pathname: "/(main)/home",
+        pathname: "/(main)/(tabs)/home",
       })
       await login({ userId })
       setData({
