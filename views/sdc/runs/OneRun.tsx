@@ -21,6 +21,8 @@ import Runtime from "@/components/lib/RunTime"
 import Splits from "./Splits"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import CatchError from "@/components/lib/CatchError"
+import IsLoading from "@/components/lib/IsLoading"
 
 const OneRun = () => {
     const { id } = useGlobalSearchParams()
@@ -37,12 +39,7 @@ const OneRun = () => {
     })
 
     if (error) {
-        return (
-            <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
-                <Header backButton={true} title="Run Details" />
-                <Text>An error occurred: {error.message}</Text>
-            </View>
-        )
+        return <CatchError error={error} />
     }
 
     const getPlayers = (data: any) => {
@@ -145,7 +142,7 @@ const OneRun = () => {
     return (
         <ScrollView style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             <Header backButton={true} title="" />
-            {isLoading ? <ActivityIndicator /> : oneRun()}
+            {isLoading ? <IsLoading isLoading={isLoading} /> : oneRun()}
         </ScrollView>
     )
 }

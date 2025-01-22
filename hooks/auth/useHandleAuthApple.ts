@@ -3,11 +3,12 @@ import { useState } from "react"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
 import { authService } from "@/services/speedhub"
 import { userService } from "@/services/speedhub"
-import { useRouter } from "expo-router"
+import ROUTES from "@/components/routes"
+import useHandleRouter from "../utils/useHandleRouter"
 
 const useHandleAuthApple = () => {
   const [isProcessingApple, setIsProcessingApple] = useState<boolean>(false)
-  const router = useRouter()
+  const { handleRedirect } = useHandleRouter()
 
   const onAppleButtonPress = async () => {
     setIsProcessingApple(true)
@@ -44,9 +45,7 @@ const useHandleAuthApple = () => {
 
         await authService.login({ userId })
 
-        router.push({
-          pathname: "/(main)/(tabs)/home",
-        })
+        await handleRedirect(ROUTES.HOME)
 
         setIsProcessingApple(false)
       } else {
@@ -65,9 +64,7 @@ const useHandleAuthApple = () => {
 
         authService.login({ userId: response.user.userId })
 
-        router.push({
-          pathname: "/(main)/(tabs)/home",
-        })
+        await handleRedirect(ROUTES.HOME)
 
         setIsProcessingApple(false)
       }

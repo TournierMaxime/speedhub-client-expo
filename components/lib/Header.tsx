@@ -3,9 +3,10 @@ import { View, TouchableOpacity, Image, StyleSheet } from "react-native"
 import { FontAwesome5, FontAwesome, Ionicons } from "@expo/vector-icons"
 import Utils from "./Utils"
 import { useAuth } from "@/contexts/AuthContext"
-import { useRouter } from "expo-router"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import ROUTES from "../routes"
 
 interface HeaderProps {
     backButton: boolean
@@ -29,22 +30,7 @@ const Header: React.FC<HeaderProps> = ({
         setModalVisible(!modalVisible)
     }
 
-    const router = useRouter()
-
-    const handleRedirectToProfile = () => {
-        router.push({
-            pathname: "/(main)/(profile)/user",
-            params: {
-                userId: user?.userId
-            }
-        })
-    }
-
-    const handleRedirectToSearch = () => {
-        router.push({
-            pathname: "/(main)/(search)/search",
-        })
-    }
+    const { handleRedirect, handleBack } = useHandleRouter()
 
     const NotAuthenticatedUser = () => {
         if (isAuthenticated === false) {
@@ -57,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
                         <View style={{ marginLeft: Utils.moderateScale(10) }}>
                             <TouchableOpacity
                                 style={""}
-                                onPress={() => router.back()}
+                                onPress={async () => await handleBack()}
                             >
                                 <Ionicons
                                     name="arrow-back-outline"
@@ -99,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({
                         <View style={{ marginLeft: Utils.moderateScale(10) }}>
                             <TouchableOpacity
                                 style={""}
-                                onPress={() => router.back()}
+                                onPress={async () => await handleBack()}
                             >
                                 <Ionicons
                                     name="arrow-back-outline"
@@ -112,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({
                         <View style={""}>
                             <TouchableOpacity
                                 style={""}
-                                onPress={() => handleRedirectToProfile()}
+                                onPress={async () => handleRedirect(ROUTES.ONE_USER_PROFILE, { userId: user?.userId })}
                             >
                                 {user?.image ? (
                                     <Image source={{ uri: user.image }} style={{
@@ -142,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({
                     </View>
 
                     <View style={""}>
-                        <TouchableOpacity style={""} onPress={() => handleRedirectToSearch()}>
+                        <TouchableOpacity style={""} onPress={async () => handleRedirect(ROUTES.SEARCH)}>
                             <FontAwesome
                                 name="search"
                                 size={Utils.moderateScale(25)}

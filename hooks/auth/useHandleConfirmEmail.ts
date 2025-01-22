@@ -1,12 +1,14 @@
 import { useState } from "react"
-import { useRouter, useGlobalSearchParams } from "expo-router"
+import { useGlobalSearchParams } from "expo-router"
 import { authService } from "@/services/speedhub"
 import useHandleToast from "../utils/useHandleToast"
 import { DataState } from "./interface"
 import { useAuth } from "@/contexts/AuthContext"
+import ROUTES from "@/components/routes"
+import useHandleRouter from "../utils/useHandleRouter"
 
 const useHandleConfirmEmail = () => {
-  const router = useRouter()
+  const { handleRedirect } = useHandleRouter()
   const { userId } = useGlobalSearchParams()
 
   const { login } = useAuth()
@@ -22,10 +24,11 @@ const useHandleConfirmEmail = () => {
       })
 
       await authService.login({ userId })
-      router.push({
-        pathname: "/(main)/(tabs)/home",
-      })
+
+      await handleRedirect(ROUTES.HOME)
+
       await login({ userId })
+
       setData({
         verificationCode: "",
       })

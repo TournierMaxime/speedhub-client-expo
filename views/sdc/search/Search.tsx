@@ -10,30 +10,22 @@ import {
 import useHandleSearch from "@/hooks/search/useHandleSearch"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
-import { useRouter } from "expo-router"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import ROUTES from "@/components/routes"
 
 const Search = () => {
     const { data, setData, handleSearch, result } = useHandleSearch()
 
     const theme = useColorScheme() ?? 'light';
 
-    const router = useRouter()
-
-    const handleRedirectToUser = (id: string) => {
-        router.push({
-            pathname: "/(main)/(user)/user",
-            params: {
-                id
-            }
-        })
-    }
+    const { handleRedirect } = useHandleRouter()
 
     const renderItem = ({ item }: { item: any }) => {
 
         return (
-            <TouchableOpacity style={style.card} onPress={() => handleRedirectToUser(item.id)}>
+            <TouchableOpacity style={style.card} onPress={async () => await handleRedirect(ROUTES.ONE_USER, { id: item.id })}>
                 <Text style={[style.cardItem, theme === "dark" ? { color: Colors.dark.text, borderColor: Colors.dark.borderColor } : { color: Colors.light.text, borderColor: Colors.light.borderColor }]}>{item.names.international}</Text>
             </TouchableOpacity>
         )

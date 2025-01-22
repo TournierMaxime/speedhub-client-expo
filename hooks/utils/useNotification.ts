@@ -1,11 +1,12 @@
 import { useEffect } from "react"
 import * as Notifications from "expo-notifications"
 import registerForPushNotificationsAsync from "../../components/lib/Notifications"
-import { useRouter } from "expo-router"
+import useHandleRouter from "./useHandleRouter"
 import { useAuth } from "@/contexts/AuthContext"
+import ROUTES from "@/components/routes"
 
 const useNotification = () => {
-  const router = useRouter()
+  const { handleRedirect } = useHandleRouter()
   const { user } = useAuth()
   const lastNotificationResponse = Notifications.useLastNotificationResponse()
 
@@ -70,13 +71,10 @@ const useNotification = () => {
 
   const handleNotificationRedirect = (data: any) => {
     if (data) {
-      router.push({
-        pathname: data.redirect,
-        params: {
-          userId: data.userId ?? null,
-          screen: data.screen ?? null,
-          articleId: data.articleId ?? null,
-        },
+      handleRedirect(data.redirect, {
+        userId: data.userId ?? null,
+        screen: data.screen ?? null,
+        articleId: data.articleId ?? null,
       })
     }
   }

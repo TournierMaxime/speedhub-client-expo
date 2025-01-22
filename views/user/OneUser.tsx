@@ -1,20 +1,21 @@
 import { useGlobalSearchParams } from 'expo-router'
 import React from 'react'
 import { View, Text, Button } from 'react-native'
-import { useRouter } from 'expo-router'
+import useHandleRouter from '@/hooks/utils/useHandleRouter'
 import { useAuth } from "@/contexts/AuthContext"
 import Header from '@/components/lib/Header'
+import ROUTES from '@/components/routes'
 
 const OneUser = () => {
     const { userId } = useGlobalSearchParams()
 
-    const router = useRouter()
+    const { handleReplace } = useHandleRouter()
 
     const { logout, user } = useAuth()
 
     const handleLogout = async () => {
         await logout()
-        router.replace("/(auth)")
+        await handleReplace(ROUTES.AUTH)
     }
 
     return (

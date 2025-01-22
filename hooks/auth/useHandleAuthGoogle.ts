@@ -2,12 +2,13 @@ import { authorize, AuthConfiguration } from "react-native-app-auth"
 import axios from "axios"
 import { useState } from "react"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
-import { useRouter } from "expo-router"
+import ROUTES from "@/components/routes"
+import useHandleRouter from "../utils/useHandleRouter"
 import { userService } from "@/services/speedhub"
 import { authService } from "@/services/speedhub"
 
 const useHandleAuthGoogle = () => {
-  const router = useRouter()
+  const { handleRedirect } = useHandleRouter()
 
   const [isProcessing, setIsProcessing] = useState(false)
 
@@ -59,7 +60,7 @@ const useHandleAuthGoogle = () => {
 
         await authService.login({ userId })
 
-        router.push({ pathname: "/(main)/(tabs)/home" })
+        await handleRedirect(ROUTES.HOME)
 
         setIsProcessing(false)
       } else {
@@ -77,7 +78,7 @@ const useHandleAuthGoogle = () => {
 
         authService.login({ userId: response.user.userId })
 
-        router.push({ pathname: "/(main)/(tabs)/home" })
+        await handleRedirect(ROUTES.HOME)
 
         setIsProcessing(false)
       }

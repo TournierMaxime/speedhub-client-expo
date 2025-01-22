@@ -8,23 +8,26 @@ import {
     Image,
 } from "react-native"
 import Utils from "@/components/lib/Utils"
-import Header from "@/components/lib/Header"
-import { useGlobalSearchParams, useRouter } from "expo-router"
+import { useGlobalSearchParams } from "expo-router"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { PersonalBests } from "../interface"
 import { userService } from "@/services/speedrunDotCom"
 import Runtime from "@/components/lib/RunTime"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import ROUTES from "@/components/routes"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import CatchError from "@/components/lib/CatchError"
+import IsLoading from "@/components/lib/IsLoading"
 
 const PersonalBestsUser = () => {
     const { id } = useGlobalSearchParams()
 
     const theme = useColorScheme() ?? 'light';
 
-    const router = useRouter()
+    const { handleRedirect } = useHandleRouter()
 
-    const { data, isLoading } = useInfiniteQuery({
+    const { data, isLoading, error } = useInfiniteQuery({
         queryKey: ["getPersonalBests"],
         queryFn: async () => {
             return await userService.getPersonalBests(id)
@@ -34,6 +37,10 @@ const PersonalBestsUser = () => {
             return lastPage.nextPage || undefined
         },
     })
+
+    if (error) {
+        return <CatchError error={error} />
+    }
 
     const [personalBest, setPersonalBest] = useState<PersonalBests["data"]>([])
 
@@ -53,19 +60,10 @@ const PersonalBestsUser = () => {
 
     const personalBests = () => {
 
-        const handleRedirectToRun = (id: string) => {
-            router.push({
-                pathname: "/(main)/(runs)/run",
-                params: {
-                    id
-                }
-            })
-        }
-
         if (personalBest.length > 0) {
             const getPersonalBests = personalBest.map((pb, idx) => {
                 return (
-                    <TouchableOpacity key={idx} style={style.card} onPress={() => handleRedirectToRun(pb.run.id)}>
+                    <TouchableOpacity key={idx} style={style.card} onPress={async () => await handleRedirect(ROUTES.ONE_RUN, { id: pb.run.id })}>
                         <View style={style.cardImage}>
                             <Image style={style.image} source={{ uri: pb.game.data.assets["cover-large"].uri }} />
                         </View>
@@ -92,7 +90,7 @@ const PersonalBestsUser = () => {
 
     return (
         <View style={style.container}>
-            {isLoading ? <ActivityIndicator /> : personalBests()}
+            {isLoading ? <IsLoading isLoading={isLoading} /> : personalBests()}
         </View>
     )
 }

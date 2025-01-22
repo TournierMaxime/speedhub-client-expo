@@ -1,12 +1,13 @@
 import { useState } from "react"
-import { useRouter } from "expo-router"
+import ROUTES from "@/components/routes"
+import useHandleRouter from "../utils/useHandleRouter"
 import { authService } from "@/services/speedhub"
 import { DataState } from "./interface"
 import { useAuth } from "@/contexts/AuthContext"
 import useHandleToast from "../utils/useHandleToast"
 
 const useHandleForgetPassword = () => {
-  const router = useRouter()
+  const { handleRedirect } = useHandleRouter()
 
   const { login } = useAuth()
 
@@ -58,7 +59,8 @@ const useHandleForgetPassword = () => {
 
       authService.login({ userId: response.userId })
       await login({ email: data.email ?? "", password: data.password ?? "" })
-      router.push({ pathname: "/(main)/(tabs)/home" })
+
+      await handleRedirect(ROUTES.HOME)
 
       setData({
         ...data,

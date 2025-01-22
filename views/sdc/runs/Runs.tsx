@@ -8,19 +8,22 @@ import {
     Image,
 } from "react-native"
 import { speedRunDotComRunService } from "@/services/speedrunDotCom"
-import { useRouter } from "expo-router"
 import { Runs } from "../interface"
 import Utils from "@/components/lib/Utils"
 import Runtime from "@/components/lib/RunTime"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import ROUTES from "@/components/routes"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import IsLoading from "@/components/lib/IsLoading"
+import CatchError from "@/components/lib/CatchError"
 
 const AllRuns = () => {
-    const router = useRouter()
+    const { handleRedirect } = useHandleRouter()
     const theme = useColorScheme() ?? 'light';
 
-    const { data, isLoading } = useInfiniteQuery({
+    const { data, isLoading, error } = useInfiniteQuery({
         queryKey: ["getRuns"],
         queryFn: async () => {
             return await speedRunDotComRunService.getRuns();
@@ -31,6 +34,10 @@ const AllRuns = () => {
         },
     });
 
+    if (error) {
+        return <CatchError error={error} />
+    }
+
     const [runs, setRuns] = useState<Runs["data"]>([]);
 
     useEffect(() => {
@@ -39,15 +46,6 @@ const AllRuns = () => {
             setRuns(mergedData);
         }
     }, [data]);
-
-    const handleRedirectRun = (id: string) => {
-        router.push({
-            pathname: "/(main)/(runs)/run",
-            params: {
-                id,
-            },
-        })
-    }
 
     const players = (data: any) => {
         if (data) {
@@ -72,7 +70,7 @@ const AllRuns = () => {
             const getRuns = runs.map((run, idx) => {
                 return (
                     <TouchableOpacity
-                        onPress={() => handleRedirectRun(run.id)}
+                        onPress={async () => await handleRedirect(ROUTES.RUNS, { id: run.id })}
                         style={[style.card, theme === "dark" ? { backgroundColor: Colors.dark.background, shadowColor: Colors.dark.shadowColor, } : { backgroundColor: Colors.light.background, shadowColor: Colors.light.shadowColor }]}
                         key={idx}
                     >
@@ -98,7 +96,7 @@ const AllRuns = () => {
 
     return (
         <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
-            {isLoading ? <ActivityIndicator /> : allRuns()}
+            {isLoading ? <IsLoading isLoading={isLoading} /> : allRuns()}
         </View>
     )
 }

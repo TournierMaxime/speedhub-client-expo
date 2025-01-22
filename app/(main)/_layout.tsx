@@ -8,6 +8,7 @@ export default function MainLayout() {
       <Stack.Screen name="(profile)" options={{ headerShown: false }} />
       <Stack.Screen name="(search)" options={{ headerShown: false }} />
       <Stack.Screen name="(user)" options={{ headerShown: false }} />
+      <Stack.Screen name="(marathon)" options={{ headerShown: false }} />
     </Stack>
   );
 }

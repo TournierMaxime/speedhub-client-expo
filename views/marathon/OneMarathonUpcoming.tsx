@@ -1,49 +1,42 @@
 import React from "react"
-import { View, StyleSheet, Text, ActivityIndicator, Image, ScrollView } from "react-native"
+import { View, StyleSheet, Text, ActivityIndicator, ScrollView } from "react-native"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { User } from "../interface"
-import { userService } from "@/services/speedrunDotCom"
-import PersonalBestsUser from "./PersonalBestsUser"
-import moment from "moment"
+import { Live } from "../interface"
+import { horaroService } from "@/services/speedhub"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 
-const OneUser = () => {
-    const { id } = useGlobalSearchParams()
+const OneMarathonUpcoming = () => {
+    const { horaroId } = useGlobalSearchParams()
 
     const theme = useColorScheme() ?? 'light';
 
-    const { data, isLoading, error } = useQuery<User>({
-        queryKey: ["getUser", id],
+    const { data, isLoading, error } = useQuery<Live>({
+        queryKey: ["getUpcoming", horaroId],
         queryFn: async () => {
-            if (!id) throw new Error("Missing ID")
-            return await userService.getUser(id)
+            if (!horaroId) throw new Error("Missing ID")
+            return await horaroService.getUpcoming(horaroId)
+
         },
-        enabled: !!id,
+        enabled: !!horaroId,
     })
 
     if (error) {
         return <CatchError error={error} />
     }
 
-    const oneUser = () => {
+    const oneMarathonUpcoming = () => {
         if (data) {
             return (
                 <View style={[style.cardUser, theme === "dark" ? { backgroundColor: Colors.dark.background, shadowColor: Colors.dark.shadowColor } : { backgroundColor: Colors.light.background, shadowColor: Colors.light.shadowColor }]}>
-                    <View style={style.cardImage}>
-                        <Image source={{ uri: data.data.assets.image.uri }} style={style.image} />
-                        <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.data.names.international}</Text>
-                    </View>
                     <View style={style.cardInfo}>
-                        <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.data.location?.country.names.international ?? null}</Text>
-                        <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.data.location?.region.names.international ?? null}</Text>
-                        <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{`role ${data.data.role}`}</Text>
-                        <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{moment(data.data.signup).format("YYYY-MM-DD h:mm:ss a") ?? null}</Text>
+                        <Text>Upcoming</Text>
+                        <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.name}</Text>
                     </View>
                 </View>
             )
@@ -54,8 +47,7 @@ const OneUser = () => {
     return (
         <ScrollView style={[style.container, theme == "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
             <Header backButton={true} title="" />
-            {isLoading ? <IsLoading isLoading={isLoading} /> : oneUser()}
-            <PersonalBestsUser />
+            {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonUpcoming()}
         </ScrollView>
     )
 }
@@ -97,4 +89,4 @@ const style = StyleSheet.create({
     }
 })
 
-export default OneUser
+export default OneMarathonUpcoming

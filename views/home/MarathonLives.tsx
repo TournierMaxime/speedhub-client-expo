@@ -2,7 +2,7 @@ import React, { Fragment } from "react"
 import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
-import Error from "@/components/lib/Error"
+import CatchError from "@/components/lib/CatchError"
 import { Lives } from "../interface"
 import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
@@ -10,9 +10,13 @@ import Utils from "@/components/lib/Utils"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import AntDesign from "@expo/vector-icons/AntDesign"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
 
 const MarathonLives = () => {
     const theme = useColorScheme() ?? "light"
+
+    const { handleRedirect } = useHandleRouter()
 
     const { data, isLoading, error } = useInfiniteQuery({
         queryKey: ["getLives"],
@@ -28,7 +32,7 @@ const MarathonLives = () => {
     const [lives, setLives] = useState<Lives["data"]>([])
 
     if (error) {
-        return <Error error />
+        return <CatchError error={error} />
     }
 
     const marathonsLive = () => {
@@ -40,6 +44,7 @@ const MarathonLives = () => {
                 return (
                     <TouchableOpacity
                         key={idx}
+                        onPress={() => handleRedirect(ROUTES.ONE_MARATHON_LIVE, { horaroId: live.horaroId })}
                         style={[
                             style.cardItem,
                             isFirst
@@ -82,7 +87,7 @@ const MarathonLives = () => {
     return (
         <View style={style.container}>
             {isLoading ? (
-                <IsLoading isLoading />
+                <IsLoading isLoading={isLoading} />
             ) : (
                 <View
                     style={[

@@ -8,6 +8,8 @@ import Runtime from "@/components/lib/RunTime"
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import CatchError from "@/components/lib/CatchError"
+import IsLoading from "@/components/lib/IsLoading"
 
 interface Props {
     splits: string
@@ -28,6 +30,10 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
             enabled: !!id,
         })
 
+        if (error) {
+            return <CatchError error={error} />
+        }
+
         const getSplits = () => {
             if (data) {
                 const splits = data.run.splits.map((split, idx) => {
@@ -45,7 +51,7 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
         return (
             <Fragment>
                 {isLoading ? (
-                    <ActivityIndicator />
+                    <IsLoading isLoading={isLoading} />
                 ) : (
                     <View style={style.cardInfo}>
                         <View style={style.cardTitle}>

@@ -13,26 +13,21 @@ import useHandleAuthGoogle from "@/hooks/auth/useHandleAuthGoogle"
 import Utils from "@/components/lib/Utils"
 import useHandleAuthApple from "@/hooks/auth/useHandleAuthApple"
 import StepAuth from "./StepAuth"
-import { useRouter } from "expo-router"
 import Form from "@/components/lib/Form"
 import Header from "@/components/lib/Header"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
 
 const LoginScreen = () => {
-    const router = useRouter()
+    const { handleRedirect } = useHandleRouter()
 
     const theme = useColorScheme() ?? 'light';
 
     const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()
 
     const { loginWithGoogle, isProcessing } = useHandleAuthGoogle()
-
-    const handleForgetPassword = () => {
-        router.push({
-            pathname: "/(auth)/forget-password",
-        })
-    }
 
     return (
         <View style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
@@ -51,7 +46,7 @@ const LoginScreen = () => {
                     <View style={style.section}>
                         <StepAuth />
 
-                        {Form.submit("error", "Forgot your password", async () => await handleForgetPassword(), false)}
+                        {Form.submit("error", "Forgot your password", async () => await handleRedirect(ROUTES.FORGET_PASSWORD), false)}
                     </View>
 
                     <View style={style.section}>

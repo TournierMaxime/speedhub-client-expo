@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { authService, userService } from "@/services/speedhub"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
-import { useRouter } from "expo-router"
 import { useAuth } from "@/contexts/AuthContext"
 import { DataState } from "./interface"
 import useHandleToast from "../utils/useHandleToast"
+import ROUTES from "@/components/routes"
+import useHandleRouter from "../utils/useHandleRouter"
 
 const useHandleAuth = () => {
-  const router = useRouter()
+  const { handleRedirect } = useHandleRouter()
   const { login } = useAuth()
 
   const [data, setData] = useState<DataState>({
@@ -71,13 +72,12 @@ const useHandleAuth = () => {
         lang: "en",
       })
 
-      router.push({
-        pathname: "/(auth)/confirm-email",
-        params: {
-          userId: response.user.userId,
-        },
+      await handleRedirect(ROUTES.CONFIRM_EMAIL, {
+        userId: response.user.userId,
       })
+
       handleSuccess("Your account has been created")
+
       setData({
         email: "",
         password: "",
