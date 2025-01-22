@@ -21,15 +21,15 @@ interface Lives {
       setup: string
       setup_t: number
       updated: string
-      hidden_columns: [string]
+      hidden_columns: string[]
       link: string
-      columns: [string]
+      columns: string[]
       items: {
         length: string
         length_t: number
         scheduled: string
         scheduled_t: number
-        data: [string]
+        data: string[]
       }[]
       links: {
         rel: string
@@ -47,7 +47,7 @@ interface Lives {
         setup: string
         setup_t: number
         updated: string
-        columns: [string]
+        columns: string[]
         link: string
       }
       ticker: {
@@ -56,21 +56,21 @@ interface Lives {
           length_t: number
           scheduled: string
           scheduled_t: number
-          data: [string]
+          data: string[]
         }
         current: {
           length: string
           length_t: number
           scheduled: string
           scheduled_t: number
-          data: [string]
+          data: string[]
         }
         next: {
           length: string
           length_t: number
           scheduled: string
           scheduled_t: number
-          data: [string]
+          data: string[]
         }
       }
       links: {

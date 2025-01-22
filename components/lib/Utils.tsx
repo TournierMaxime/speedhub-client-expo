@@ -62,6 +62,10 @@ class Utils {
         const codeRegex = /^\d{6}$/;
         return codeRegex.test(code);
     }
+
+    static removeMarkdownLinks = (text: string): string => {
+        return text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    }
 }
 
 export default Utils

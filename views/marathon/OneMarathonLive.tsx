@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { View, StyleSheet, Text, ActivityIndicator, ScrollView } from "react-native"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
@@ -10,6 +10,8 @@ import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
+import OneSchedule from "./OneSchedule"
+import OneTicker from "./OneTicker"
 
 const OneMarathonLive = () => {
     const { horaroId } = useGlobalSearchParams()
@@ -33,12 +35,16 @@ const OneMarathonLive = () => {
     const oneMarathonLive = () => {
         if (data) {
             return (
-                <View style={[style.cardUser, theme === "dark" ? { backgroundColor: Colors.dark.background, shadowColor: Colors.dark.shadowColor } : { backgroundColor: Colors.light.background, shadowColor: Colors.light.shadowColor }]}>
-                    <View style={style.cardInfo}>
-                        <Text>Live</Text>
-                        <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.name}</Text>
+                <Fragment>
+                    <View style={[style.cardUser, theme === "dark" ? { backgroundColor: Colors.dark.background, shadowColor: Colors.dark.shadowColor } : { backgroundColor: Colors.light.background, shadowColor: Colors.light.shadowColor }]}>
+                        <View style={style.cardInfo}>
+                            <Text>Live</Text>
+                            <Text style={[style.textCard, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.name}</Text>
+                        </View>
                     </View>
-                </View>
+                    <OneTicker ticker={data.ticker} />
+                    <OneSchedule schedule={data.schedule} />
+                </Fragment>
             )
         }
         return null
@@ -70,15 +76,9 @@ const style = StyleSheet.create({
         padding: Utils.moderateScale(10),
         borderColor: "grey"
     },
-    cardImage: {
-        display: "flex",
-        flexDirection: "column",
-        width: "40%"
-    },
     cardInfo: {
         display: "flex",
-        flexDirection: "column",
-        width: "60%"
+        flexDirection: "column"
     },
     image: {
         width: Utils.moderateScale(80),

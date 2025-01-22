@@ -277,7 +277,7 @@ interface Splits {
       duration: number
       finish_time: number
       gold: boolean
-      history: [number]
+      history: number[]
       name: string
       reduced: boolean
       skipped: boolean

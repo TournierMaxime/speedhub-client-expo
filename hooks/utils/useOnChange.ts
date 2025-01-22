@@ -1,4 +1,4 @@
-import { DataState } from "../auth/useHandleAuth"
+import { DataState } from "../auth/interface"
 
 interface Props {
   data: DataState

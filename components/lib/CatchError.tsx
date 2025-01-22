@@ -1,27 +1,12 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import Header from './Header'
+import React from "react"
+import { Text } from "react-native"
 
 interface Props {
     error: any
 }
 
 const CatchError: React.FC<Props> = ({ error }) => {
-    if (error)
-        return (
-            <View style={style.container}>
-                <Header backButton={true} title="Error" />
-                <Text>{error}</Text>
-            </View>
-        )
+    if (error) return <Text>{error}</Text>
 }
-
-const style = StyleSheet.create({
-    container: {
-        display: "flex",
-        backgroundColor: "#fff",
-        height: "100%",
-    }
-})
 
 export default CatchError
