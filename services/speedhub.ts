@@ -21,6 +21,41 @@ interface UserServiceInterface {
   deleteUser(userId: string): Promise<any>
 }
 
+interface HoraroServiceInterface {
+  getLives(filters?: any): Promise<any>
+  getLive(horaroId: string): Promise<any>
+  getUpcomings(filters?: any): Promise<any>
+  getUpcoming(horaroId: string): Promise<any>
+}
+
+class HoraroService implements HoraroServiceInterface {
+  private http = http
+
+  async getLives(filters?: any) {
+    const response = await this.http.post("/horaro/lives", {
+      ...filters,
+    })
+    return response.data
+  }
+
+  async getLive(horaroId: string) {
+    const response = await this.http.get(`/horaro/lives/${horaroId}`)
+    return response.data
+  }
+
+  async getUpcomings(filters?: any) {
+    const response = await this.http.post("/horaro/upcoming", {
+      ...filters,
+    })
+    return response.data
+  }
+
+  async getUpcoming(horaroId: string) {
+    const response = await this.http.get(`/horaro/upcoming/${horaroId}`)
+    return response.data
+  }
+}
+
 class AuthService implements AuthServiceInterface {
   private http = http
 
@@ -111,3 +146,4 @@ class UserService implements UserServiceInterface {
 
 export const authService = new AuthService()
 export const userService = new UserService()
+export const horaroService = new HoraroService()

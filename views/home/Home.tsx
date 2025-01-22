@@ -1,7 +1,9 @@
-import { StyleSheet, ScrollView, Text } from "react-native"
+import { StyleSheet, ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import MarathonLives from "./MarathonLives"
+import UpcomingMarathons from "./UpcomingMarathons"
 
 const Home = () => {
     const theme = useColorScheme() ?? "light"
@@ -16,7 +18,8 @@ const Home = () => {
             ]}
         >
             <Header backButton={false} title="" />
-            <Text>Home</Text>
+            <MarathonLives />
+            <UpcomingMarathons />
         </ScrollView>
     )
 }
