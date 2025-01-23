@@ -1,20 +1,25 @@
 import React from "react"
-import { TwitchPlayer } from "react-twitch-embed"
 import useResponsive from "@/hooks/utils/useResponsive"
 import { StyleSheet, View } from "react-native"
 import WebView from "react-native-webview"
 
-/* interface Props {
-    videoId: string
-} */
+interface Props {
+    id: string
+}
 
-const TwitchIframe: React.FC = () => {
+const TwitchIframe: React.FC<Props> = ({ id }) => {
     const { video } = useResponsive()
+    const twitchEmbedUrl = `https://player.twitch.tv/?video=${id}&parent=${process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`;
     return (
-        <WebView
-            source={{ uri: 'https://www.twitch.tv/videos/2356220734' }}
-            style={{ marginTop: 20 }}
-        />
+        <View style={style.card}>
+            <WebView
+                source={{ uri: twitchEmbedUrl }}
+                allowsInlineMediaPlayback
+                mediaPlaybackRequiresUserAction={false}
+                style={{ width: video.dimension.w, height: video.dimension.h }}
+            />
+        </View>
+
     )
 }
 

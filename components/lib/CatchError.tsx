@@ -6,7 +6,7 @@ interface Props {
 }
 
 const CatchError: React.FC<Props> = ({ error }) => {
-    if (error) return <Text>{error}</Text>
+    if (error) return <Text>{error.message}</Text>
 }
 
 export default CatchError

@@ -5,7 +5,6 @@ import {
     StyleSheet,
     FlatList,
     TouchableOpacity,
-    Text,
 } from "react-native"
 import useHandleSearch from "@/hooks/search/useHandleSearch"
 import Utils from "@/components/lib/Utils"
@@ -14,6 +13,7 @@ import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import ROUTES from "@/components/routes"
+import UserName from "@/components/lib/UserName"
 
 const Search = () => {
     const { data, setData, handleSearch, result } = useHandleSearch()
@@ -26,7 +26,7 @@ const Search = () => {
 
         return (
             <TouchableOpacity style={style.card} onPress={async () => await handleRedirect(ROUTES.ONE_USER, { id: item.id })}>
-                <Text style={[style.cardItem, theme === "dark" ? { color: Colors.dark.text, borderColor: Colors.dark.borderColor } : { color: Colors.light.text, borderColor: Colors.light.borderColor }]}>{item.names.international}</Text>
+                <UserName data={item} width={"auto"} height={Utils.moderateScale(45)} style={style.cardItem} />
             </TouchableOpacity>
         )
     }
@@ -74,14 +74,12 @@ const style = StyleSheet.create({
         display: "flex",
         width: "90%",
         marginLeft: Utils.moderateScale(20),
+        borderTopWidth: Utils.moderateScale(1),
     },
     cardItem: {
-        fontSize: Utils.moderateScale(18),
-        borderTopWidth: Utils.moderateScale(1),
         display: "flex",
         alignItems: "center",
         paddingVertical: Utils.moderateScale(10)
-
     }
 })
 

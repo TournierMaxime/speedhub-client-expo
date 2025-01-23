@@ -4,7 +4,6 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    ActivityIndicator,
     Image,
 } from "react-native"
 import { speedRunDotComRunService } from "@/services/speedrunDotCom"
@@ -18,6 +17,7 @@ import ROUTES from "@/components/routes"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
+import UserName from "@/components/lib/UserName"
 
 const AllRuns = () => {
     const { handleRedirect } = useHandleRouter()
@@ -49,9 +49,9 @@ const AllRuns = () => {
 
     const players = (data: any) => {
         if (data) {
-            const getPlayers = data.players.data.map(
-                (player: { names: { international: string } }, idx: string) => {
-                    return <Text style={[style.username, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]} key={idx}>{player?.names?.international}</Text>
+            const getPlayers = data.map(
+                (player: any, idx: string) => {
+                    return <UserName data={player} idx={idx} width={"auto"} />
                 }
             )
             return getPlayers
@@ -81,7 +81,7 @@ const AllRuns = () => {
                             />
                         </View>
                         <View style={style.cardInfo}>
-                            {players(run)}
+                            {players(run.players.data)}
                             {category(run.category.data.name)}
                             <Runtime time={run.times.primary_t} />
                         </View>

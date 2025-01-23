@@ -43,7 +43,7 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
                         <View style={{ width: "25%" }}>
                             <Text>Previous</Text>
                         </View>
-                        <View style={{ width: "50%" }}>
+                        <View style={{ width: "45%" }}>
                             <Text>
                                 {Utils.removeMarkdownLinks(previous.data.join(", "))}
                             </Text>
@@ -62,7 +62,7 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
                         <View style={{ width: "25%" }}>
                             <Text>Current</Text>
                         </View>
-                        <View style={{ width: "50%" }}>
+                        <View style={{ width: "45%" }}>
                             <Text>
                                 {Utils.removeMarkdownLinks(current.data.join(", "))}
                             </Text>
@@ -79,7 +79,7 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
                         <View style={{ width: "25%" }}>
                             <Text>Next</Text>
                         </View>
-                        <View style={{ width: "50%" }}>
+                        <View style={{ width: "45%" }}>
                             <Text>
                                 {Utils.removeMarkdownLinks(next.data.join(", "))}
                             </Text>

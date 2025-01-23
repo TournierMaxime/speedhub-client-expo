@@ -4,9 +4,6 @@ import {
     View,
     Text,
     StyleSheet,
-    ActivityIndicator,
-    Button,
-    Linking,
     ScrollView,
 } from "react-native"
 import Header from "@/components/lib/Header"
@@ -23,11 +20,13 @@ import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
+import TwitchIframe from "@/components/lib/TwitchIframe"
+import UserName from "@/components/lib/UserName"
 
 const OneRun = () => {
     const { id } = useGlobalSearchParams()
 
-    const theme = useColorScheme() ?? 'light';
+    const theme = useColorScheme() ?? "light"
 
     const { data, isLoading, error } = useQuery<Run>({
         queryKey: ["getRun", id],
@@ -45,8 +44,8 @@ const OneRun = () => {
     const getPlayers = (data: any) => {
         if (data) {
             const players = data.map(
-                (player: { names: { international: string } }, idx: string) => {
-                    return <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]} key={idx}>{player.names.international}</Text>
+                (player: any, idx: string) => {
+                    return <UserName data={player} idx={idx} width={Utils.moderateScale(50)} />
                 }
             )
 
@@ -57,14 +56,17 @@ const OneRun = () => {
     const oneRun = () => {
         if (data) {
             const videoUri = data.data.videos?.links[0].uri
+            let platform
 
-            const platform = videoUri?.includes("youtube")
-                ? "youtube"
-                : videoUri.includes("twitch")
-                    ? "twitch"
-                    : videoUri.includes("youtu.be")
-                        ? "youtu.be"
-                        : null
+            if (videoUri) {
+                platform = videoUri?.includes("youtube")
+                    ? "youtube"
+                    : videoUri.includes("twitch")
+                        ? "twitch"
+                        : videoUri.includes("youtu.be")
+                            ? "youtu.be"
+                            : null
+            }
 
             let videoComponent
 
@@ -77,12 +79,8 @@ const OneRun = () => {
                     break
 
                 case "twitch":
-                    videoComponent = (
-                        <Button
-                            title="Watch on Twitch"
-                            onPress={() => Linking.openURL(videoUri)}
-                        />
-                    )
+                    const twitchId = videoUri.substring(29)
+                    videoComponent = <TwitchIframe id={twitchId} />
                     break
 
                 case "youtu.be":
@@ -100,12 +98,16 @@ const OneRun = () => {
                     {videoComponent}
                     <View style={style.cardInfo}>
                         <View style={style.cardInfoItems}>
-                            <MaterialCommunityIcons
-                                name="run"
-                                size={Utils.moderateScale(28)}
-                                color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
-                            />
-                            {getPlayers(data.data.players.data)}
+                            <View style={style.icons}>
+                                <MaterialCommunityIcons
+                                    name="run"
+                                    size={Utils.moderateScale(28)}
+                                    color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
+                                />
+                            </View>
+                            <View style={style.data}>
+                                {getPlayers(data.data.players.data)}
+                            </View>
                         </View>
                         <View style={style.cardInfoItems}>
                             <MaterialIcons
@@ -113,7 +115,16 @@ const OneRun = () => {
                                 size={Utils.moderateScale(24)}
                                 color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                             />
-                            <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.data.game.data.names.international}</Text>
+                            <Text
+                                style={[
+                                    style.text,
+                                    theme === "dark"
+                                        ? { color: Colors.dark.text }
+                                        : { color: Colors.light.text },
+                                ]}
+                            >
+                                {data.data.game.data.names.international}
+                            </Text>
                         </View>
                         <View style={style.cardInfoItems}>
                             <MaterialIcons
@@ -121,7 +132,16 @@ const OneRun = () => {
                                 size={Utils.moderateScale(24)}
                                 color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
                             />
-                            <Text style={[style.text, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>{data.data.category.data.name}</Text>
+                            <Text
+                                style={[
+                                    style.text,
+                                    theme === "dark"
+                                        ? { color: Colors.dark.text }
+                                        : { color: Colors.light.text },
+                                ]}
+                            >
+                                {data.data.category.data.name}
+                            </Text>
                         </View>
                         <View style={style.cardInfoItems}>
                             <MaterialIcons
@@ -140,7 +160,14 @@ const OneRun = () => {
     }
 
     return (
-        <ScrollView style={[style.container, theme === "dark" ? { backgroundColor: Colors.dark.background } : { backgroundColor: Colors.light.background }]}>
+        <ScrollView
+            style={[
+                style.container,
+                theme === "dark"
+                    ? { backgroundColor: Colors.dark.background }
+                    : { backgroundColor: Colors.light.background },
+            ]}
+        >
             <Header backButton={true} title="" />
             {isLoading ? <IsLoading isLoading={isLoading} /> : oneRun()}
         </ScrollView>
@@ -169,12 +196,19 @@ const style = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
-        marginVertical: Utils.moderateScale(5),
+        marginVertical: Utils.moderateScale(5)
+    },
+    icons: {
+        display: "flex",
+        justifyContent: "flex-start",
+    },
+    data: {
+        flex: 1,
+        alignItems: "flex-end",
     },
     text: {
-        fontSize: Utils.moderateScale(16)
-    }
+        fontSize: Utils.moderateScale(16),
+    },
 })
 
 export default OneRun

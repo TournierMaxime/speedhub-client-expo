@@ -89,7 +89,18 @@ interface Runs {
       data: { id: string; name: string }
     }
     players: {
-      data: { names: { international: string } }[]
+      data: {
+        names: {
+          international: string
+        }
+        "name-style": {
+          style: string
+          color: {
+            light: string
+            dark: string
+          }
+        }
+      }[]
     }
     times: { primary_t: number }
   }[]

@@ -15,8 +15,19 @@ interface Props {
     splits: string
 }
 
+interface Split {
+    best: { duration: number }
+    duration: number
+    finish_time: number
+    gold: boolean
+    history: number[]
+    name: string
+    reduced: boolean
+    skipped: boolean
+}
+
 const SplitsSheet: React.FC<Props> = ({ splits }) => {
-    const theme = useColorScheme() ?? 'light';
+    const theme = useColorScheme() ?? "light"
 
     if (splits) {
         const id = splits.substring(30)
@@ -34,18 +45,28 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
             return <CatchError error={error} />
         }
 
-        const getSplits = () => {
-            if (data) {
-                const splits = data.run.splits.map((split, idx) => {
+        const getSplits = (data: Split[]) => {
+            if (data && data.length > 0) {
+                const splits = data.map((split, idx) => {
                     return (
                         <View key={idx} style={style.cardSplit}>
-                            <Text style={[style.textSplit, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.dark.text }]}>{split.name}</Text>
+                            <Text
+                                style={[
+                                    style.textSplit,
+                                    theme === "dark"
+                                        ? { color: Colors.dark.text }
+                                        : { color: Colors.light.text },
+                                ]}
+                            >
+                                {split.name}
+                            </Text>
                             <Runtime time={split.finish_time} />
                         </View>
                     )
                 })
                 return splits
             }
+            return null
         }
 
         return (
@@ -53,17 +74,31 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
                 {isLoading ? (
                     <IsLoading isLoading={isLoading} />
                 ) : (
-                    <View style={style.cardInfo}>
-                        <View style={style.cardTitle}>
-                            <MaterialCommunityIcons
-                                name="clock-fast"
-                                size={Utils.moderateScale(28)}
-                                color={theme == "dark" ? Colors.dark.icon : Colors.light.icon}
-                            />
-                            <Text style={[style.textTitle, theme === "dark" ? { color: Colors.dark.text } : { color: Colors.light.text }]}>Splits</Text>
-                        </View>
-                        {getSplits()}
-                    </View>
+                    <Fragment>
+                        {data && data.run.splits.length > 0 ?
+                            <View style={style.cardInfo}>
+                                <View style={style.cardTitle}>
+                                    <MaterialCommunityIcons
+                                        name="clock-fast"
+                                        size={Utils.moderateScale(28)}
+                                        color={theme == "dark" ? Colors.dark.icon : Colors.light.icon}
+                                    />
+                                    <Text
+                                        style={[
+                                            style.textTitle,
+                                            theme === "dark"
+                                                ? { color: Colors.dark.text }
+                                                : { color: Colors.light.text },
+                                        ]}
+                                    >
+                                        Splits
+                                    </Text>
+                                </View>
+                                {getSplits(data?.run?.splits)}
+                            </View>
+                            : null}
+
+                    </Fragment>
                 )}
             </Fragment>
         )

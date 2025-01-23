@@ -1,17 +1,20 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import MarathonLives from "@/views/home/MarathonLives";
+import UpcomingMarathons from "@/views/home/UpcomingMarathons";
+import Header from "@/components/lib/Header";
 
 export default function MarathonsScreen() {
     return (
         <View style={styles.container}>
-            <Text>Liste des Marathons</Text>
+            <Header backButton={true} title="" />
+            <MarathonLives />
+            <UpcomingMarathons />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        display: "flex"
     },
 });
