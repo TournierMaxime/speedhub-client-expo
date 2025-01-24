@@ -61,7 +61,7 @@ function Navigation() {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push("/(main)/(tabs)/home")
+      router.push("/(tabs)/home")
     } else if (!isLoading && !isAuthenticated) {
       router.push("/(auth)/login")
     }
@@ -74,7 +74,7 @@ function Navigation() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       {isAuthenticated ? (
-        <Stack.Screen name="(main)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       ) : (
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       )}

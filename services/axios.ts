@@ -13,4 +13,8 @@ const splitIOApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_SPLITIO_API,
 })
 
-export { speedHubApi, speedRunDotComApi, splitIOApi }
+const redditApi = axios.create({
+  baseURL: process.env.EXPO_PUBLIC_REDDIT_API,
+})
+
+export { speedHubApi, speedRunDotComApi, splitIOApi, redditApi }

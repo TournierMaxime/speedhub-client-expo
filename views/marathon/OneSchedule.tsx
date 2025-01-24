@@ -53,7 +53,7 @@ const style = StyleSheet.create({
         flexDirection: "column",
         marginLeft: "auto",
         marginRight: "auto",
-        width: "90%",
+        width: "95%",
         borderWidth: Utils.moderateScale(1),
         marginTop: Utils.moderateScale(10),
         borderRadius: Utils.moderateScale(5),

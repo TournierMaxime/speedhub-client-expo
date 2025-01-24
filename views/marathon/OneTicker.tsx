@@ -40,10 +40,10 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
             <Fragment>
                 {previous && (
                     <View style={style.card}>
-                        <View style={{ width: "25%" }}>
+                        <View style={{ width: "20%" }}>
                             <Text>Previous</Text>
                         </View>
-                        <View style={{ width: "45%" }}>
+                        <View style={{ width: "50%" }}>
                             <Text>
                                 {Utils.removeMarkdownLinks(previous.data.join(", "))}
                             </Text>
@@ -59,10 +59,10 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
 
                 {current && (
                     <View style={style.card}>
-                        <View style={{ width: "25%" }}>
+                        <View style={{ width: "20%" }}>
                             <Text>Current</Text>
                         </View>
-                        <View style={{ width: "45%" }}>
+                        <View style={{ width: "50%" }}>
                             <Text>
                                 {Utils.removeMarkdownLinks(current.data.join(", "))}
                             </Text>
@@ -76,10 +76,10 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
 
                 {next && (
                     <View style={style.card}>
-                        <View style={{ width: "25%" }}>
+                        <View style={{ width: "20%" }}>
                             <Text>Next</Text>
                         </View>
-                        <View style={{ width: "45%" }}>
+                        <View style={{ width: "50%" }}>
                             <Text>
                                 {Utils.removeMarkdownLinks(next.data.join(", "))}
                             </Text>
@@ -114,7 +114,7 @@ const style = StyleSheet.create({
         flexDirection: "column",
         marginLeft: "auto",
         marginRight: "auto",
-        width: "90%",
+        width: "95%",
         borderWidth: Utils.moderateScale(1),
         marginTop: Utils.moderateScale(10),
         borderRadius: Utils.moderateScale(5),
