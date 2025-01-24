@@ -8,6 +8,7 @@ const ROUTES = {
   AUTH: "/(auth)" as RelativePathString,
   ONE_RUN: "/(tabs)/(main)/(runs)/run" as RelativePathString,
   ONE_USER: "/(tabs)/(main)/(user)/user" as RelativePathString,
+  ONE_GAME: "/(tabs)/(main)/(games)/game" as RelativePathString,
   RUNS: "/(tabs)/(main)/(runs)/run" as RelativePathString,
   FORGET_PASSWORD: "/(auth)/forget-password" as RelativePathString,
   ONE_MARATHON_LIVE:

@@ -1,6 +1,6 @@
 import React from "react"
-import { LinearGradient } from "expo-linear-gradient"
-import MaskedView from "@react-native-masked-view/masked-view"
+/* import { LinearGradient } from "expo-linear-gradient"
+import MaskedView from "@react-native-masked-view/masked-view" */
 import Utils from "./Utils"
 import { DimensionValue, StyleProp, Text, TextStyle } from "react-native"
 
@@ -27,13 +27,33 @@ interface Item {
 
 interface Props {
     data: Item
-    idx?: string
     width?: DimensionValue
     height?: DimensionValue
     style?: StyleProp<TextStyle>
+    idx?: number
 }
 
 const UserName: React.FC<Props> = ({ data, idx, width, height, style }) => {
+    return (
+        <Text
+            key={idx}
+            style={[
+                {
+                    fontSize: Utils.moderateScale(16),
+                    fontWeight: "bold",
+                    textAlign: "left",
+                },
+                style,
+            ]}
+        >
+            {data.names?.international}
+        </Text>
+    )
+}
+
+export default UserName
+
+/*
     return (
         <MaskedView
             key={idx}
@@ -73,6 +93,4 @@ const UserName: React.FC<Props> = ({ data, idx, width, height, style }) => {
             />
         </MaskedView>
     )
-}
-
-export default UserName
+*/

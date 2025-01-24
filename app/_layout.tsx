@@ -15,6 +15,7 @@ import { useColorScheme } from "@/hooks/useColorScheme"
 import ToastManager from "toastify-react-native"
 import Utils from "@/components/lib/Utils"
 import { ActivityIndicator } from "react-native"
+import { Colors } from "@/constants/Colors"
 
 SplashScreen.preventAutoHideAsync()
 
@@ -58,6 +59,7 @@ export default function RootLayout() {
 function Navigation() {
   const { isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
+  const theme = useColorScheme()
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -72,7 +74,11 @@ function Navigation() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{
+      headerShown: false, contentStyle: {
+        backgroundColor: theme === "dark" ? Colors.dark.background : Colors.light.background
+      },
+    }}>
       {isAuthenticated ? (
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       ) : (

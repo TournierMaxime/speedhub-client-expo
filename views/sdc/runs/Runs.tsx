@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native"
-import { speedRunDotComRunService } from "@/services/speedrunDotCom"
+import { runService } from "@/services/speedrunDotCom"
 import { Runs } from "../interface"
 import Utils from "@/components/lib/Utils"
 import Runtime from "@/components/lib/RunTime"
@@ -26,7 +26,7 @@ const AllRuns = () => {
     const { data, isLoading, error } = useInfiniteQuery({
         queryKey: ["getRuns"],
         queryFn: async () => {
-            return await speedRunDotComRunService.getRuns();
+            return await runService.getRuns();
         },
         initialPageParam: 1,
         getNextPageParam: (lastPage) => {
@@ -50,8 +50,8 @@ const AllRuns = () => {
     const players = (data: any) => {
         if (data) {
             const getPlayers = data.map(
-                (player: any, idx: string) => {
-                    return <UserName data={player} idx={idx} width={"auto"} />
+                (player: any, idx: number) => {
+                    return <UserName data={player} key={idx} width={"auto"} />
                 }
             )
             return getPlayers

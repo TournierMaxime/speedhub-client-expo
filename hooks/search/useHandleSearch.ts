@@ -1,30 +1,44 @@
 import { useState } from "react"
 import { DataState } from "../auth/interface"
 import { userService } from "@/services/speedrunDotCom"
+import { gameService } from "@/services/speedrunDotCom"
 
 const useHandleSearch = () => {
   const [data, setData] = useState<DataState>({
-    username: "",
+    query: "",
   })
 
   const [result, setResult] = useState({ data: [] })
 
-  const handleSearch = async () => {
+  const handleSearch = async (name: string) => {
     try {
-      const response = await userService.getUsers({ name: data.username ?? "" })
-      setData({
-        username: "",
-      })
+      setResult({ data: [] })
+      let response
+
+      if (name === "users") {
+        response = await userService.getUsers({
+          name: data.query ?? "",
+        })
+      } else if (name === "games") {
+        response = await gameService.getGames({
+          name: data.query ?? "",
+        })
+      }
       setResult(response)
+      setData({
+        query: "",
+      })
     } catch (error: any) {
       console.log(error)
     }
   }
+
   return {
     handleSearch,
     data,
     setData,
     result,
+    setResult,
   }
 }
 

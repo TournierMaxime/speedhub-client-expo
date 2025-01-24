@@ -8,5 +8,9 @@ export interface DataState {
   confirmPassword?: string
   userId?: string
   lang?: string
-  username?: string
+  query?: string
+  option?: {
+    name?: string
+    value?: string
+  }
 }

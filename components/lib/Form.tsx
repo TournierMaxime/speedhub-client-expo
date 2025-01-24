@@ -13,6 +13,7 @@ import Utils from "./Utils"
 import { DataState } from "@/hooks/auth/interface"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
+import Checkbox from "expo-checkbox"
 
 type SetFormData = React.Dispatch<React.SetStateAction<DataState>>;
 
@@ -132,6 +133,26 @@ class Form {
         );
     };
 
+    static checkBox = (
+        data: DataState,
+        setData: SetFormData,
+        label: string,
+        name: keyof DataState,
+        value: string,
+    ) => {
+        const { handleCheckboxChange } = useOnChange({ data, setData });
+
+        return (
+            <TouchableOpacity onPress={() => handleCheckboxChange({ name, value })} style={style.option}>
+                <Checkbox
+                    value={value === data.option?.value}
+                    onValueChange={() => handleCheckboxChange({ name, value })}
+                />
+                <Text style={style.optionText}>{label}</Text>
+            </TouchableOpacity>
+        )
+    }
+
     static inputSwitch = (
         value: boolean,
         fct: (key: string, value: boolean) => void,
@@ -228,7 +249,16 @@ const style = StyleSheet.create({
         fontSize: Utils.moderateScale(18),
         fontWeight: "bold",
         marginVertical: Utils.moderateScale(10)
-    }
+    },
+    option: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginRight: 20,
+    },
+    optionText: {
+        fontSize: 16,
+        marginLeft: 10,
+    },
 })
 
 export default Form

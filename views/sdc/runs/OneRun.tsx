@@ -8,7 +8,7 @@ import {
 } from "react-native"
 import Header from "@/components/lib/Header"
 import { useQuery } from "@tanstack/react-query"
-import { speedRunDotComRunService } from "@/services/speedrunDotCom"
+import { runService } from "@/services/speedrunDotCom"
 import Utils from "@/components/lib/Utils"
 import { Run } from "../interface"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
@@ -32,7 +32,7 @@ const OneRun = () => {
         queryKey: ["getRun", id],
         queryFn: async () => {
             if (!id) throw new Error("Missing ID")
-            return await speedRunDotComRunService.getRun(id)
+            return await runService.getRun(id)
         },
         enabled: !!id,
     })

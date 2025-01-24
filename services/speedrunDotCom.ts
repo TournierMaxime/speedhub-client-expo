@@ -2,7 +2,7 @@ import { speedRunDotComApi as http } from "./axios"
 import { splitIOApi } from "./axios"
 
 interface GameInterface {
-  getGames(): Promise<any>
+  getGames(params: { name: string | string[] }): Promise<any>
   getGame(id: string | string[]): Promise<any>
 }
 
@@ -85,8 +85,12 @@ class Runs implements RunInterface {
 class Games implements GameInterface {
   private http = http
 
-  async getGames() {
-    const response = await this.http.get("/games")
+  async getGames(params: { name: string | string[] }) {
+    const response = await this.http.get("/games", {
+      params: {
+        name: params.name,
+      },
+    })
     return response.data
   }
 
@@ -96,7 +100,7 @@ class Games implements GameInterface {
   }
 }
 
-export const speedRunDotComGameService = new Games()
-export const speedRunDotComRunService = new Runs()
+export const gameService = new Games()
+export const runService = new Runs()
 export const splitIOService = new Split()
 export const userService = new Users()
