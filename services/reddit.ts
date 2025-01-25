@@ -1,15 +1,19 @@
 import { redditApi as http } from "./axios"
 
 interface RedditInterface {
-  getAllNews(): Promise<any>
+  getAllNews(params?: any): Promise<any>
   getOneNews(permalink: string): Promise<any>
 }
 
 class Reddit implements RedditInterface {
   private http = http
 
-  async getAllNews() {
-    const response = await this.http.get("/r/speedrun/new.json")
+  async getAllNews(params?: any) {
+    const response = await this.http.get("/new.json", {
+      params: {
+        ...params,
+      },
+    })
     return response.data
   }
 

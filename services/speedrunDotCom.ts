@@ -7,7 +7,7 @@ interface GameInterface {
 }
 
 interface RunInterface {
-  getRuns(): Promise<any>
+  getRuns(limit?: number): Promise<any>
   getRun(id: string | string[]): Promise<any>
 }
 
@@ -60,13 +60,14 @@ class Split implements SplitInterface {
 class Runs implements RunInterface {
   private http = http
 
-  async getRuns() {
+  async getRuns(limit?: number) {
     const response = await this.http.get("/runs", {
       params: {
         direction: "desc",
         status: "verified",
         orderby: "verify-date",
         embed: "players,category,game",
+        max: limit ? limit : 20,
       },
     })
     return response.data

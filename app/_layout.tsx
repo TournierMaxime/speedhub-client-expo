@@ -74,11 +74,15 @@ function Navigation() {
   }
 
   return (
-    <Stack screenOptions={{
-      headerShown: false, contentStyle: {
-        backgroundColor: theme === "dark" ? Colors.dark.background : Colors.light.background
-      },
-    }}>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor:
+            theme === "dark" ? Colors.dark.background : Colors.light.background,
+        },
+      }}
+    >
       {isAuthenticated ? (
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       ) : (

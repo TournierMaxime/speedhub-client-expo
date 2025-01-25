@@ -1,29 +1,26 @@
 import { StyleSheet, ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
-import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
+import MarathonLives from "./MarathonLives"
+import UpcomingMarathons from "./UpcomingMarathons"
+import AllReddits from "../reddit/Reddits"
+import AllRuns from "../sdc/runs/Runs"
 
 const Home = () => {
-    const theme = useColorScheme() ?? "light"
-
-    return (
-        <ScrollView
-            style={[
-                style.container,
-                theme === "dark"
-                    ? { backgroundColor: Colors.dark.background }
-                    : { backgroundColor: Colors.light.background },
-            ]}
-        >
-            <Header backButton={false} title="" />
-        </ScrollView>
-    )
+  return (
+    <ScrollView style={style.container}>
+      <Header backButton={false} />
+      <AllReddits limit={5} />
+      <AllRuns limit={5} />
+      <MarathonLives limit={5} />
+      <UpcomingMarathons limit={5} />
+    </ScrollView>
+  )
 }
 
 const style = StyleSheet.create({
-    container: {
-        display: "flex",
-    },
+  container: {
+    display: "flex",
+  },
 })
 
 export default Home

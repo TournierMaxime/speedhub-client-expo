@@ -16,6 +16,7 @@ interface Reddits {
         url_overridden_by_dest: string
         url: string
         domain: string
+        link_flair_text: string
       }
     }[]
   }

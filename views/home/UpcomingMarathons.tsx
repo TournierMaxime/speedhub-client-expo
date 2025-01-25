@@ -1,140 +1,122 @@
-import React, { Fragment } from "react"
+import React from "react"
 import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { Upcomings } from "../interface"
 import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 import Utils from "@/components/lib/Utils"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
-import AntDesign from "@expo/vector-icons/AntDesign"
 import ROUTES from "@/components/routes"
-import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import Card from "@/components/lib/Card"
 
-const UpcomingMarathons = () => {
-    const theme = useColorScheme() ?? "light"
-    const { handleRedirect } = useHandleRouter()
+interface Props {
+  limit?: number
+}
 
-    const { data, isLoading, error } = useInfiniteQuery({
-        queryKey: ["getUpcomings"],
-        queryFn: async () => {
-            return await horaroService.getUpcomings()
-        },
-        initialPageParam: 1,
-        getNextPageParam: (lastPage) => {
-            return lastPage.nextPage || undefined
-        },
-    })
+const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
+  const theme = useColorScheme() ?? "light"
 
-    const [upcomings, setUpcomings] = useState<Upcomings["data"]>([])
+  const { data, isLoading, error } = useInfiniteQuery({
+    queryKey: ["getUpcomings", limit],
+    queryFn: async () => {
+      return await horaroService.getUpcomings(limit ? { limit } : null)
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextPage || undefined
+    },
+  })
 
-    if (error) {
-        return <CatchError error={error} />
-    }
+  const [upcomings, setUpcomings] = useState<Upcomings["data"]>([])
 
-    const upcomingMarathons = () => {
-        if (upcomings.length > 0) {
-            const upcomingMarathons = upcomings.map((upcoming, idx) => {
-                const isFirst = idx === 0
-                const isLast = idx === upcomings.length - 1
+  if (error) {
+    return <CatchError error={error} />
+  }
 
-                return (
-                    <TouchableOpacity
-                        key={idx}
-                        onPress={() => handleRedirect(ROUTES.ONE_MARATHON_UPCOMING, { horaroId: upcoming.horaroId })}
-                        style={[
-                            style.cardItem,
-                            isFirst
-                                ? {
-                                    borderTopWidth: Utils.moderateScale(1),
-                                    borderBottomWidth: undefined,
-                                }
-                                : isLast
-                                    ? {
-                                        borderTopWidth: Utils.moderateScale(1),
-                                        borderBottomWidth: undefined,
-                                    }
-                                    : {
-
-                                        borderTopWidth: Utils.moderateScale(1),
-                                    },
-                        ]}
-                    >
-                        <Text style={style.cardText}>{upcoming.name}</Text>
-                        <AntDesign
-                            name="arrowright"
-                            size={Utils.moderateScale(24)}
-                            color="black"
-                        />
-                    </TouchableOpacity>
-                )
-            })
-            return upcomingMarathons
-        }
-
-        return null
-    }
-
-    useEffect(() => {
-        if (data?.pages) {
-            const mergedData = data.pages.flatMap((page) => page.data)
-            setUpcomings(mergedData)
-        }
-    }, [data])
-
-    return (
-        <View style={style.container}>
-            {isLoading ? (
-                <IsLoading isLoading={isLoading} />
-            ) : (
-                <View
-                    style={[
-                        style.card,
-                        theme === "dark"
-                            ? { backgroundColor: Colors.dark.background }
-                            : { backgroundColor: Colors.light.background },
-                    ]}
-                >
-                    <Text style={style.title}>Upcoming Marathons</Text>
-                    <Fragment>{upcomingMarathons()}</Fragment>
-                </View>
-            )}
+  const upcomingMarathons = () => {
+    if (upcomings.length > 0) {
+      return (
+        <View
+          style={[
+            style.card,
+            theme === "dark"
+              ? { backgroundColor: Colors.dark.background }
+              : { backgroundColor: Colors.light.background },
+          ]}
+        >
+          {upcomings.map((upcoming, idx) => (
+            <Card
+              header={idx === 0 ? "Upcoming Marathons" : undefined}
+              route={ROUTES.ONE_MARATHON_UPCOMING}
+              routeParams={{ horaroId: upcoming.horaroId }}
+              key={idx}
+            >
+              <Text style={style.cardText}>{upcoming.name}</Text>
+            </Card>
+          ))}
         </View>
-    )
+      )
+    }
+
+    return null
+  }
+
+  useEffect(() => {
+    if (data?.pages) {
+      const mergedData = data.pages.flatMap((page) => page.data)
+      setUpcomings(mergedData)
+    }
+  }, [data])
+
+  return (
+    <View style={style.container}>
+      {isLoading ? <IsLoading isLoading={isLoading} /> : upcomingMarathons()}
+    </View>
+  )
 }
 
 const style = StyleSheet.create({
-    container: {
-        display: "flex",
+  container: {
+    display: "flex",
+    height: "100%",
+    marginBottom: Utils.moderateScale(10),
+  },
+  card: {
+    display: "flex",
+    flexDirection: "column",
+    width: "95%",
+    marginHorizontal: "auto",
+    marginTop: Utils.moderateScale(10),
+    borderRadius: Utils.moderateScale(5),
+    borderColor: "grey",
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
     },
-    card: {
-        display: "flex",
-        flexDirection: "column",
-        width: "95%",
-        marginHorizontal: "auto",
-        marginTop: Utils.moderateScale(10),
-        borderWidth: Utils.moderateScale(1),
-        borderRadius: Utils.moderateScale(5),
-        borderColor: "grey"
-    },
-    cardItem: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: Utils.moderateScale(10),
-    },
-    cardText: {
-        fontSize: Utils.moderateScale(16),
-        paddingVertical: Utils.moderateScale(10),
-    },
-    title: {
-        fontSize: Utils.moderateScale(20),
-        fontWeight: "bold",
-        padding: Utils.moderateScale(10)
-    },
+    shadowOpacity: Utils.moderateScale(0.25),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
+    paddingVertical: Utils.moderateScale(10),
+  },
+  cardItem: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: Utils.moderateScale(10),
+  },
+  cardText: {
+    fontSize: Utils.moderateScale(16),
+    paddingVertical: Utils.moderateScale(10),
+  },
+  title: {
+    fontSize: Utils.moderateScale(20),
+    fontWeight: "bold",
+    padding: Utils.moderateScale(10),
+  },
 })
 
 export default UpcomingMarathons

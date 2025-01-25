@@ -5,27 +5,20 @@ import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 
 const Tab = () => {
-    const theme = useColorScheme() ?? "light"
+  const theme = useColorScheme() ?? "light"
 
-    return (
-        <ScrollView
-            style={[
-                style.container,
-                theme === "dark"
-                    ? { backgroundColor: Colors.dark.background }
-                    : { backgroundColor: Colors.light.background },
-            ]}
-        >
-            <Header backButton={false} title="" />
-            <AllRuns />
-        </ScrollView>
-    )
+  return (
+    <ScrollView style={style.container}>
+      <Header backButton={false} title="" />
+      <AllRuns />
+    </ScrollView>
+  )
 }
 
 const style = StyleSheet.create({
-    container: {
-        display: "flex",
-    },
+  container: {
+    display: "flex",
+  },
 })
 
 export default Tab

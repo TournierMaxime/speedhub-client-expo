@@ -1,6 +1,6 @@
 import { ExternalPathString, RelativePathString, useRouter } from "expo-router"
 
-type Pathname = RelativePathString | ExternalPathString
+export type Pathname = RelativePathString | ExternalPathString
 
 const useHandleRouter = () => {
   const router = useRouter()

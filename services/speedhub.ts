@@ -22,19 +22,25 @@ interface UserServiceInterface {
 }
 
 interface HoraroServiceInterface {
-  getLives(filters?: any): Promise<any>
+  getLives(params?: any): Promise<any>
   getLive(horaroId: string | string[]): Promise<any>
-  getUpcomings(filters?: any): Promise<any>
+  getUpcomings(params?: any): Promise<any>
   getUpcoming(horaroId: string | string[]): Promise<any>
 }
 
 class HoraroService implements HoraroServiceInterface {
   private http = http
 
-  async getLives(filters?: any) {
-    const response = await this.http.post("/horaro/lives", {
-      ...filters,
-    })
+  async getLives(params?: any) {
+    const response = await this.http.post(
+      "/horaro/lives",
+      {},
+      {
+        params: {
+          ...params,
+        },
+      }
+    )
     return response.data
   }
 
@@ -43,10 +49,16 @@ class HoraroService implements HoraroServiceInterface {
     return response.data
   }
 
-  async getUpcomings(filters?: any) {
-    const response = await this.http.post("/horaro/upcoming", {
-      ...filters,
-    })
+  async getUpcomings(params?: any) {
+    const response = await this.http.post(
+      "/horaro/upcoming",
+      {},
+      {
+        params: {
+          ...params,
+        },
+      }
+    )
     return response.data
   }
 
