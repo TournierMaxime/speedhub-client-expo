@@ -44,24 +44,16 @@ const AllReddits: React.FC<Props> = ({ limit }) => {
           ]}
         >
           {reddits.map((reddit, idx) => {
-            switch (reddit.data.link_flair_text) {
-              case "World Record":
-              case "Personal Best":
-              case "Glitch":
-              case "Events":
-                return (
-                  <Card
-                    header={idx === 0 ? "News" : undefined}
-                    route={ROUTES.ONE_MARATHON_LIVE}
-                    routeParams={{ id: reddit?.data?.id }}
-                    key={idx}
-                  >
-                    <Text style={style.cardText}>{reddit?.data?.title}</Text>
-                  </Card>
-                )
-              default:
-                return null
-            }
+            return (
+              <Card
+                header={idx === 0 ? "News" : undefined}
+                route={ROUTES.ONE_MARATHON_LIVE}
+                routeParams={{ id: reddit?.data?.id }}
+                key={idx}
+              >
+                <Text style={style.cardText}>{reddit?.data?.title}</Text>
+              </Card>
+            )
           })}
         </View>
       )

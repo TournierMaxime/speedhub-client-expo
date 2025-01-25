@@ -145,6 +145,7 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     marginLeft: Utils.moderateScale(10),
+    width: "50%",
   },
   image: {
     width: Utils.moderateScale(80),

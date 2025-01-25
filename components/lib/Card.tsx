@@ -35,7 +35,7 @@ const Card: React.FC<CardProps> = ({
         style={[
           style.cardItem,
           theme === "dark"
-            ? { backgroundColor: Colors.dark.background }
+            ? { backgroundColor: Colors.dark.cardBackground }
             : { backgroundColor: Colors.light.background },
         ]}
       >
