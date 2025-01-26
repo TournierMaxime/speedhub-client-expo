@@ -5,50 +5,50 @@ import Utils from "./Utils"
 import { DimensionValue, StyleProp, Text, TextStyle } from "react-native"
 
 interface Item {
-    names: {
-        international: string
+  names: {
+    international: string
+  }
+  "name-style": {
+    style: string
+    "color-from": {
+      light: string
+      dark: string
     }
-    "name-style": {
-        style: string
-        "color-from": {
-            light: string
-            dark: string
-        }
-        "color-to": {
-            light: string
-            dark: string
-        }
-        color: {
-            light: string
-            dark: string
-        }
+    "color-to": {
+      light: string
+      dark: string
     }
+    color: {
+      light: string
+      dark: string
+    }
+  }
 }
 
 interface Props {
-    data: Item
-    width?: DimensionValue
-    height?: DimensionValue
-    style?: StyleProp<TextStyle>
-    idx?: number
+  data: Item
+  width?: DimensionValue
+  height?: DimensionValue
+  style?: StyleProp<TextStyle>
+  idx?: number
 }
 
 const UserName: React.FC<Props> = ({ data, idx, width, height, style }) => {
-    return (
-        <Text
-            key={idx}
-            style={[
-                {
-                    fontSize: Utils.moderateScale(16),
-                    fontWeight: "bold",
-                    textAlign: "left",
-                },
-                style,
-            ]}
-        >
-            {data.names?.international}
-        </Text>
-    )
+  return (
+    <Text
+      key={idx}
+      style={[
+        {
+          fontSize: Utils.moderateScale(16),
+          fontWeight: "bold",
+          textAlign: "left",
+        },
+        style,
+      ]}
+    >
+      {data?.names?.international}
+    </Text>
+  )
 }
 
 export default UserName

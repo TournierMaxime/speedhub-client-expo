@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
@@ -37,7 +37,7 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
   }
 
   const marathonsLive = () => {
-    if (lives.length > 0) {
+    if (lives && lives.length > 0) {
       return (
         <View
           style={[
@@ -47,16 +47,21 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
               : { backgroundColor: Colors.light.background },
           ]}
         >
-          {lives.map((live, idx) => (
-            <Card
-              header={idx === 0 ? "Marathons Live" : undefined}
-              route={ROUTES.ONE_MARATHON_LIVE}
-              routeParams={{ horaroId: live.horaroId }}
-              key={idx}
-            >
-              <Text style={style.cardText}>{live.name}</Text>
-            </Card>
-          ))}
+          {lives.map((live, idx) => {
+            if (live) {
+              return (
+                <Card
+                  header={idx === 0 ? "Marathons Live" : undefined}
+                  route={ROUTES.ONE_MARATHON_LIVE}
+                  routeParams={{ horaroId: live?.horaroId }}
+                  key={idx}
+                >
+                  <Text style={style.cardText}>{live.name}</Text>
+                </Card>
+              )
+            }
+            return null
+          })}
         </View>
       )
     }
@@ -67,14 +72,19 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
   useEffect(() => {
     if (data?.pages) {
       const mergedData = data.pages.flatMap((page) => page.data)
-      setLives(mergedData)
+      const filteredData = mergedData.filter((item) => item !== undefined)
+      setLives(filteredData)
     }
   }, [data])
 
   return (
-    <View style={style.container}>
-      {isLoading ? <IsLoading isLoading={isLoading} /> : marathonsLive()}
-    </View>
+    <Fragment>
+      {lives && lives.length > 0 && (
+        <View style={style.container}>
+          {isLoading ? <IsLoading isLoading={isLoading} /> : marathonsLive()}
+        </View>
+      )}
+    </Fragment>
   )
 }
 

@@ -128,7 +128,6 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     margin: Utils.moderateScale(10),
-    padding: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
     shadowOffset: {
       width: Utils.moderateScale(0),

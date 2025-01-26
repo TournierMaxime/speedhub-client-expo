@@ -15,12 +15,9 @@ import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import UserName from "@/components/lib/UserName"
-import { Category, GamePad, Time } from "@/components/lib/Icons"
 
 const OneRun = () => {
   const { id } = useGlobalSearchParams()
-
-  const userDefaultImg = require("../../../assets/images/default.png")
 
   const theme = useColorScheme() ?? "light"
 
@@ -35,43 +32,54 @@ const OneRun = () => {
 
   const getPlayers = (data: any) => {
     if (data) {
-      const players = data.map((player: any, idx: string) => {
-        const { uri } = player?.assets?.image
-        return (
-          <View style={style.playerContainer}>
-            {uri ? (
-              <Image source={{ uri }} style={style.img} />
-            ) : (
-              <Image source={userDefaultImg} style={style.img} />
-            )}
-            <UserName
-              data={player}
-              key={idx}
-              width={Utils.moderateScale(50)}
-              style={{ marginLeft: Utils.moderateScale(10) }}
-            />
-          </View>
-        )
+      const players = data?.map((player: any, idx: number) => {
+        return <UserName data={player} key={idx} />
       })
-
       return players
     }
+    return null
   }
 
-  const getGame = (data: any) => {
+  const getCategoryAndTime = (data: any) => {
+    if (data) {
+      return (
+        <Text style={style.text}>
+          {data?.category?.data?.name} in{" "}
+          <Runtime time={data?.times?.primary_t} />
+        </Text>
+      )
+    }
+    return null
+  }
+
+  const getGameImg = (data: any) => {
+    if (data) {
+      const image = data?.assets["cover-large"]?.uri ? (
+        <Image
+          source={{ uri: data?.assets["cover-large"]?.uri }}
+          style={style.img}
+        />
+      ) : null
+      return image
+    }
+
+    return null
+  }
+
+  const getContent = (data: any) => {
     if (data) {
       return (
         <View style={style.playerContainer}>
-          {data?.assets["cover-large"]?.uri ? (
-            <Image
-              source={{ uri: data?.assets["cover-large"]?.uri }}
-              style={style.img}
-            />
-          ) : null}
-          <Text>{data.names.international}</Text>
+          {getGameImg(data?.game?.data)}
+          <View>
+            <Text style={style.text}>{data.game.data.names.international}</Text>
+            {getPlayers(data?.players?.data)}
+            {getCategoryAndTime(data)}
+          </View>
         </View>
       )
     }
+    return null
   }
 
   const oneRun = () => {
@@ -128,29 +136,7 @@ const OneRun = () => {
         >
           {videoComponent}
           <View style={style.cardInfo}>
-            <View style={style.cardInfoItems}>
-              {getPlayers(data.data.players.data)}
-            </View>
-            <View style={style.cardInfoItems}>
-              {getGame(data.data.game.data)}
-            </View>
-            <View style={style.cardInfoItems}>
-              <Category />
-              <Text
-                style={[
-                  style.text,
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
-                ]}
-              >
-                {data.data.category.data.name}
-              </Text>
-            </View>
-            <View style={style.cardInfoItems}>
-              <Time />
-              <Runtime time={data.data.times.primary_t} />
-            </View>
+            <View style={style.cardInfoItems}>{getContent(data.data)}</View>
           </View>
           <Splits splits={data.data.splits?.uri} />
         </View>
@@ -165,7 +151,7 @@ const OneRun = () => {
 
   return (
     <ScrollView style={style.container}>
-      <Header backButton={true} title="" />
+      <Header backButton={true} />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneRun()}
     </ScrollView>
   )
@@ -181,7 +167,7 @@ const style = StyleSheet.create({
     width: "95%",
     margin: "auto",
     borderRadius: Utils.moderateScale(5),
-    marginTop: Utils.moderateScale(10),
+    marginVertical: Utils.moderateScale(10),
     borderColor: "grey",
     shadowOffset: {
       width: Utils.moderateScale(0),
@@ -195,17 +181,24 @@ const style = StyleSheet.create({
   cardInfo: {
     display: "flex",
     flexDirection: "column",
-    marginHorizontal: Utils.moderateScale(5),
-    marginTop: Utils.moderateScale(10),
-    padding: Utils.moderateScale(10),
-    /*     borderRadius: Utils.moderateScale(5),
-    borderWidth: Utils.moderateScale(2),
-    borderColor: "grey", */
   },
   cardInfoItems: {
     display: "flex",
-    flexDirection: "row",
-    marginVertical: Utils.moderateScale(5),
+    flexDirection: "column",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    paddingVertical: Utils.moderateScale(10),
+    borderRadius: Utils.moderateScale(5),
+    backgroundColor: "white", // adapt theme
+    marginHorizontal: Utils.moderateScale(5),
+    marginVertical: Utils.moderateScale(10),
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
+    },
+    shadowOpacity: Utils.moderateScale(5),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
   },
   icons: {
     display: "flex",

@@ -48,8 +48,6 @@ const AllReddits: React.FC<Props> = ({ limit }) => {
               ? reddit.data.permalink.slice(0, -1)
               : reddit.data.permalink
 
-            console.log(permalink.substring(11))
-
             return (
               <Card
                 header={idx === 0 ? "News" : undefined}

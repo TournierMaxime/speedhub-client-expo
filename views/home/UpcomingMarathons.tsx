@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
@@ -67,14 +67,23 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
   useEffect(() => {
     if (data?.pages) {
       const mergedData = data.pages.flatMap((page) => page.data)
-      setUpcomings(mergedData)
+      const filteredData = mergedData.filter((item) => item !== undefined)
+      setUpcomings(filteredData)
     }
   }, [data])
 
   return (
-    <View style={style.container}>
-      {isLoading ? <IsLoading isLoading={isLoading} /> : upcomingMarathons()}
-    </View>
+    <Fragment>
+      {upcomings && upcomings.length > 0 && (
+        <View style={style.container}>
+          {isLoading ? (
+            <IsLoading isLoading={isLoading} />
+          ) : (
+            upcomingMarathons()
+          )}
+        </View>
+      )}
+    </Fragment>
   )
 }
 

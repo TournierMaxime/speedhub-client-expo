@@ -112,11 +112,17 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     marginHorizontal: Utils.moderateScale(5),
-    marginTop: Utils.moderateScale(10),
-    padding: Utils.moderateScale(10),
+    marginVertical: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
-    borderWidth: Utils.moderateScale(2),
-    borderColor: "grey",
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
+    },
+    shadowOpacity: Utils.moderateScale(0.25),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
+    backgroundColor: "white", // adapt theme
+    padding: Utils.moderateScale(10),
   },
   cardSplit: {
     display: "flex",
