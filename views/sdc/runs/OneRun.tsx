@@ -21,7 +21,7 @@ const OneRun = () => {
 
   const theme = useColorScheme() ?? "light"
 
-  const { data, isLoading, error } = useQuery<Run>({
+  const { data, isLoading, error, refetch } = useQuery<Run>({
     queryKey: ["getRun", id],
     queryFn: async () => {
       if (!id) throw new Error("Missing ID")
@@ -136,9 +136,9 @@ const OneRun = () => {
         >
           {videoComponent}
           <View style={style.cardInfo}>
-            <View style={style.cardInfoItems}>{getContent(data.data)}</View>
+            <View style={style.cardInfoItems}>{getContent(data?.data)}</View>
           </View>
-          <Splits splits={data.data.splits?.uri} />
+          <Splits splits={data?.data?.splits?.uri} />
         </View>
       )
     }
@@ -147,6 +147,10 @@ const OneRun = () => {
 
   if (error) {
     return <CatchError error={error} />
+  }
+
+  if (data === undefined && !isLoading) {
+    refetch()
   }
 
   return (
