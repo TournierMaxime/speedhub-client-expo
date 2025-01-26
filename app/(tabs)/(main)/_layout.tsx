@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack } from "expo-router"
 
 export default function MainLayout() {
   return (
@@ -9,6 +9,7 @@ export default function MainLayout() {
       <Stack.Screen name="(user)" options={{ headerShown: false }} />
       <Stack.Screen name="(marathon)" options={{ headerShown: false }} />
       <Stack.Screen name="(games)" options={{ headerShown: false }} />
+      <Stack.Screen name="(reddit)" options={{ headerShown: false }} />
     </Stack>
-  );
+  )
 }

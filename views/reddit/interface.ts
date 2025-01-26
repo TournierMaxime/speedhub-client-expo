@@ -23,23 +23,29 @@ interface Reddits {
 }
 
 interface Reddit {
+  kind: string
   data: {
-    data: {
-      children: {
-        data: {
-          title: string
-          name: string
-          author_fullname: string
-          link_flair_text: string
-          created: number
-          url_overridden_by_dest: string
-          id: string
-          author: string
-          url: string
-        }
-      }[]
-    }
-  }[]
+    after: string | null
+    before: string | null
+    children: {
+      kind: string
+      data: {
+        title: string
+        name: string
+        author_fullname: string
+        link_flair_text: string
+        created: number
+        url_overridden_by_dest: string
+        id: string
+        author: string
+        url: string
+        selftext: string
+      }
+    }[]
+    dist: number | null
+    geo_filter: string
+    modhash: string
+  }
 }
 
 export { Reddits, Reddit }

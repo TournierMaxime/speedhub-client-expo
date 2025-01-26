@@ -2,7 +2,7 @@ import { redditApi as http } from "./axios"
 
 interface RedditInterface {
   getAllNews(params?: any): Promise<any>
-  getOneNews(permalink: string): Promise<any>
+  getOneNews(permalink: string | string[]): Promise<any>
 }
 
 class Reddit implements RedditInterface {
@@ -17,11 +17,8 @@ class Reddit implements RedditInterface {
     return response.data
   }
 
-  async getOneNews(permalink: string) {
-    const removeSlash = permalink.endsWith("/")
-      ? permalink.slice(0, -1)
-      : permalink
-    const response = await this.http.get(`${removeSlash}.json`)
+  async getOneNews(permalink: string | string[]) {
+    const response = await this.http.get(`${permalink}`)
     return response.data
   }
 }

@@ -1,5 +1,5 @@
-import OneRun from "@/views/sdc/runs/OneRun"
+import OneReddit from "@/views/reddit/OneReddit"
 
 export default function RedditsScreen() {
-  return <OneRun />
+  return <OneReddit />
 }

@@ -1,6 +1,6 @@
 import React from "react"
 import { useGlobalSearchParams } from "expo-router"
-import { View, Text, StyleSheet, ScrollView } from "react-native"
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native"
 import Header from "@/components/lib/Header"
 import { useQuery } from "@tanstack/react-query"
 import { runService } from "@/services/speedrunDotCom"
@@ -15,10 +15,12 @@ import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import UserName from "@/components/lib/UserName"
-import { Category, GamePad, Runner, Time } from "@/components/lib/Icons"
+import { Category, GamePad, Time } from "@/components/lib/Icons"
 
 const OneRun = () => {
   const { id } = useGlobalSearchParams()
+
+  const userDefaultImg = require("../../../assets/images/default.png")
 
   const theme = useColorScheme() ?? "light"
 
@@ -34,12 +36,41 @@ const OneRun = () => {
   const getPlayers = (data: any) => {
     if (data) {
       const players = data.map((player: any, idx: string) => {
+        const { uri } = player?.assets?.image
         return (
-          <UserName data={player} key={idx} width={Utils.moderateScale(50)} />
+          <View style={style.playerContainer}>
+            {uri ? (
+              <Image source={{ uri }} style={style.img} />
+            ) : (
+              <Image source={userDefaultImg} style={style.img} />
+            )}
+            <UserName
+              data={player}
+              key={idx}
+              width={Utils.moderateScale(50)}
+              style={{ marginLeft: Utils.moderateScale(10) }}
+            />
+          </View>
         )
       })
 
       return players
+    }
+  }
+
+  const getGame = (data: any) => {
+    if (data) {
+      return (
+        <View style={style.playerContainer}>
+          {data?.assets["cover-large"]?.uri ? (
+            <Image
+              source={{ uri: data?.assets["cover-large"]?.uri }}
+              style={style.img}
+            />
+          ) : null}
+          <Text>{data.names.international}</Text>
+        </View>
+      )
     }
   }
 
@@ -60,53 +91,48 @@ const OneRun = () => {
 
       let videoComponent
 
-      console.log("OneRun videoUri line 74 - ", videoUri)
-
       switch (platform) {
         case "youtube":
           const youtubeId = videoUri.substring(32)
-          videoComponent = <YoutubeIframe videoId={youtubeId} />
+          videoComponent = (
+            <YoutubeIframe videoId={youtubeId} width={360} height={200} />
+          )
           break
 
         case "twitch":
           const twitchId = videoUri.substring(29)
-          videoComponent = <TwitchIframe id={twitchId} />
+          videoComponent = (
+            <TwitchIframe id={twitchId} width={360} height={200} />
+          )
           break
 
         case "youtu.be":
           const youtuBeId = videoUri.substring(17)
-          videoComponent = <YoutubeIframe videoId={youtuBeId} />
+          videoComponent = (
+            <YoutubeIframe videoId={youtuBeId} width={360} height={200} />
+          )
           break
 
         default:
-          ;<Text>Unsupported video platform</Text>
-          break
+          return <Text>Unsupported video platform</Text>
       }
 
       return (
-        <View style={style.card}>
+        <View
+          style={[
+            style.card,
+            theme === "dark"
+              ? { backgroundColor: Colors.dark.background }
+              : { backgroundColor: Colors.light.background },
+          ]}
+        >
           {videoComponent}
           <View style={style.cardInfo}>
             <View style={style.cardInfoItems}>
-              <View style={style.icons}>
-                <Runner />
-              </View>
-              <View style={style.data}>
-                {getPlayers(data.data.players.data)}
-              </View>
+              {getPlayers(data.data.players.data)}
             </View>
             <View style={style.cardInfoItems}>
-              <GamePad />
-              <Text
-                style={[
-                  style.text,
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
-                ]}
-              >
-                {data.data.game.data.names.international}
-              </Text>
+              {getGame(data.data.game.data)}
             </View>
             <View style={style.cardInfoItems}>
               <Category />
@@ -138,14 +164,7 @@ const OneRun = () => {
   }
 
   return (
-    <ScrollView
-      style={[
-        style.container,
-        theme === "dark"
-          ? { backgroundColor: Colors.dark.background }
-          : { backgroundColor: Colors.light.background },
-      ]}
-    >
+    <ScrollView style={style.container}>
       <Header backButton={true} title="" />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneRun()}
     </ScrollView>
@@ -159,6 +178,19 @@ const style = StyleSheet.create({
   },
   card: {
     display: "flex",
+    width: "95%",
+    margin: "auto",
+    borderRadius: Utils.moderateScale(5),
+    marginTop: Utils.moderateScale(10),
+    borderColor: "grey",
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
+    },
+    shadowOpacity: Utils.moderateScale(0.25),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
+    paddingVertical: Utils.moderateScale(10),
   },
   cardInfo: {
     display: "flex",
@@ -166,26 +198,31 @@ const style = StyleSheet.create({
     marginHorizontal: Utils.moderateScale(5),
     marginTop: Utils.moderateScale(10),
     padding: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
+    /*     borderRadius: Utils.moderateScale(5),
     borderWidth: Utils.moderateScale(2),
-    borderColor: "grey",
+    borderColor: "grey", */
   },
   cardInfoItems: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     marginVertical: Utils.moderateScale(5),
   },
   icons: {
     display: "flex",
     justifyContent: "flex-start",
   },
-  data: {
-    flex: 1,
-    alignItems: "flex-end",
-  },
   text: {
     fontSize: Utils.moderateScale(16),
+  },
+  img: {
+    width: Utils.moderateScale(80),
+    height: Utils.moderateScale(80),
+    resizeMode: "contain",
+  },
+  playerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 })
 

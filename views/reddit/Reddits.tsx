@@ -44,11 +44,19 @@ const AllReddits: React.FC<Props> = ({ limit }) => {
           ]}
         >
           {reddits.map((reddit, idx) => {
+            const permalink = reddit.data.permalink.endsWith("/")
+              ? reddit.data.permalink.slice(0, -1)
+              : reddit.data.permalink
+
+            console.log(permalink.substring(11))
+
             return (
               <Card
                 header={idx === 0 ? "News" : undefined}
-                route={ROUTES.ONE_MARATHON_LIVE}
-                routeParams={{ id: reddit?.data?.id }}
+                route={ROUTES.ONE_REDDIT}
+                routeParams={{
+                  permalink: `${permalink.substring(11)}.json`,
+                }}
                 key={idx}
               >
                 <Text style={style.cardText}>{reddit?.data?.title}</Text>

@@ -7,6 +7,11 @@ interface Run {
         names: {
           international: string
         }
+        assets: {
+          "cover-large": {
+            uri: string
+          }
+        }
       }
     }
     category: {
@@ -40,6 +45,11 @@ interface Run {
           "color-to": {
             light: string
             dark: string
+          }
+        }
+        assets: {
+          image: {
+            uri: string
           }
         }
       }[]
