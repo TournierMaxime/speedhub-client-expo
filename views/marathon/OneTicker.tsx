@@ -6,138 +6,133 @@ import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 
 interface Item {
-    previous: {
-        length: string
-        length_t: number
-        scheduled: string
-        scheduled_t: number
-        data: string[]
-    } | null
-    current: {
-        length: string
-        length_t: number
-        scheduled: string
-        scheduled_t: number
-        data: string[]
-    } | null
-    next: {
-        length: string
-        length_t: number
-        scheduled: string
-        scheduled_t: number
-        data: string[]
-    } | null
+  previous: {
+    length: string
+    length_t: number
+    scheduled: string
+    scheduled_t: number
+    data: string[]
+  } | null
+  current: {
+    length: string
+    length_t: number
+    scheduled: string
+    scheduled_t: number
+    data: string[]
+  } | null
+  next: {
+    length: string
+    length_t: number
+    scheduled: string
+    scheduled_t: number
+    data: string[]
+  } | null
 }
 
 const OneTicker: React.FC<Ticker> = ({ ticker }) => {
-    if (!ticker) {
-        return <CatchError error={"No ticker for this event"} />
-    }
+  if (!ticker) {
+    return <CatchError error={"No ticker for this event"} />
+  }
 
-    const renderCurrent = (item: Item) => {
-        const { previous, current, next } = item
-        return (
-            <Fragment>
-                {previous && (
-                    <View style={style.card}>
-                        <View style={{ width: "20%" }}>
-                            <Text>Previous</Text>
-                        </View>
-                        <View style={{ width: "50%" }}>
-                            <Text>
-                                {Utils.removeMarkdownLinks(previous.data.join(", "))}
-                            </Text>
-                        </View>
-                        <View style={{ width: "25%" }}>
-                            <Text>
-                                {moment(previous.scheduled).format("YYYY-MM-DD")}
-                            </Text>
-                            <Text>{moment(previous.scheduled).format("h:mm a")}</Text>
-                        </View>
-                    </View>
-                )}
-
-                {current && (
-                    <View style={style.card}>
-                        <View style={{ width: "20%" }}>
-                            <Text>Current</Text>
-                        </View>
-                        <View style={{ width: "50%" }}>
-                            <Text>
-                                {Utils.removeMarkdownLinks(current.data.join(", "))}
-                            </Text>
-                        </View>
-                        <View style={{ width: "25%" }}>
-                            <Text>{moment(current.scheduled).format("YYYY-MM-DD")}</Text>
-                            <Text>{moment(current.scheduled).format("h:mm a")}</Text>
-                        </View>
-                    </View>
-                )}
-
-                {next && (
-                    <View style={style.card}>
-                        <View style={{ width: "20%" }}>
-                            <Text>Next</Text>
-                        </View>
-                        <View style={{ width: "50%" }}>
-                            <Text>
-                                {Utils.removeMarkdownLinks(next.data.join(", "))}
-                            </Text>
-                        </View>
-                        <View style={{ width: "25%" }}>
-                            <Text>{moment(next.scheduled).format("YYYY-MM-DD")}</Text>
-                            <Text>{moment(next.scheduled).format("h:mm a")}</Text>
-                        </View>
-                    </View>
-                )}
-
-                {!previous && !current && !next && (
-                    <Text>No schedule for this event</Text>
-                )}
-            </Fragment>
-        )
-    }
-
+  const renderCurrent = (item: Item) => {
+    const { previous, current, next } = item
     return (
-        <View style={style.container}>
-            <View style={style.header}>
-                <Text style={style.title}>Ticker</Text>
+      <Fragment>
+        {previous && (
+          <View style={style.card}>
+            <View style={{ width: "20%" }}>
+              <Text>Previous</Text>
             </View>
-            {renderCurrent(ticker.ticker)}
-        </View>
+            <View style={{ width: "50%" }}>
+              <Text>{Utils.removeMarkdownLinks(previous.data.join(", "))}</Text>
+            </View>
+            <View style={{ width: "25%" }}>
+              <Text>{moment(previous.scheduled).format("YYYY-MM-DD")}</Text>
+              <Text>{moment(previous.scheduled).format("h:mm a")}</Text>
+            </View>
+          </View>
+        )}
+
+        {current && (
+          <View style={style.card}>
+            <View style={{ width: "20%" }}>
+              <Text>Current</Text>
+            </View>
+            <View style={{ width: "50%" }}>
+              <Text>{Utils.removeMarkdownLinks(current.data.join(", "))}</Text>
+            </View>
+            <View style={{ width: "25%" }}>
+              <Text>{moment(current.scheduled).format("YYYY-MM-DD")}</Text>
+              <Text>{moment(current.scheduled).format("h:mm a")}</Text>
+            </View>
+          </View>
+        )}
+
+        {next && (
+          <View style={style.card}>
+            <View style={{ width: "20%" }}>
+              <Text>Next</Text>
+            </View>
+            <View style={{ width: "50%" }}>
+              <Text>{Utils.removeMarkdownLinks(next.data.join(", "))}</Text>
+            </View>
+            <View style={{ width: "25%" }}>
+              <Text>{moment(next.scheduled).format("YYYY-MM-DD")}</Text>
+              <Text>{moment(next.scheduled).format("h:mm a")}</Text>
+            </View>
+          </View>
+        )}
+
+        {!previous && !current && !next && (
+          <Text>No schedule for this event</Text>
+        )}
+      </Fragment>
     )
+  }
+
+  return (
+    <View style={style.container}>
+      <View style={style.header}>
+        <Text style={style.title}>Ticker</Text>
+      </View>
+      {renderCurrent(ticker.ticker)}
+    </View>
+  )
 }
 
 const style = StyleSheet.create({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        marginLeft: "auto",
-        marginRight: "auto",
-        width: "95%",
-        borderWidth: Utils.moderateScale(1),
-        marginTop: Utils.moderateScale(10),
-        borderRadius: Utils.moderateScale(5),
-        padding: Utils.moderateScale(10),
-        borderColor: "grey",
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "95%",
+    marginTop: Utils.moderateScale(10),
+    borderRadius: Utils.moderateScale(5),
+    padding: Utils.moderateScale(10),
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
     },
-    title: {
-        fontSize: Utils.moderateScale(18),
-        fontWeight: "bold",
-    },
-    subTitle: {
-        fontSize: Utils.moderateScale(16),
-    },
-    header: {
-        display: "flex",
-        flexDirection: "column",
-    },
-    card: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginVertical: Utils.moderateScale(10),
-    },
+    shadowOpacity: Utils.moderateScale(0.25),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
+    backgroundColor: "#fff", // adapt theme
+  },
+  title: {
+    fontSize: Utils.moderateScale(18),
+    fontWeight: "bold",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  card: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: Utils.moderateScale(10),
+  },
 })
 
 export default OneTicker

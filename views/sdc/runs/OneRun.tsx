@@ -15,6 +15,7 @@ import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import UserName from "@/components/lib/UserName"
+import { Comment } from "@/components/lib/Icons"
 
 const OneRun = () => {
   const { id } = useGlobalSearchParams()
@@ -61,6 +62,22 @@ const OneRun = () => {
         />
       ) : null
       return image
+    }
+
+    return null
+  }
+
+  const getComment = (data: any) => {
+    if (data) {
+      const comment = data
+      return (
+        <View style={style.commentContainer}>
+          <Comment />
+          <Text style={[style.text, { marginLeft: Utils.moderateScale(10) }]}>
+            {comment}
+          </Text>
+        </View>
+      )
     }
 
     return null
@@ -136,7 +153,15 @@ const OneRun = () => {
         >
           {videoComponent}
           <View style={style.cardInfo}>
-            <View style={style.cardInfoItems}>{getContent(data?.data)}</View>
+            {data?.data ? (
+              <View style={style.cardInfoItems}>{getContent(data?.data)}</View>
+            ) : null}
+
+            {data?.data?.comment ? (
+              <View style={style.cardInfoItems}>
+                {getComment(data?.data?.comment)}
+              </View>
+            ) : null}
           </View>
           <Splits splits={data?.data?.splits?.uri} />
         </View>
@@ -194,7 +219,7 @@ const style = StyleSheet.create({
     paddingVertical: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
     backgroundColor: "white", // adapt theme
-    marginHorizontal: Utils.moderateScale(5),
+    marginHorizontal: Utils.moderateScale(10),
     marginVertical: Utils.moderateScale(10),
     shadowOffset: {
       width: Utils.moderateScale(0),
@@ -210,16 +235,26 @@ const style = StyleSheet.create({
   },
   text: {
     fontSize: Utils.moderateScale(16),
+    textAlign: "justify",
   },
   img: {
-    width: Utils.moderateScale(80),
-    height: Utils.moderateScale(80),
+    width: Utils.moderateScale(60),
+    height: Utils.moderateScale(60),
     resizeMode: "contain",
+    marginHorizontal: Utils.moderateScale(5),
   },
   playerContainer: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap",
+  },
+  commentContainer: {
+    display: "flex",
+    flexDirection: "row",
+    padding: Utils.moderateScale(10),
+    width: "90%",
+    margin: "auto",
   },
 })
 

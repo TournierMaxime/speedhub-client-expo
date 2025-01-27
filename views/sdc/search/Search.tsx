@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  ScrollView,
 } from "react-native"
 import useHandleSearch from "@/hooks/search/useHandleSearch"
 import Utils from "@/components/lib/Utils"
@@ -18,6 +19,7 @@ import ROUTES from "@/components/routes"
 import UserName from "@/components/lib/UserName"
 import CheckboxForm from "./CheckBoxForm"
 import { Chevron } from "@/components/lib/Icons"
+import BottomModal from "@/components/lib/Modal"
 
 const Search = () => {
   const [selectedOptionValue, setSelectedOptionValue] =
@@ -31,11 +33,12 @@ const Search = () => {
 
   const imageDefault = require("../../../assets/images/default.png")
 
-  const renderItem = ({ item }: { item: any }) => {
+  const renderItem = (item: any, idx: number) => {
     switch (selectedOptionValue) {
       case "games":
         return (
           <TouchableOpacity
+            key={idx}
             style={[
               style.card,
               theme == "dark"
@@ -78,6 +81,7 @@ const Search = () => {
       default:
         return (
           <TouchableOpacity
+            key={idx}
             style={[
               style.card,
               theme == "dark"
@@ -128,14 +132,14 @@ const Search = () => {
   }, [selectedOptionValue])
 
   return (
-    <Fragment>
+    <ScrollView>
       <Header backButton={true} title="" />
       <View
         style={[
           style.container,
           theme === "dark"
-            ? { backgroundColor: Colors.dark.cardBackground }
-            : { backgroundColor: Colors.light.cardBackground },
+            ? { backgroundColor: Colors.dark.background }
+            : { backgroundColor: Colors.light.background },
         ]}
       >
         <View style={style.searchForm}>
@@ -148,7 +152,9 @@ const Search = () => {
             false,
             false
           )}
-          <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
+          <BottomModal>
+            <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
+          </BottomModal>
           {Form.submit(
             "info",
             "Search",
@@ -157,20 +163,15 @@ const Search = () => {
           )}
         </View>
 
-        <FlatList
-          data={result.data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
-        />
+        {result.data.map((item: any, idx: number) => renderItem(item, idx))}
       </View>
-    </Fragment>
+    </ScrollView>
   )
 }
 
 const style = StyleSheet.create({
   container: {
     display: "flex",
-    height: "80%",
     width: "95%",
     marginHorizontal: "auto",
     marginVertical: Utils.moderateScale(10),
@@ -183,6 +184,7 @@ const style = StyleSheet.create({
     shadowOpacity: Utils.moderateScale(0.25),
     shadowRadius: Utils.moderateScale(3.5),
     elevation: Utils.moderateScale(5),
+    paddingBottom: Utils.moderateScale(10),
   },
   searchForm: {
     display: "flex",
@@ -210,6 +212,7 @@ const style = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     padding: Utils.moderateScale(10),
+    marginVertical: Utils.moderateScale(10),
   },
   cardLeft: {
     display: "flex",

@@ -6,6 +6,7 @@ import {
   FontAwesome,
   MaterialIcons,
   MaterialCommunityIcons,
+  AntDesign,
 } from "@expo/vector-icons"
 import Utils from "./Utils"
 import { useColorScheme } from "react-native"
@@ -107,4 +108,39 @@ const Time = () => {
   )
 }
 
-export { Chevron, LeftArrow, User, Search, Runner, GamePad, Category, Time }
+const Comment = () => {
+  const theme = useColorScheme() ?? "light"
+
+  return (
+    <FontAwesome
+      name="comment-o"
+      size={Utils.moderateScale(24)}
+      color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
+    />
+  )
+}
+
+const Filter = () => {
+  const theme = useColorScheme() ?? "light"
+
+  return (
+    <AntDesign
+      name="filter"
+      size={Utils.moderateScale(24)}
+      color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
+    />
+  )
+}
+
+export {
+  Chevron,
+  LeftArrow,
+  User,
+  Search,
+  Runner,
+  GamePad,
+  Category,
+  Time,
+  Comment,
+  Filter,
+}
