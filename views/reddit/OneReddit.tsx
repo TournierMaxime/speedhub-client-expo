@@ -28,7 +28,7 @@ const OneReddit = () => {
 
   const userDefaultImg = require("../../assets/images/default.png")
 
-  const { data, isLoading, error } = useQuery<Reddit[]>({
+  const { data, isLoading, error, refetch } = useQuery<Reddit[]>({
     queryKey: ["getReddit", permalink],
     queryFn: async () => {
       if (!permalink) throw new Error("Missing permalink")
@@ -168,6 +168,10 @@ const OneReddit = () => {
 
   if (error) {
     return <CatchError error={error} />
+  }
+
+  if (data === undefined && !isLoading) {
+    refetch()
   }
 
   return (

@@ -24,7 +24,7 @@ const OneMarathonUpcoming = () => {
 
   const theme = useColorScheme() ?? "light"
 
-  const { data, isLoading, error } = useQuery<Live>({
+  const { data, isLoading, error, refetch } = useQuery<Live>({
     queryKey: ["getUpcoming", horaroId],
     queryFn: async () => {
       if (!horaroId) throw new Error("Missing ID")
@@ -47,6 +47,10 @@ const OneMarathonUpcoming = () => {
 
   if (error) {
     return <CatchError error={error} />
+  }
+
+  if (data === undefined && !isLoading) {
+    refetch()
   }
 
   return (
