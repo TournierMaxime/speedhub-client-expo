@@ -150,11 +150,15 @@ const Search = () => {
             "query",
             data.query ?? "",
             false,
-            false
+            false,
+            "",
+            { width: "95%", display: "flex" }
           )}
-          <BottomModal>
+          <BottomModal title="Filters">
             <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
           </BottomModal>
+        </View>
+        <View style={style.submitButton}>
           {Form.submit(
             "info",
             "Search",
@@ -187,6 +191,12 @@ const style = StyleSheet.create({
     paddingBottom: Utils.moderateScale(10),
   },
   searchForm: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "baseline",
+    justifyContent: "center",
+  },
+  submitButton: {
     display: "flex",
     alignItems: "center",
   },

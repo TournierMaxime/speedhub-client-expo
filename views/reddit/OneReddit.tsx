@@ -247,7 +247,7 @@ const style = StyleSheet.create({
   btnContainer: {
     display: "flex",
     borderRadius: Utils.moderateScale(5),
-    width: "90%",
+    width: "100%",
     margin: "auto",
     alignItems: "center",
     marginVertical: Utils.moderateScale(10),
