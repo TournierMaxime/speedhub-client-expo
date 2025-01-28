@@ -19,7 +19,7 @@ interface Props {
 const MarathonLives: React.FC<Props> = ({ limit }) => {
   const theme = useColorScheme() ?? "light"
 
-  const { data, isLoading, error } = useInfiniteQuery({
+  const { data, isLoading, error, refetch } = useInfiniteQuery({
     queryKey: ["getLives", limit],
     queryFn: async () => {
       return await horaroService.getLives(limit ? { limit } : null)
@@ -77,13 +77,19 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
     }
   }, [data])
 
+  if (lives === undefined && !isLoading) {
+    refetch()
+  }
+
   return (
     <Fragment>
-      {lives && lives.length > 0 && (
-        <View style={style.container}>
-          {isLoading ? <IsLoading isLoading={isLoading} /> : marathonsLive()}
-        </View>
-      )}
+      <View style={style.container}>
+        {isLoading ? (
+          <IsLoading isLoading={isLoading} />
+        ) : (
+          lives && lives.length > 0 && marathonsLive()
+        )}
+      </View>
     </Fragment>
   )
 }

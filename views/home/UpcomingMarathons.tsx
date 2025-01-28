@@ -19,7 +19,7 @@ interface Props {
 const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
   const theme = useColorScheme() ?? "light"
 
-  const { data, isLoading, error } = useInfiniteQuery({
+  const { data, isLoading, error, refetch } = useInfiniteQuery({
     queryKey: ["getUpcomings", limit],
     queryFn: async () => {
       return await horaroService.getUpcomings(limit ? { limit } : null)
@@ -72,17 +72,19 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
     }
   }, [data])
 
+  if (upcomings === undefined && !isLoading) {
+    refetch()
+  }
+
   return (
     <Fragment>
-      {upcomings && upcomings.length > 0 && (
-        <View style={style.container}>
-          {isLoading ? (
-            <IsLoading isLoading={isLoading} />
-          ) : (
-            upcomingMarathons()
-          )}
-        </View>
-      )}
+      <View style={style.container}>
+        {isLoading ? (
+          <IsLoading isLoading={isLoading} />
+        ) : (
+          upcomings && upcomings.length > 0 && upcomingMarathons()
+        )}
+      </View>
     </Fragment>
   )
 }
