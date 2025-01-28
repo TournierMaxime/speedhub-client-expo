@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from "react"
-import { StyleSheet, TouchableOpacity } from "react-native"
+import { StyleSheet, TouchableOpacity, View } from "react-native"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { IconSymbol } from "@/components/ui/IconSymbol"
@@ -17,33 +17,42 @@ export function Collapsible({
   return (
     <ThemedView>
       <TouchableOpacity
-        style={styles.heading}
+        style={styles.headingContainer}
         onPress={() => setIsOpen((value) => !value)}
         activeOpacity={Utils.moderateScale(0.8)}
       >
-        <IconSymbol
-          name="chevron.right"
-          size={Utils.moderateScale(18)}
-          weight="medium"
-          color={theme === "light" ? Colors.light.icon : Colors.dark.icon}
-          style={{ transform: [{ rotate: isOpen ? "90deg" : "0deg" }] }}
-        />
-
-        <ThemedText type="defaultSemiBold">{title}</ThemedText>
+        <View style={styles.heading}>
+          <IconSymbol
+            name="chevron.right"
+            size={Utils.moderateScale(18)}
+            weight="medium"
+            color={theme === "light" ? Colors.light.icon : Colors.dark.icon}
+            style={{ transform: [{ rotate: isOpen ? "90deg" : "0deg" }] }}
+          />
+          <ThemedText type="defaultSemiBold">{title}</ThemedText>
+        </View>
       </TouchableOpacity>
-      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
+      {isOpen && <View style={styles.contentContainer}>{children}</View>}
     </ThemedView>
   )
 }
 
 const styles = StyleSheet.create({
+  headingContainer: {
+    width: "100%",
+    display: "flex",
+  },
   heading: {
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: Utils.moderateScale(6),
+    padding: Utils.moderateScale(10),
   },
-  content: {
+  contentContainer: {
     marginTop: Utils.moderateScale(10),
-    marginLeft: Utils.moderateScale(20),
+    flexDirection: "row", // Aligne les enfants sur une ligne
+    flexWrap: "wrap", // Permet aux éléments de passer à la ligne
+    gap: Utils.moderateScale(8), // Ajoute de l'espace entre les éléments
   },
 })

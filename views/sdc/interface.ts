@@ -347,7 +347,16 @@ interface Game {
         }[]
       }[]
     }
-    regions: any[]
+    regions: {
+      data: {
+        id: string
+        name: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
     genres: {
       data: {
         id: string
@@ -382,6 +391,50 @@ interface Game {
       data: {
         id: string
         name: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    moderators: {
+      data: {
+        id: string
+        names: {
+          international: string
+        }
+      }[]
+    }
+    levels: {
+      data: {
+        id: string
+        name: string
+        weblink: string
+        rules: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    categories: {
+      data: {
+        id: string
+        name: string
+        weblink: string
+        type: string
+        rules: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    variables: {
+      data: {
+        id: string
+        name: string
+        category: string
         links: {
           rel: string
           uri: string
