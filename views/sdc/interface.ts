@@ -306,4 +306,132 @@ interface Splits {
   }
 }
 
-export { Run, Runs, User, PersonalBests, Splits }
+interface Game {
+  data: {
+    id: string
+    names: {
+      international: string
+    }
+    abbreviation: string
+    weblink: string
+    discord: string
+    released: number
+    "release-date": string
+    ruleset: {
+      "show-milliseconds": boolean
+      "require-verification": boolean
+      "require-video": boolean
+      "run-times": string[]
+      "default-time": string
+      "emulators-allowed": boolean
+    }
+    romhack: boolean
+    gametypes: {
+      data: {
+        id: string
+        name: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    platforms: {
+      data: {
+        id: string
+        name: string
+        released: number
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    regions: any[]
+    genres: {
+      data: {
+        id: string
+        name: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    engines: {
+      data: {
+        id: string
+        name: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    developers: {
+      data: {
+        id: string
+        name: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    publishers: {
+      data: {
+        id: string
+        name: string
+        links: {
+          rel: string
+          uri: string
+        }[]
+      }[]
+    }
+    created: string
+    assets: {
+      logo: {
+        uri: string
+      }
+      "cover-tiny": {
+        uri: string
+      }
+      "cover-small": {
+        uri: string
+      }
+      "cover-medium": {
+        uri: string
+      }
+      "cover-large": {
+        uri: string
+      }
+      icon: {
+        uri: string
+      }
+      "trophy-1st": {
+        uri: string
+      }
+      "trophy-2nd": {
+        uri: string
+      }
+      "trophy-3rd": {
+        uri: string
+      }
+      "trophy-4th": {
+        uri: string
+      }
+      background: {
+        uri: string
+      }
+      foreground: {
+        uri: string
+      }
+    }
+    links: {
+      rel: string
+      uri: string
+    }[]
+  }
+}
+
+export { Run, Runs, User, PersonalBests, Splits, Game }

@@ -96,7 +96,11 @@ class Games implements GameInterface {
   }
 
   async getGame(id: string | string[]) {
-    const response = await this.http.get(`/games/${id}`)
+    const response = await this.http.get(`/games/${id}`, {
+      params: {
+        embed: "genres,platforms,engines,developers,publishers,gametypes",
+      },
+    })
     return response.data
   }
 }
