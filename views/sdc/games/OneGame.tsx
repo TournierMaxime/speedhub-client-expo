@@ -55,71 +55,100 @@ const OneGame = () => {
   }
 
   const getPlatforms = (data: Game["data"]["platforms"]["data"]) => {
-    if (data) {
-      const platforms = data.map((platform, idx) => {
-        return (
-          <View style={style.collapsibleContainer} key={idx}>
-            <Text style={style.tags}>{platform.name}</Text>
-          </View>
-        )
-      })
-      return platforms
+    if (data.length > 0) {
+      const platforms = data.map((platform, idx) => (
+        <Text key={idx} style={style.tags}>
+          {platform.name}
+        </Text>
+      ))
+
+      return (
+        <View style={style.cardInfoItems}>
+          <Collapsible title="Platforms">
+            <View style={style.collapsibleContainer}>{platforms}</View>
+          </Collapsible>
+        </View>
+      )
     }
     return null
   }
 
   const getGenres = (data: Game["data"]["genres"]["data"]) => {
-    if (data) {
+    if (data.length > 0) {
       const genres = data.map((genre, idx) => {
         return (
-          <View style={style.collapsibleContainer} key={idx}>
-            <Text style={style.tags}>{genre.name}</Text>
-          </View>
+          <Text key={idx} style={style.tags}>
+            {genre.name}
+          </Text>
         )
       })
-      return genres
+      return (
+        <View style={style.cardInfoItems}>
+          <Collapsible title="Genres">
+            <View style={style.collapsibleContainer}>{genres}</View>
+          </Collapsible>
+        </View>
+      )
     }
     return null
   }
 
   const getEngines = (data: Game["data"]["engines"]["data"]) => {
-    if (data) {
+    if (data.length > 0) {
       const engines = data.map((engine, idx) => {
         return (
-          <View style={style.collapsibleContainer} key={idx}>
-            <Text style={style.tags}>{engine.name}</Text>
-          </View>
+          <Text key={idx} style={style.tags}>
+            {engine.name}
+          </Text>
         )
       })
-      return engines
+      return (
+        <View style={style.cardInfoItems}>
+          <Collapsible title="Engines">
+            <View style={style.collapsibleContainer}>{engines}</View>
+          </Collapsible>
+        </View>
+      )
     }
     return null
   }
 
   const getDevelopers = (data: Game["data"]["developers"]["data"]) => {
-    if (data) {
+    if (data.length > 0) {
       const developers = data.map((developer, idx) => {
         return (
-          <View style={style.collapsibleContainer} key={idx}>
-            <Text style={style.tags}>{developer.name}</Text>
-          </View>
+          <Text key={idx} style={style.tags}>
+            {developer.name}
+          </Text>
         )
       })
-      return developers
+      return (
+        <View style={style.cardInfoItems}>
+          <Collapsible title="Developers">
+            <View style={style.collapsibleContainer}>{developers}</View>
+          </Collapsible>
+        </View>
+      )
     }
     return null
   }
 
   const getPublishers = (data: Game["data"]["publishers"]["data"]) => {
-    if (data) {
+    if (data.length > 0) {
       const publishers = data.map((publisher, idx) => {
         return (
-          <View style={style.collapsibleContainer} key={idx}>
-            <Text style={style.tags}>{publisher.name}</Text>
-          </View>
+          <Text key={idx} style={style.tags}>
+            {publisher.name}
+          </Text>
         )
       })
-      return publishers
+      return (
+        <View style={style.cardInfoItems}>
+          <Collapsible title="Publishers">
+            <View style={style.collapsibleContainer}>{publishers}</View>
+          </Collapsible>
+        </View>
+      )
     }
     return null
   }
@@ -157,29 +186,16 @@ const OneGame = () => {
             ]}
           >
             <View style={style.cardInfo}>{getContent(data.data)}</View>
-            <Collapsible title="Platforms">
-              <Text style={style.text}>
-                {getPlatforms(data.data.platforms.data)}
-              </Text>
-            </Collapsible>
-            <Collapsible title="Genres">
-              <Text style={style.text}>{getGenres(data.data.genres.data)}</Text>
-            </Collapsible>
-            <Collapsible title="Developers">
-              <Text style={style.text}>
-                {getDevelopers(data.data.developers.data)}
-              </Text>
-            </Collapsible>
-            <Collapsible title="Engines">
-              <Text style={style.text}>
-                {getEngines(data.data.engines.data)}
-              </Text>
-            </Collapsible>
-            <Collapsible title="Publishers">
-              <Text style={style.text}>
-                {getPublishers(data.data.publishers.data)}
-              </Text>
-            </Collapsible>
+
+            {getPlatforms(data.data.platforms.data)}
+
+            {getGenres(data.data.genres.data)}
+
+            {getDevelopers(data.data.developers.data)}
+
+            {getEngines(data.data.engines.data)}
+
+            {getPublishers(data.data.publishers.data)}
           </View>
         </ImageBackground>
       )
@@ -210,6 +226,7 @@ const style = StyleSheet.create({
   },
   card: {
     display: "flex",
+    flexDirection: "column",
     width: "95%",
     margin: "auto",
     borderRadius: Utils.moderateScale(5),
@@ -226,9 +243,8 @@ const style = StyleSheet.create({
   },
   cardInfoItems: {
     display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    justifyContent: "center",
+    flexDirection: "row",
+    //flexWrap: "wrap",
     paddingVertical: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
     backgroundColor: "white", // adapt theme
@@ -270,11 +286,11 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    //flexWrap: "wrap",
   },
   collapsibleContainer: {
     display: "flex",
     flexDirection: "row",
+    flexWrap: "wrap",
   },
   tags: {
     backgroundColor: "grey",
