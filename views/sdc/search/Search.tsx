@@ -1,54 +1,42 @@
 import Form from "@/components/lib/Form"
-import React, { Fragment, useState, useEffect } from "react"
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
-  Image,
-  ScrollView,
-} from "react-native"
+import React, { useState, useEffect } from "react"
+import { View, StyleSheet, Text, Image, ScrollView } from "react-native"
 import useHandleSearch from "@/hooks/search/useHandleSearch"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
-import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import ROUTES from "@/components/routes"
 import UserName from "@/components/lib/UserName"
 import CheckboxForm from "./CheckBoxForm"
-import { Chevron } from "@/components/lib/Icons"
 import BottomModal from "@/components/lib/Modal"
+import CatchError from "@/components/lib/CatchError"
+import IsLoading from "@/components/lib/IsLoading"
+import Card from "@/components/lib/Card"
 
 const Search = () => {
   const [selectedOptionValue, setSelectedOptionValue] =
     useState<string>("users")
 
-  const { data, setData, handleSearch, result, setResult } = useHandleSearch()
+  const { data, setData, handleSearch, result, setResult, isLoading, error } =
+    useHandleSearch()
+
+  const [hasSearched, setHasSearched] = useState<boolean>(false)
 
   const theme = useColorScheme() ?? "light"
 
-  const { handleRedirect } = useHandleRouter()
-
   const imageDefault = require("../../../assets/images/default.png")
+
+  const handleSearchWithFlag = async () => {
+    await handleSearch(selectedOptionValue)
+    setHasSearched(true)
+  }
 
   const renderItem = (item: any, idx: number) => {
     switch (selectedOptionValue) {
       case "games":
         return (
-          <TouchableOpacity
-            key={idx}
-            style={[
-              style.card,
-              theme == "dark"
-                ? { backgroundColor: Colors.dark.background }
-                : { backgroundColor: Colors.light.background },
-            ]}
-            onPress={async () =>
-              await handleRedirect(ROUTES.ONE_GAME, { id: item.id })
-            }
-          >
+          <Card key={idx} route={ROUTES.ONE_GAME} routeParams={{ id: item.id }}>
             <View style={style.cardLeft}>
               {item?.assets["cover-large"]?.uri ? (
                 <Image
@@ -73,25 +61,11 @@ const Search = () => {
                 {item.names?.international}
               </Text>
             </View>
-            <View>
-              <Chevron />
-            </View>
-          </TouchableOpacity>
+          </Card>
         )
       default:
         return (
-          <TouchableOpacity
-            key={idx}
-            style={[
-              style.card,
-              theme == "dark"
-                ? { backgroundColor: Colors.dark.background }
-                : { backgroundColor: Colors.light.background },
-            ]}
-            onPress={async () =>
-              await handleRedirect(ROUTES.ONE_USER, { id: item.id })
-            }
-          >
+          <Card key={idx} route={ROUTES.ONE_USER} routeParams={{ id: item.id }}>
             <View style={style.cardLeft}>
               {item?.assets?.image?.uri ? (
                 <Image
@@ -119,12 +93,13 @@ const Search = () => {
                 style={style.cardItem}
               />
             </View>
-            <View>
-              <Chevron />
-            </View>
-          </TouchableOpacity>
+          </Card>
         )
     }
+  }
+
+  if (error) {
+    return <CatchError error={error} />
   }
 
   useEffect(() => {
@@ -159,15 +134,16 @@ const Search = () => {
           </BottomModal>
         </View>
         <View style={style.submitButton}>
-          {Form.submit(
-            "info",
-            "Search",
-            async () => await handleSearch(selectedOptionValue),
-            !data.query
-          )}
+          {Form.submit("info", "Search", handleSearchWithFlag, !data.query)}
         </View>
 
-        {result.data.map((item: any, idx: number) => renderItem(item, idx))}
+        {isLoading ? (
+          <IsLoading isLoading={isLoading} />
+        ) : !hasSearched ? null : result.data.length === 0 ? (
+          <Text>No result</Text>
+        ) : (
+          result.data.map((item: any, idx: number) => renderItem(item, idx))
+        )}
       </View>
     </ScrollView>
   )

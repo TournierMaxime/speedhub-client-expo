@@ -33,9 +33,9 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
 
   const [runs, setRuns] = useState<Runs["data"]>([])
 
-  const players = (data: any) => {
-    if (data) {
-      const getPlayers = data.map((player: any, idx: number) => {
+  const getPlayers = (players: Runs["data"][0]["players"]["data"]) => {
+    if (players) {
+      const getPlayers = players.map((player: any, idx: number) => {
         return <UserName data={player} key={idx} width={"auto"} />
       })
       return getPlayers
@@ -43,8 +43,8 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
     return null
   }
 
-  const category = (data: string) => {
-    if (data) {
+  const getCategory = (category: Runs["data"][0]["category"]["data"]) => {
+    if (category) {
       return (
         <Text
           style={[
@@ -54,7 +54,7 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
               : { color: Colors.light.text },
           ]}
         >
-          {data}
+          {category.name}
         </Text>
       )
     }
@@ -88,8 +88,8 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
                   />
                 </View>
                 <View style={style.cardInfo}>
-                  {players(run.players.data)}
-                  {category(run.category.data.name)}
+                  {getPlayers(run.players.data)}
+                  {getCategory(run.category.data)}
                   <Runtime time={run.times.primary_t} />
                 </View>
               </Fragment>

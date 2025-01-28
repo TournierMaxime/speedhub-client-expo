@@ -31,7 +31,7 @@ const OneRun = () => {
     enabled: !!id,
   })
 
-  const getPlayers = (data: any) => {
+  const getPlayers = (data: Run["data"]["players"]["data"]) => {
     if (data) {
       const players = data?.map((player: any, idx: number) => {
         return <UserName data={player} key={idx} />
@@ -41,7 +41,9 @@ const OneRun = () => {
     return null
   }
 
-  const getCategoryAndTime = (data: any) => {
+  const getCategoryAndTime = (
+    data: Pick<Run["data"], "category" | "times">
+  ) => {
     if (data) {
       return (
         <Text style={style.text}>
@@ -53,13 +55,10 @@ const OneRun = () => {
     return null
   }
 
-  const getGameImg = (data: any) => {
+  const getGameImg = (data: Run["data"]["game"]["data"]["assets"]) => {
     if (data) {
-      const image = data?.assets["cover-large"]?.uri ? (
-        <Image
-          source={{ uri: data?.assets["cover-large"]?.uri }}
-          style={style.img}
-        />
+      const image = data["cover-large"]?.uri ? (
+        <Image source={{ uri: data["cover-large"]?.uri }} style={style.img} />
       ) : null
       return image
     }
@@ -83,11 +82,11 @@ const OneRun = () => {
     return null
   }
 
-  const getContent = (data: any) => {
+  const getContent = (data: Run["data"]) => {
     if (data) {
       return (
         <View style={style.playerContainer}>
-          {getGameImg(data?.game?.data)}
+          {getGameImg(data?.game?.data?.assets)}
           <View>
             <Text style={style.text}>{data.game.data.names.international}</Text>
             {getPlayers(data?.players?.data)}
