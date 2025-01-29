@@ -9,7 +9,7 @@ import IsLoading from "@/components/lib/IsLoading"
 import Tabs from "@/components/lib/Tabs"
 import CatchError from "@/components/lib/CatchError"
 import GameDetails from "./GameDetails"
-import { CategoriesTab, LevelsTab, ModeratorsTab } from "./GameTabs"
+import { CategoriesTab, ModeratorsTab } from "./GameTabs"
 
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
@@ -39,11 +39,6 @@ const OneGame = () => {
     {
       name: "Categories",
       component: CategoriesTab,
-      props: { data: data.data },
-    },
-    {
-      name: "Levels",
-      component: LevelsTab,
       props: { data: data.data },
     },
     {

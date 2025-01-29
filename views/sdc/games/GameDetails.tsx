@@ -108,6 +108,9 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
             <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
               {data.names.international}
             </Text>
+            <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
+              {data.id}
+            </Text>
             <Text style={[style.text, { color: "#fff" }]}>
               {data["release-date"]}
             </Text>

@@ -405,18 +405,6 @@ interface Game {
         }
       }[]
     }
-    levels: {
-      data: {
-        id: string
-        name: string
-        weblink: string
-        rules: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
     categories: {
       data: {
         id: string
@@ -429,17 +417,38 @@ interface Game {
           uri: string
         }[]
       }[]
-    }
-    variables: {
-      data: {
-        id: string
-        name: string
-        category: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
+      variables: {
+        data: [
+          {
+            id: string
+            name: string
+            category: string
+            scope: {
+              type: string
+            }
+            mandatory: boolean
+            "user-defined": boolean
+            obsoletes: boolean
+            values: {
+              values: {
+                [key: string]: {
+                  label: string
+                  rules: string
+                  flags: {
+                    miscellaneous: boolean
+                  }
+                }
+              }
+              default: string
+            }
+            "is-subcategory": boolean
+            links: {
+              rel: string
+              uri: string
+            }[]
+          }
+        ]
+      }
     }
     created: string
     assets: {

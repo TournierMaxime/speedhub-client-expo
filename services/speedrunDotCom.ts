@@ -99,7 +99,7 @@ class Games implements GameInterface {
     const response = await this.http.get(`/games/${id}`, {
       params: {
         embed:
-          "genres,platforms,engines,developers,publishers,gametypes,regions,levels,categories,moderators,variables",
+          "genres,platforms,engines,developers,publishers,gametypes,regions,categories.variables,moderators",
       },
     })
     return response.data
