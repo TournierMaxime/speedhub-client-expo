@@ -129,7 +129,7 @@ const Search = () => {
             "",
             { width: "95%", display: "flex" }
           )}
-          <BottomModal title="Filters">
+          <BottomModal icon={true} title="Filters">
             <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
           </BottomModal>
         </View>

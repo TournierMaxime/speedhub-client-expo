@@ -4,6 +4,7 @@ import {
   Ionicons,
   FontAwesome5,
   FontAwesome,
+  FontAwesome6,
   MaterialIcons,
   MaterialCommunityIcons,
   AntDesign,
@@ -132,7 +133,18 @@ const Filter = () => {
   )
 }
 
+const Discord = () => {
+  return (
+    <FontAwesome6
+      name="discord"
+      size={Utils.moderateScale(20)}
+      color={"white"}
+    />
+  )
+}
+
 export {
+  Discord,
   Chevron,
   LeftArrow,
   User,

@@ -2,13 +2,15 @@ import React, { useState, Fragment } from "react"
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { Filter } from "./Icons"
 import Utils from "./Utils"
+import Chip from "./Chip"
 
 interface Props {
   children: React.ReactNode
-  title?: string
+  title: string
+  icon?: boolean
 }
 
-const BottomModal: React.FC<Props> = ({ children, title }) => {
+const BottomModal: React.FC<Props> = ({ children, title, icon }) => {
   const [isVisible, setIsVisible] = useState(false)
 
   const openModal = () => {
@@ -22,7 +24,7 @@ const BottomModal: React.FC<Props> = ({ children, title }) => {
   return (
     <Fragment>
       <TouchableOpacity style={styles.openButton} onPress={openModal}>
-        <Filter />
+        {icon === true ? <Filter /> : <Chip title={title} />}
       </TouchableOpacity>
 
       <Modal
