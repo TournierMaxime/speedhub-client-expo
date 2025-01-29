@@ -39,17 +39,17 @@ const OneGame = () => {
     {
       name: "Categories",
       component: CategoriesTab,
-      props: { categories: data.data.categories.data },
+      props: { data: data.data },
     },
     {
       name: "Levels",
       component: LevelsTab,
-      props: { levels: data.data.levels.data },
+      props: { data: data.data },
     },
     {
       name: "Moderators",
       component: ModeratorsTab,
-      props: { moderators: data.data.moderators.data },
+      props: { data: data.data },
     },
   ]
 

@@ -12,7 +12,6 @@ import { Game } from "../interface"
 import Utils from "@/components/lib/Utils"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
-import useResponsive from "@/hooks/utils/useResponsive"
 import BottomModal from "@/components/lib/Modal"
 import { Discord } from "@/components/lib/Icons"
 import SDCSVG from "@/assets/images/SDCSVG"
@@ -76,8 +75,6 @@ const Publishers = ({
     </Fragment>
   )
 }
-
-const { video } = useResponsive()
 
 const GameDetails = ({ data }: { data: Game["data"] }) => {
   const theme = useColorScheme() ?? "light"
@@ -168,7 +165,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
 const style = StyleSheet.create({
   contentContainer: {
     display: "flex",
-    width: "95%",
+    width: "100%",
     marginHorizontal: "auto",
   },
   gameContainer: {
@@ -204,20 +201,20 @@ const style = StyleSheet.create({
   },
   text: {
     fontSize: Utils.moderateScale(20),
-    marginVertical: Utils.moderateScale(10),
   },
   externalLinkContainer: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   sdcContainer: {
     backgroundColor: "#199c77",
     borderRadius: Utils.moderateScale(5),
     display: "flex",
-    justifyContent: "center",
+    alignItems: "center",
     padding: Utils.moderateScale(5),
-    marginRight: Utils.moderateScale(5),
+    marginBottom: Utils.moderateScale(5),
+    width: Utils.moderateScale(80),
   },
   sdcButton: {
     color: "#fff",
@@ -230,8 +227,9 @@ const style = StyleSheet.create({
     backgroundColor: "#7289da",
     borderRadius: Utils.moderateScale(5),
     display: "flex",
-    justifyContent: "center",
+    alignItems: "center",
     padding: Utils.moderateScale(5),
+    width: Utils.moderateScale(80),
   },
   discordButton: {
     color: "#fff",

@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, StyleProp, ViewStyle } from "react-native"
+import { View, StyleProp, ViewStyle } from "react-native"
 
 interface Props<T> {
   item: T
