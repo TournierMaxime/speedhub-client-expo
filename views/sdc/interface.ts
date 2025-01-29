@@ -416,39 +416,40 @@ interface Game {
           rel: string
           uri: string
         }[]
-      }[]
-      variables: {
-        data: [
-          {
-            id: string
-            name: string
-            category: string
-            scope: {
-              type: string
-            }
-            mandatory: boolean
-            "user-defined": boolean
-            obsoletes: boolean
-            values: {
-              values: {
-                [key: string]: {
-                  label: string
-                  rules: string
-                  flags: {
-                    miscellaneous: boolean
-                  }
-                }
+        variables: {
+          data: [
+            {
+              id: string
+              name: string
+              category: string
+              scope: {
+                type: string
               }
-              default: string
+              mandatory: boolean
+              "user-defined": boolean
+              obsoletes: boolean
+              values: {
+                values: Record<
+                  string,
+                  {
+                    label: string
+                    rules: string
+                    flags: {
+                      miscellaneous: boolean
+                    }
+                  }
+                >
+                default: string
+              }
+              "is-subcategory": boolean
+              links: {
+                rel: string
+                uri: string
+              }[]
             }
-            "is-subcategory": boolean
-            links: {
-              rel: string
-              uri: string
-            }[]
-          }
-        ]
-      }
+          ]
+        }
+      }[]
     }
     created: string
     assets: {

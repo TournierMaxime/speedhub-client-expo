@@ -1,66 +1,68 @@
 import React from "react"
-import { StyleSheet, FlatList, Text, ImageBackground } from "react-native"
+import { StyleSheet, FlatList, Text, ImageBackground, View } from "react-native"
 import { Game } from "../interface"
 import RenderItem from "@/components/lib/RenderItem"
 import Utils from "@/components/lib/Utils"
+import Leaderboard from "./Leaderboard"
 
 const CategoriesTab = ({ data }: { data: Game["data"] }) => {
-  const filteredItem = data.categories.data.filter((c) => c.type === "per-game")
+  const filteredCategories = data.categories.data.filter(
+    (c) => c.type === "per-game"
+  )
 
   return (
     <ImageBackground
-      source={{
-        uri: data?.assets?.background?.uri ?? null,
-      }}
+      source={{ uri: data?.assets?.background?.uri ?? null }}
       style={style.backgroungImg}
       resizeMode="cover"
       imageStyle={{ opacity: 0.2 }}
     >
       <FlatList
         style={style.tabContent}
-        data={filteredItem}
-        keyExtractor={(item, idx) => idx.toString()}
+        data={filteredCategories}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
+          const categoryVariables = item.variables?.data ?? []
+
           return (
             <RenderItem
               item={item}
               style={style.tags}
-              renderProperty={(item) => {
-                if (item.type === "per-game") {
-                  return <Text>{item.name}</Text>
-                }
-              }}
+              renderProperty={() => (
+                <>
+                  {/* Affichage du nom de la catégorie */}
+                  <Text style={style.categoryTitle}>{item.name}</Text>
+
+                  {/* Affichage des variables associées */}
+                  {categoryVariables.length > 0 ? (
+                    categoryVariables.map((variable) => {
+                      const defaultValueId = variable.values.default
+                      const variableLabel =
+                        variable.values.values[defaultValueId]?.label ??
+                        "Unknown"
+
+                      return (
+                        <View key={variable.id} style={style.variableContainer}>
+                          <Text style={style.variableTitle}>
+                            {variable.name}:
+                          </Text>
+                          <Text style={style.variableValue}>
+                            {variableLabel}
+                          </Text>
+                        </View>
+                      )
+                    })
+                  ) : (
+                    <Text>No variables</Text>
+                  )}
+
+                  {/* Classement des runs */}
+                  <Leaderboard gameId={data.id} categoryId={item.id} />
+                </>
+              )}
             />
           )
         }}
-      />
-    </ImageBackground>
-  )
-}
-
-const LevelsTab = ({ data }: { data: Game["data"] }) => {
-  const levels = data?.levels?.data
-
-  return (
-    <ImageBackground
-      source={{
-        uri: data?.assets?.background?.uri ?? null,
-      }}
-      style={style.backgroungImg}
-      resizeMode="cover"
-      imageStyle={{ opacity: 0.2 }}
-    >
-      <FlatList
-        style={style.tabContent}
-        data={levels}
-        keyExtractor={(item, idx) => idx.toString()}
-        renderItem={({ item }) => (
-          <RenderItem
-            item={item}
-            style={style.tags}
-            renderProperty={(item) => <Text>{item.name}</Text>}
-          />
-        )}
       />
     </ImageBackground>
   )
@@ -117,6 +119,45 @@ const style = StyleSheet.create({
     position: "relative",
     backgroundColor: "rgba(0, 0, 0, 0.9)",
   },
+  leaderboardContainer: {
+    backgroundColor: "rgba(255,255,255,0.9)",
+    padding: Utils.moderateScale(10),
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  categoryTitle: {
+    fontSize: Utils.moderateScale(18),
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  variableContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  variableTitle: {
+    fontSize: Utils.moderateScale(14),
+    fontWeight: "bold",
+  },
+  variableValue: {
+    fontSize: Utils.moderateScale(14),
+    fontStyle: "italic",
+  },
+  runContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#E0E0E0",
+    padding: Utils.moderateScale(5),
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  runPlace: {
+    fontSize: Utils.moderateScale(16),
+    fontWeight: "bold",
+  },
+  runTime: {
+    fontSize: Utils.moderateScale(16),
+  },
 })
 
-export { CategoriesTab, ModeratorsTab, LevelsTab }
+export { CategoriesTab, ModeratorsTab }

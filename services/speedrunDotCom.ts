@@ -4,6 +4,10 @@ import { splitIOApi } from "./axios"
 interface GameInterface {
   getGames(params: { name: string | string[] }): Promise<any>
   getGame(id: string | string[]): Promise<any>
+  getLeaderBoard(
+    id: string | string[],
+    categoryId: string | string[]
+  ): Promise<any>
 }
 
 interface RunInterface {
@@ -102,6 +106,30 @@ class Games implements GameInterface {
           "genres,platforms,engines,developers,publishers,gametypes,regions,categories.variables,moderators",
       },
     })
+    return response.data
+  }
+
+  async getLeaderBoard(
+    id: string | string[],
+    categoryId: string | string[],
+    variables?: Record<string, string>
+  ) {
+    const params: Record<string, string> = {
+      embed: "players",
+      top: "1",
+    }
+
+    if (variables) {
+      Object.entries(variables).forEach(([key, value]) => {
+        params[`var-${key}`] = value
+      })
+    }
+
+    const response = await this.http.get(
+      `/leaderboards/${id}/category/${categoryId}`,
+      { params }
+    )
+
     return response.data
   }
 }
