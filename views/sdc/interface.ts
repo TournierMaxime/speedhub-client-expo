@@ -497,4 +497,61 @@ interface Game {
   }
 }
 
-export { Run, Runs, User, PersonalBests, Splits, Game }
+interface LeaderBoard {
+  data: {
+    weblink: string
+    game: string
+    category: string
+    runs: [
+      {
+        place: number
+        run: {
+          id: string
+          weblink: string
+          game: string
+          category: string
+          videos: {
+            links: {
+              uri: string
+            }[]
+          }
+          players: [
+            {
+              rel: string
+              id: string
+              uri: string
+            }
+          ]
+          date: string
+          submitted: string
+          times: {
+            primary_t: number
+            realtime_t: number
+          }
+        }
+      }
+    ]
+    links: {
+      rel: string
+      uri: string
+    }[]
+
+    players: {
+      data: [
+        {
+          id: string
+          names: {
+            international: string
+          }
+          weblink: string
+          links: {
+            rel: string
+            uri: string
+          }[]
+        }
+      ]
+    }
+  }
+}
+
+export { Run, Runs, User, PersonalBests, Splits, Game, LeaderBoard }

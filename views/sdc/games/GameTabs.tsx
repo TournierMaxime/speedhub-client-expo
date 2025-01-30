@@ -131,18 +131,18 @@ const style = StyleSheet.create({
   leaderboardContainer: {
     backgroundColor: "rgba(255,255,255,0.9)",
     padding: Utils.moderateScale(10),
-    borderRadius: 8,
-    marginVertical: 10,
+    borderRadius: Utils.moderateScale(5),
+    marginVertical: Utils.moderateScale(10),
   },
   categoryTitle: {
     fontSize: Utils.moderateScale(18),
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: Utils.moderateScale(10),
   },
   variableContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 5,
+    marginBottom: Utils.moderateScale(5),
   },
   variableTitle: {
     fontSize: Utils.moderateScale(14),
@@ -157,8 +157,8 @@ const style = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#E0E0E0",
     padding: Utils.moderateScale(5),
-    marginVertical: 5,
-    borderRadius: 5,
+    marginVertical: Utils.moderateScale(5),
+    borderRadius: Utils.moderateScale(5),
   },
   runPlace: {
     fontSize: Utils.moderateScale(16),

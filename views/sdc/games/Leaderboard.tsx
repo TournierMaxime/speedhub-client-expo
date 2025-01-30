@@ -4,13 +4,20 @@ import { useQuery } from "@tanstack/react-query"
 import { gameService } from "@/services/speedrunDotCom"
 import Runtime from "@/components/lib/RunTime"
 import Utils from "@/components/lib/Utils"
+import { LeaderBoard } from "../interface"
 
-const Runs = ({ records, assets }: { records: any; assets: any }) => {
+const Runs = ({
+  records,
+  assets,
+}: {
+  records: LeaderBoard["data"]
+  assets: any
+}) => {
   if (!records?.runs?.length) return <Text>No records available</Text>
 
   return (
     <View>
-      {records.runs.map((run: any, idx: number) => {
+      {records?.runs?.map((run: any, idx: number) => {
         const playerId = run.run.players[0]?.id
         const player = records.players?.data?.find(
           (p: any) => p.id === playerId
