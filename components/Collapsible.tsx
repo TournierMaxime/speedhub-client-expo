@@ -10,7 +10,11 @@ import Utils from "./lib/Utils"
 export function Collapsible({
   children,
   title,
-}: PropsWithChildren & { title: string }) {
+  onToggle,
+}: PropsWithChildren & {
+  title: string
+  onToggle?: (isOpen: boolean) => void
+}) {
   const [isOpen, setIsOpen] = useState(false)
   const theme = useColorScheme() ?? "light"
 
@@ -18,7 +22,15 @@ export function Collapsible({
     <ThemedView>
       <TouchableOpacity
         style={styles.headingContainer}
-        onPress={() => setIsOpen((value) => !value)}
+        onPress={() => {
+          setIsOpen((prev) => {
+            const newState = !prev
+            if (onToggle) {
+              onToggle(newState)
+            }
+            return newState
+          })
+        }}
         activeOpacity={Utils.moderateScale(0.8)}
       >
         <View style={styles.heading}>

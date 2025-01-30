@@ -8,6 +8,7 @@ import {
   MaterialIcons,
   MaterialCommunityIcons,
   AntDesign,
+  Feather,
 } from "@expo/vector-icons"
 import Utils from "./Utils"
 import { useColorScheme } from "react-native"
@@ -143,7 +144,20 @@ const Discord = () => {
   )
 }
 
+const VideoCam = () => {
+  const theme = useColorScheme() ?? "light"
+
+  return (
+    <Feather
+      name="video"
+      size={Utils.moderateScale(24)}
+      color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
+    />
+  )
+}
+
 export {
+  VideoCam,
   Discord,
   Chevron,
   LeftArrow,

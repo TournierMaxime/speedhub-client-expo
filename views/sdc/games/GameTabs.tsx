@@ -77,34 +77,6 @@ const CategoriesTab = ({ data }: { data: Game["data"] }) => {
   )
 }
 
-const ModeratorsTab = ({ data }: { data: Game["data"] }) => {
-  const moderators = data?.moderators?.data
-
-  return (
-    <ImageBackground
-      source={{
-        uri: data?.assets?.background?.uri ?? null,
-      }}
-      style={style.backgroungImg}
-      resizeMode="cover"
-      imageStyle={{ opacity: 0.2 }}
-    >
-      <FlatList
-        style={style.tabContent}
-        data={moderators}
-        keyExtractor={(item, idx) => idx.toString()}
-        renderItem={({ item }) => (
-          <RenderItem
-            item={item}
-            style={style.tags}
-            renderProperty={(item) => <Text>{item.names.international}</Text>}
-          />
-        )}
-      />
-    </ImageBackground>
-  )
-}
-
 const style = StyleSheet.create({
   text: {
     fontSize: Utils.moderateScale(16),
@@ -169,4 +141,4 @@ const style = StyleSheet.create({
   },
 })
 
-export { CategoriesTab, ModeratorsTab }
+export { CategoriesTab }
