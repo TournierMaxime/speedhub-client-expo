@@ -6,7 +6,8 @@ interface GameInterface {
   getGame(id: string | string[]): Promise<any>
   getLeaderBoard(
     id: string | string[],
-    categoryId: string | string[]
+    categoryId: string | string[],
+    queryParams?: Record<string, string>
   ): Promise<any>
 }
 
@@ -110,26 +111,20 @@ class Games implements GameInterface {
   }
 
   async getLeaderBoard(
-    id: string | string[],
-    categoryId: string | string[],
-    variables?: Record<string, string>
+    id: string,
+    categoryId: string,
+    queryParams?: Record<string, string>
   ) {
-    const params: Record<string, string> = {
-      embed: "players",
-      top: "1",
-    }
-
-    if (variables) {
-      Object.entries(variables).forEach(([key, value]) => {
-        params[`var-${key}`] = value
-      })
-    }
-
     const response = await this.http.get(
       `/leaderboards/${id}/category/${categoryId}`,
-      { params }
+      {
+        params: {
+          embed: "players",
+          top: "3",
+          ...queryParams,
+        },
+      }
     )
-
     return response.data
   }
 }

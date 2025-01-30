@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { StyleSheet, FlatList, Text, ImageBackground, View } from "react-native"
 import { Game } from "../interface"
 import RenderItem from "@/components/lib/RenderItem"
@@ -24,16 +24,21 @@ const CategoriesTab = ({ data }: { data: Game["data"] }) => {
         renderItem={({ item }) => {
           const categoryVariables = item.variables?.data ?? []
 
+          const selectedVariables: Record<string, string> = {}
+
+          categoryVariables.forEach((variable) => {
+            const defaultValueId = variable.values.default
+            selectedVariables[`var-${variable.id}`] = defaultValueId
+          })
+
           return (
             <RenderItem
               item={item}
               style={style.tags}
               renderProperty={() => (
-                <>
-                  {/* Affichage du nom de la catégorie */}
+                <Fragment>
                   <Text style={style.categoryTitle}>{item.name}</Text>
 
-                  {/* Affichage des variables associées */}
                   {categoryVariables.length > 0 ? (
                     categoryVariables.map((variable) => {
                       const defaultValueId = variable.values.default
@@ -56,9 +61,13 @@ const CategoriesTab = ({ data }: { data: Game["data"] }) => {
                     <Text>No variables</Text>
                   )}
 
-                  {/* Classement des runs */}
-                  <Leaderboard gameId={data.id} categoryId={item.id} />
-                </>
+                  <Leaderboard
+                    gameId={data.id}
+                    categoryId={item.id}
+                    variables={selectedVariables}
+                    assets={data.assets}
+                  />
+                </Fragment>
               )}
             />
           )
