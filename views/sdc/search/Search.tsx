@@ -1,4 +1,3 @@
-import Form from "@/components/lib/Form"
 import React, { useState, useEffect } from "react"
 import { View, StyleSheet, Text, Image, ScrollView } from "react-native"
 import useHandleSearch from "@/hooks/search/useHandleSearch"
@@ -13,6 +12,10 @@ import BottomModal from "@/components/lib/Modal"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import Card from "@/components/lib/Card"
+import {
+  FormButtonSubmit,
+  FormInputText,
+} from "@/components/lib/FormValidation"
 
 const Search = () => {
   const [selectedOptionValue, setSelectedOptionValue] =
@@ -118,23 +121,29 @@ const Search = () => {
         ]}
       >
         <View style={style.searchForm}>
-          {Form.inputText(
-            data,
-            setData,
-            "Search",
-            "query",
-            data.query ?? "",
-            false,
-            false,
-            "",
-            { width: "95%", display: "flex" }
-          )}
+          <FormInputText
+            data={data}
+            setData={setData}
+            label="Search"
+            name="query"
+            value={data.query ?? ""}
+            secure={false}
+            readOnly={false}
+            type=""
+            css={{ width: "95%", display: "flex" }}
+          />
+
           <BottomModal icon={true} title="Filters">
             <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
           </BottomModal>
         </View>
         <View style={style.submitButton}>
-          {Form.submit("info", "Search", handleSearchWithFlag, !data.query)}
+          <FormButtonSubmit
+            type="info"
+            label="Search"
+            fct={handleSearchWithFlag}
+            disabled={!data.query}
+          />
         </View>
 
         {isLoading ? (

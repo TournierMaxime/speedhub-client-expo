@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { View, StyleSheet } from "react-native"
-import Form from "@/components/lib/Form"
 import { DataState } from "@/hooks/auth/interface"
+import { FormCheckBox } from "@/components/lib/FormValidation"
 
 interface Props {
   setSelectedOptionValue: React.Dispatch<React.SetStateAction<string>>
@@ -25,8 +25,20 @@ const CheckboxForm: React.FC<Props> = ({ setSelectedOptionValue }) => {
 
   return (
     <View style={styles.optionContainer}>
-      {Form.checkBox(data, setData, "Users", "option", "users")}
-      {Form.checkBox(data, setData, "Games", "option", "games")}
+      <FormCheckBox
+        data={data}
+        setData={setData}
+        label="Users"
+        name="option"
+        value="users"
+      />
+      <FormCheckBox
+        data={data}
+        setData={setData}
+        label="Games"
+        name="option"
+        value="games"
+      />
     </View>
   )
 }
