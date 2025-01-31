@@ -1,5 +1,4 @@
 import React from "react"
-import { StyleSheet } from "react-native"
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs"
 import { NavigationIndependentTree } from "@react-navigation/native"
 import Utils from "./Utils"
@@ -25,7 +24,10 @@ const Tabs: React.FC<TabsProps> = ({ screens }) => {
             fontSize: Utils.moderateScale(16),
             fontWeight: "bold",
           },
-          tabBarStyle: { backgroundColor: "#dedede" },
+          tabBarStyle: {
+            backgroundColor: "#dedede",
+            marginTop: Utils.moderateScale(10),
+          },
           tabBarIndicatorStyle: { backgroundColor: "blue" },
         }}
       >
