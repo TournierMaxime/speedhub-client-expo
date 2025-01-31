@@ -1,21 +1,22 @@
 import React from "react"
 import { useGlobalSearchParams } from "expo-router"
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native"
+import { View, Text, ScrollView, Image } from "react-native"
 import Header from "@/components/lib/Header"
 import { useQuery } from "@tanstack/react-query"
 import { runService } from "@/services/speedrunDotCom"
-import Utils from "@/components/lib/Utils"
 import { Run } from "../interface"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import Runtime from "@/components/lib/RunTime"
 import Splits from "./Splits"
 import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import UserName from "@/components/lib/UserName"
 import { Comment } from "@/components/lib/Icons"
+import mainStyle from "@/styles/base/main"
+import cardStyle from "@/styles/components/card"
+import oneRunStyle from "@/styles/views/oneRun"
 
 const OneRun = () => {
   const { id } = useGlobalSearchParams()
@@ -46,7 +47,7 @@ const OneRun = () => {
   ) => {
     if (data) {
       return (
-        <Text style={style.text}>
+        <Text style={cardStyle.text}>
           {data?.category?.data?.name} in{" "}
           <Runtime time={data?.times?.primary_t} />
         </Text>
@@ -58,7 +59,10 @@ const OneRun = () => {
   const getGameImg = (data: Run["data"]["game"]["data"]["assets"]) => {
     if (data) {
       const image = data["cover-large"]?.uri ? (
-        <Image source={{ uri: data["cover-large"]?.uri }} style={style.img} />
+        <Image
+          source={{ uri: data["cover-large"]?.uri }}
+          style={oneRunStyle.img}
+        />
       ) : null
       return image
     }
@@ -70,11 +74,9 @@ const OneRun = () => {
     if (data) {
       const comment = data
       return (
-        <View style={style.commentContainer}>
+        <View style={oneRunStyle.commentContainer}>
           <Comment />
-          <Text style={[style.text, { marginLeft: Utils.moderateScale(10) }]}>
-            {comment}
-          </Text>
+          <Text style={cardStyle.text}>{comment}</Text>
         </View>
       )
     }
@@ -85,10 +87,12 @@ const OneRun = () => {
   const getContent = (data: Run["data"]) => {
     if (data) {
       return (
-        <View style={style.playerContainer}>
+        <View style={oneRunStyle.playerContainer}>
           {getGameImg(data?.game?.data?.assets)}
           <View>
-            <Text style={style.text}>{data.game.data.names.international}</Text>
+            <Text style={cardStyle.text}>
+              {data.game.data.names.international}
+            </Text>
             {getPlayers(data?.players?.data)}
             {getCategoryAndTime(data)}
           </View>
@@ -144,20 +148,20 @@ const OneRun = () => {
       return (
         <View
           style={[
-            style.card,
-            theme === "dark"
-              ? { backgroundColor: Colors.dark.background }
-              : { backgroundColor: Colors.light.background },
+            cardStyle.card,
+            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
           {videoComponent}
-          <View style={style.cardInfo}>
+          <View style={oneRunStyle.cardInfo}>
             {data?.data ? (
-              <View style={style.cardInfoItems}>{getContent(data?.data)}</View>
+              <View style={oneRunStyle.cardInfoItems}>
+                {getContent(data?.data)}
+              </View>
             ) : null}
 
             {data?.data?.comment ? (
-              <View style={style.cardInfoItems}>
+              <View style={oneRunStyle.cardInfoItems}>
                 {getComment(data?.data?.comment)}
               </View>
             ) : null}
@@ -178,83 +182,11 @@ const OneRun = () => {
   }
 
   return (
-    <ScrollView style={style.container}>
+    <ScrollView style={mainStyle.container}>
       <Header backButton={true} />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneRun()}
     </ScrollView>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-    marginTop: Utils.moderateScale(2),
-  },
-  card: {
-    display: "flex",
-    width: "95%",
-    margin: "auto",
-    borderRadius: Utils.moderateScale(5),
-    marginVertical: Utils.moderateScale(10),
-    borderColor: "grey",
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    paddingVertical: Utils.moderateScale(10),
-  },
-  cardInfo: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardInfoItems: {
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    paddingVertical: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
-    backgroundColor: "white", // adapt theme
-    marginHorizontal: Utils.moderateScale(10),
-    marginVertical: Utils.moderateScale(10),
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(5),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-  },
-  icons: {
-    display: "flex",
-    justifyContent: "flex-start",
-  },
-  text: {
-    fontSize: Utils.moderateScale(16),
-    textAlign: "justify",
-  },
-  img: {
-    width: Utils.moderateScale(60),
-    height: Utils.moderateScale(60),
-    resizeMode: "contain",
-    marginHorizontal: Utils.moderateScale(5),
-  },
-  playerContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-  commentContainer: {
-    display: "flex",
-    flexDirection: "row",
-    padding: Utils.moderateScale(10),
-    width: "90%",
-    margin: "auto",
-  },
-})
 
 export default OneRun

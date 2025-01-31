@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react"
-import {
-  View,
-  StyleSheet,
-  Text,
-  ActivityIndicator,
-  TouchableOpacity,
-  Image,
-} from "react-native"
+import { View, Text, TouchableOpacity, Image } from "react-native"
 import Utils from "@/components/lib/Utils"
 import { useGlobalSearchParams } from "expo-router"
 import { useInfiniteQuery } from "@tanstack/react-query"
@@ -14,11 +7,11 @@ import { PersonalBests } from "../interface"
 import { userService } from "@/services/speedrunDotCom"
 import Runtime from "@/components/lib/RunTime"
 import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
 import ROUTES from "@/components/routes"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
+import { pbStyle } from "@/styles/views/oneUser"
 
 const PersonalBestsUser = () => {
   const { id } = useGlobalSearchParams()
@@ -48,68 +41,36 @@ const PersonalBestsUser = () => {
     switch (place) {
       case 1:
         return (
-          <Text
-            style={[
-              style.textCard,
-              theme === "dark"
-                ? { color: Colors.dark.text }
-                : { color: Colors.light.text },
-            ]}
-          >
+          <Text style={pbStyle.textCard}>
             <Image
               source={{ uri: assets["trophy-1st"]?.uri }}
-              style={style.trophy}
+              style={pbStyle.trophy}
             />
             {place}st place
           </Text>
         )
       case 2:
         return (
-          <Text
-            style={[
-              style.textCard,
-              theme === "dark"
-                ? { color: Colors.dark.text }
-                : { color: Colors.light.text },
-            ]}
-          >
+          <Text style={pbStyle.textCard}>
             <Image
               source={{ uri: assets["trophy-2nd"]?.uri }}
-              style={style.trophy}
+              style={pbStyle.trophy}
             />
             {place}nd place
           </Text>
         )
       case 3:
         return (
-          <Text
-            style={[
-              style.textCard,
-              theme === "dark"
-                ? { color: Colors.dark.text }
-                : { color: Colors.light.text },
-            ]}
-          >
+          <Text style={pbStyle.textCard}>
             <Image
               source={{ uri: assets["trophy-3rd"]?.uri }}
-              style={style.trophy}
+              style={pbStyle.trophy}
             />
             {place}rd place
           </Text>
         )
       default:
-        return (
-          <Text
-            style={[
-              style.textCard,
-              theme === "dark"
-                ? { color: Colors.dark.text }
-                : { color: Colors.light.text },
-            ]}
-          >
-            {place}th place
-          </Text>
-        )
+        return <Text style={pbStyle.textCard}>{place}th place</Text>
     }
   }
 
@@ -119,38 +80,22 @@ const PersonalBestsUser = () => {
         return (
           <TouchableOpacity
             key={idx}
-            style={style.card}
+            style={pbStyle.card}
             onPress={async () =>
               await handleRedirect(ROUTES.ONE_RUN, { id: pb.run.id })
             }
           >
-            <View style={style.cardImage}>
+            <View style={pbStyle.cardImage}>
               <Image
-                style={style.image}
+                style={pbStyle.image}
                 source={{ uri: pb.game.data.assets["cover-large"].uri }}
               />
             </View>
-            <View style={style.cardInfo}>
-              <Text
-                style={[
-                  style.textCard,
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
-                ]}
-              >
+            <View style={pbStyle.cardInfo}>
+              <Text style={pbStyle.textCard}>
                 {pb.game.data.names.international}
               </Text>
-              <Text
-                style={[
-                  style.textCard,
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
-                ]}
-              >
-                {pb.category.data.name}
-              </Text>
+              <Text style={pbStyle.textCard}>{pb.category.data.name}</Text>
               <Runtime
                 time={pb.run.times.primary_t}
                 css={{ marginLeft: Utils.moderateScale(10) }}
@@ -173,62 +118,10 @@ const PersonalBestsUser = () => {
   }, [data])
 
   return (
-    <View style={style.container}>
+    <View style={pbStyle.container}>
       {isLoading ? <IsLoading isLoading={isLoading} /> : personalBests()}
     </View>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-    marginBottom: Utils.moderateScale(10),
-  },
-  card: {
-    display: "flex",
-    flexDirection: "row",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "95%",
-    marginTop: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
-    padding: Utils.moderateScale(10),
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    backgroundColor: "#fff", //adapt theme
-  },
-  cardImage: {
-    display: "flex",
-    flexDirection: "column",
-    width: "20%",
-  },
-  cardInfo: {
-    display: "flex",
-    flexDirection: "column",
-    width: "80%",
-    flexWrap: "wrap",
-  },
-  image: {
-    width: Utils.moderateScale(80),
-    height: Utils.moderateScale(80),
-    resizeMode: "contain",
-    borderRadius: Utils.moderateScale(5),
-  },
-  trophy: {
-    width: Utils.moderateScale(20),
-    height: Utils.moderateScale(20),
-    resizeMode: "contain",
-  },
-  textCard: {
-    fontSize: Utils.moderateScale(16),
-    marginLeft: Utils.moderateScale(10),
-    width: "95%",
-  },
-})
 
 export default PersonalBestsUser

@@ -1,5 +1,5 @@
 import React from "react"
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native"
+import { View, TouchableOpacity, Image } from "react-native"
 import Utils from "./Utils"
 import { useAuth } from "@/contexts/AuthContext"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
@@ -7,6 +7,7 @@ import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import ROUTES from "../routes"
 import { LeftArrow, Search, User } from "./Icons"
+import headerStyle from "@/styles/base/header"
 
 interface HeaderProps {
   backButton: boolean
@@ -27,24 +28,13 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
       return (
         <View
           style={[
-            style.header,
-            theme === "dark"
-              ? {
-                  backgroundColor: Colors.dark.background,
-                  shadowColor: Colors.dark.shadowColor,
-                }
-              : {
-                  backgroundColor: Colors.light.background,
-                  shadowColor: Colors.light.shadowColor,
-                },
+            headerStyle.header,
+            theme === "dark" ? headerStyle.themeDark : headerStyle.themeLight,
           ]}
         >
           {backButton ? (
-            <View style={{ marginLeft: Utils.moderateScale(10) }}>
-              <TouchableOpacity
-                style={""}
-                onPress={async () => await handleBack()}
-              >
+            <View style={headerStyle.backButton}>
+              <TouchableOpacity onPress={async () => await handleBack()}>
                 <LeftArrow />
               </TouchableOpacity>
             </View>
@@ -52,14 +42,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
             <View />
           )}
 
-          <Image
-            style={{
-              resizeMode: "contain",
-              width: Utils.moderateScale(120),
-              height: Utils.moderateScale(80),
-            }}
-            source={logo}
-          />
+          <Image style={headerStyle.speedHubLogo} source={logo} />
 
           <View />
         </View>
@@ -72,31 +55,19 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
       return (
         <View
           style={[
-            style.header,
-            theme === "dark"
-              ? {
-                  backgroundColor: Colors.dark.background,
-                  shadowColor: Colors.dark.shadowColor,
-                }
-              : {
-                  backgroundColor: Colors.light.background,
-                  shadowColor: Colors.light.shadowColor,
-                },
+            headerStyle.header,
+            theme === "dark" ? headerStyle.themeDark : headerStyle.themeLight,
           ]}
         >
           {backButton ? (
-            <View style={{ marginLeft: Utils.moderateScale(10) }}>
-              <TouchableOpacity
-                style={""}
-                onPress={async () => await handleBack()}
-              >
+            <View style={headerStyle.backButton}>
+              <TouchableOpacity onPress={async () => await handleBack()}>
                 <LeftArrow />
               </TouchableOpacity>
             </View>
           ) : (
-            <View style={""}>
+            <View>
               <TouchableOpacity
-                style={""}
                 onPress={async () =>
                   handleRedirect(ROUTES.ONE_USER_PROFILE, {
                     userId: user?.userId,
@@ -106,10 +77,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
                 {user?.image ? (
                   <Image
                     source={{ uri: user.image }}
-                    style={{
-                      width: Utils.moderateScale(40),
-                      height: Utils.moderateScale(40),
-                    }}
+                    style={headerStyle.userImg}
                   />
                 ) : (
                   <User />
@@ -118,20 +86,12 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
             </View>
           )}
 
-          <View style={""}>
-            <Image
-              style={{
-                resizeMode: "contain",
-                width: Utils.moderateScale(120),
-                height: Utils.moderateScale(80),
-              }}
-              source={logo}
-            />
+          <View>
+            <Image style={headerStyle.speedHubLogo} source={logo} />
           </View>
 
-          <View style={""}>
+          <View>
             <TouchableOpacity
-              style={""}
               onPress={async () => handleRedirect(ROUTES.SEARCH)}
             >
               <Search />
@@ -144,24 +104,5 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
 
   return isAuthenticated === true ? AuthenticatedUser() : NotAuthenticatedUser()
 }
-
-const style = StyleSheet.create({
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: Utils.moderateScale(10),
-    paddingTop: Utils.moderateScale(30),
-    width: "100%",
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-  },
-})
 
 export default Header

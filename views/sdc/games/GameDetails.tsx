@@ -5,16 +5,15 @@ import {
   Image,
   TouchableOpacity,
   Linking,
-  StyleSheet,
   ImageBackground,
 } from "react-native"
 import { Game } from "../interface"
-import Utils from "@/components/lib/Utils"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import BottomModal from "@/components/lib/Modal"
 import { Discord } from "@/components/lib/Icons"
 import SDCSVG from "@/assets/images/SDCSVG"
+import { oneGameDetailsStyle } from "@/styles/views/oneGame"
 
 const Platforms = ({
   platforms,
@@ -24,7 +23,7 @@ const Platforms = ({
   return (
     <Fragment>
       {platforms.map((platform, idx) => (
-        <Text key={idx} style={style.tags}>
+        <Text key={idx} style={oneGameDetailsStyle.tags}>
           {platform.name}
         </Text>
       ))}
@@ -36,7 +35,7 @@ const Genres = ({ genres }: { genres: Game["data"]["genres"]["data"] }) => {
   return (
     <Fragment>
       {genres.map((genre, idx) => (
-        <Text key={idx} style={style.tags}>
+        <Text key={idx} style={oneGameDetailsStyle.tags}>
           {genre.name}
         </Text>
       ))}
@@ -52,7 +51,7 @@ const Developers = ({
   return (
     <Fragment>
       {developers.map((developer, idx) => (
-        <Text key={idx} style={style.tags}>
+        <Text key={idx} style={oneGameDetailsStyle.tags}>
           {developer.name}
         </Text>
       ))}
@@ -68,7 +67,7 @@ const Publishers = ({
   return (
     <Fragment>
       {publishers.map((publisher, idx) => (
-        <Text key={idx} style={style.tags}>
+        <Text key={idx} style={oneGameDetailsStyle.tags}>
           {publisher.name}
         </Text>
       ))}
@@ -82,7 +81,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
   return (
     <View
       style={[
-        style.contentContainer,
+        oneGameDetailsStyle.contentContainer,
         theme === "dark"
           ? { backgroundColor: Colors.dark.background }
           : { backgroundColor: Colors.light.background },
@@ -93,32 +92,37 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
           source={{
             uri: data?.assets?.background?.uri ?? null,
           }}
-          style={style.backgroungImg}
+          style={oneGameDetailsStyle.backgroungImg}
           resizeMode="cover"
           imageStyle={{ opacity: 0.2 }}
         >
-          <View style={style.gameContainer}>
+          <View style={oneGameDetailsStyle.gameContainer}>
             {data?.assets["cover-large"]?.uri ? (
               <Image
                 source={{
                   uri: data?.assets["cover-large"]?.uri,
                 }}
-                style={style.img}
+                style={oneGameDetailsStyle.img}
               />
             ) : null}
 
-            <View style={style.infoContainer}>
-              <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
+            <View style={oneGameDetailsStyle.infoContainer}>
+              <Text
+                style={[
+                  oneGameDetailsStyle.text,
+                  { fontWeight: "bold", color: "#fff" },
+                ]}
+              >
                 {data?.names?.international}
               </Text>
-              <Text style={[style.text, { color: "#fff" }]}>
+              <Text style={[oneGameDetailsStyle.text, { color: "#fff" }]}>
                 {data["release-date"]}
               </Text>
 
-              <View style={style.externalLinkContainer}>
+              <View style={oneGameDetailsStyle.externalLinkContainer}>
                 {data?.weblink && (
                   <TouchableOpacity
-                    style={style.sdcContainer}
+                    style={oneGameDetailsStyle.sdcContainer}
                     onPress={() => Linking.openURL(data?.weblink)}
                   >
                     <SDCSVG />
@@ -126,7 +130,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
                 )}
                 {data?.discord && (
                   <TouchableOpacity
-                    style={style.discordContainer}
+                    style={oneGameDetailsStyle.discordContainer}
                     onPress={() => Linking.openURL(data?.discord)}
                   >
                     <Discord />
@@ -135,7 +139,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
               </View>
             </View>
           </View>
-          <View style={style.collapsiblesContainer}>
+          <View style={oneGameDetailsStyle.collapsiblesContainer}>
             {data?.platforms?.data?.length > 0 ? (
               <BottomModal title="Platforms">
                 <Platforms platforms={data?.platforms?.data} />
@@ -165,117 +169,5 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
     </View>
   )
 }
-
-const style = StyleSheet.create({
-  contentContainer: {
-    display: "flex",
-    width: "100%",
-    marginHorizontal: "auto",
-  },
-  gameContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignSelf: "center",
-    width: "95%",
-    position: "absolute",
-    top: Utils.moderateScale(10),
-    backgroundColor: "#cacaca",
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(5),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    borderRadius: Utils.moderateScale(5),
-    padding: Utils.moderateScale(10),
-  },
-  collapsiblesContainer: {
-    position: "absolute",
-    width: "95%",
-    alignSelf: "center",
-    padding: Utils.moderateScale(10),
-    top: Utils.moderateScale(240),
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    backgroundColor: "#fff",
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(5),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    borderRadius: Utils.moderateScale(5),
-  },
-  infoContainer: {
-    //marginLeft: Utils.moderateScale(10),
-  },
-  img: {
-    width: Utils.moderateScale(200),
-    height: Utils.moderateScale(200),
-    resizeMode: "contain",
-  },
-  backgroungImg: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
-    position: "relative",
-    backgroundColor: "rgba(0, 0, 0, 0.9)",
-  },
-  text: {
-    fontSize: Utils.moderateScale(20),
-  },
-  externalLinkContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  sdcContainer: {
-    backgroundColor: "#199c77",
-    borderRadius: Utils.moderateScale(5),
-    display: "flex",
-    alignItems: "center",
-    padding: Utils.moderateScale(5),
-    marginBottom: Utils.moderateScale(5),
-    width: Utils.moderateScale(80),
-  },
-  sdcButton: {
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
-    padding: Utils.moderateScale(10),
-    fontSize: Utils.moderateScale(16),
-  },
-  discordContainer: {
-    backgroundColor: "#7289da",
-    borderRadius: Utils.moderateScale(5),
-    display: "flex",
-    alignItems: "center",
-    padding: Utils.moderateScale(5),
-    width: Utils.moderateScale(80),
-  },
-  discordButton: {
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
-    padding: Utils.moderateScale(10),
-    fontSize: Utils.moderateScale(16),
-  },
-  tabContent: {
-    flex: 1,
-    padding: Utils.moderateScale(10),
-    marginVertical: Utils.moderateScale(10),
-  },
-  tags: {
-    backgroundColor: "#E0E0E0",
-    padding: Utils.moderateScale(5),
-    margin: Utils.moderateScale(5),
-    borderRadius: Utils.moderateScale(5),
-    fontSize: Utils.moderateScale(16),
-  },
-})
 
 export default GameDetails

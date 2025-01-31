@@ -3,7 +3,6 @@ import { useGlobalSearchParams } from "expo-router"
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   Image,
   Linking,
@@ -16,11 +15,13 @@ import Utils from "@/components/lib/Utils"
 import { Reddit } from "./interface"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import moment from "moment"
+import mainStyle from "@/styles/base/main"
+import cardStyle from "@/styles/components/card"
+import oneRedditStyle from "@/styles/views/oneReddit"
 
 const OneReddit = () => {
   const { permalink } = useGlobalSearchParams()
@@ -91,15 +92,13 @@ const OneReddit = () => {
       return (
         <View
           style={[
-            style.card,
-            theme === "dark"
-              ? { backgroundColor: Colors.dark.background }
-              : { backgroundColor: Colors.light.background },
+            cardStyle.card,
+            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
           {videoComponent}
-          <View style={style.cardInfo}>
-            <View style={style.author}>
+          <View style={oneRedditStyle.cardInfo}>
+            <View style={oneRedditStyle.author}>
               <Image
                 source={userDefaultImg}
                 style={{
@@ -109,10 +108,8 @@ const OneReddit = () => {
               />
               <Text
                 style={[
-                  style.textAuthor,
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
+                  oneRedditStyle.textAuthor,
+                  theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
                 ]}
               >
                 {author}
@@ -120,10 +117,8 @@ const OneReddit = () => {
             </View>
             <Text
               style={[
-                style.textTitle,
-                theme === "dark"
-                  ? { color: Colors.dark.text }
-                  : { color: Colors.light.text },
+                oneRedditStyle.text,
+                theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
               ]}
             >
               {title}
@@ -132,10 +127,8 @@ const OneReddit = () => {
             {selftext ? (
               <Text
                 style={[
-                  style.text,
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
+                  oneRedditStyle.text,
+                  theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
                 ]}
               >
                 {selftext}
@@ -144,19 +137,17 @@ const OneReddit = () => {
 
             <Text
               style={[
-                style.textDate,
-                theme === "dark"
-                  ? { color: Colors.dark.text }
-                  : { color: Colors.light.text },
+                oneRedditStyle.text,
+                theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
               ]}
             >
               {moment.unix(created).format("YYYY-MM-DD h:mm a")}
             </Text>
             <TouchableOpacity
-              style={style.btnContainer}
+              style={oneRedditStyle.btnContainer}
               onPress={() => Linking.openURL(url)}
             >
-              <Text style={style.btnLabel}>Watch on Reddit</Text>
+              <Text style={oneRedditStyle.btnLabel}>Watch on Reddit</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -175,90 +166,11 @@ const OneReddit = () => {
   }
 
   return (
-    <ScrollView style={style.container}>
+    <ScrollView style={mainStyle.container}>
       <Header backButton={true} title="" />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneReddit()}
     </ScrollView>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-  },
-  author: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  card: {
-    display: "flex",
-    width: "95%",
-    margin: "auto",
-    borderRadius: Utils.moderateScale(5),
-    marginTop: Utils.moderateScale(10),
-    borderColor: "grey",
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    paddingVertical: Utils.moderateScale(10),
-  },
-  cardInfo: {
-    display: "flex",
-    flexDirection: "column",
-    marginHorizontal: Utils.moderateScale(5),
-    marginTop: Utils.moderateScale(10),
-    padding: Utils.moderateScale(10),
-  },
-  cardInfoItems: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: Utils.moderateScale(5),
-  },
-  icons: {
-    display: "flex",
-    justifyContent: "flex-start",
-  },
-  data: {
-    flex: 1,
-    alignItems: "flex-end",
-  },
-  text: {
-    fontSize: Utils.moderateScale(18),
-    textAlign: "justify",
-  },
-  textTitle: {
-    fontSize: Utils.moderateScale(18),
-    marginVertical: Utils.moderateScale(10),
-  },
-  textDate: {
-    fontSize: Utils.moderateScale(18),
-    marginVertical: Utils.moderateScale(10),
-  },
-  textAuthor: {
-    fontSize: Utils.moderateScale(18),
-    marginLeft: Utils.moderateScale(10),
-  },
-  btnContainer: {
-    display: "flex",
-    borderRadius: Utils.moderateScale(5),
-    width: "100%",
-    margin: "auto",
-    alignItems: "center",
-    marginVertical: Utils.moderateScale(10),
-    backgroundColor: "#d93a00",
-  },
-  btnLabel: {
-    fontSize: Utils.moderateScale(18),
-    fontWeight: "bold",
-    marginVertical: Utils.moderateScale(10),
-    color: "white",
-  },
-})
 
 export default OneReddit

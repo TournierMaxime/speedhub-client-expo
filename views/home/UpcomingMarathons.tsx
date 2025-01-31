@@ -5,12 +5,12 @@ import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { Upcomings } from "../interface"
 import { useState, useEffect } from "react"
-import { View, Text, StyleSheet } from "react-native"
-import Utils from "@/components/lib/Utils"
+import { View, Text } from "react-native"
 import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
 import ROUTES from "@/components/routes"
 import Card from "@/components/lib/Card"
+import mainStyle from "@/styles/base/main"
+import cardStyle from "@/styles/components/card"
 
 interface Props {
   limit?: number
@@ -41,10 +41,8 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
       return (
         <View
           style={[
-            style.card,
-            theme === "dark"
-              ? { backgroundColor: Colors.dark.background }
-              : { backgroundColor: Colors.light.background },
+            cardStyle.card,
+            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
           {upcomings.map((upcoming, idx) => (
@@ -54,7 +52,7 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
               routeParams={{ horaroId: upcoming.horaroId }}
               key={idx}
             >
-              <Text style={style.cardText}>{upcoming.name}</Text>
+              <Text style={cardStyle.cardText}>{upcoming.name}</Text>
             </Card>
           ))}
         </View>
@@ -78,7 +76,7 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
 
   return (
     <Fragment>
-      <View style={style.container}>
+      <View style={mainStyle.container}>
         {isLoading ? (
           <IsLoading isLoading={isLoading} />
         ) : (
@@ -88,46 +86,5 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
     </Fragment>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-    height: "100%",
-    marginBottom: Utils.moderateScale(10),
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    marginHorizontal: "auto",
-    marginTop: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
-    borderColor: "grey",
-    /*     shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5), */
-    paddingVertical: Utils.moderateScale(10),
-  },
-  cardItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: Utils.moderateScale(10),
-  },
-  cardText: {
-    fontSize: Utils.moderateScale(16),
-    paddingVertical: Utils.moderateScale(10),
-  },
-  title: {
-    fontSize: Utils.moderateScale(20),
-    fontWeight: "bold",
-    padding: Utils.moderateScale(10),
-  },
-})
 
 export default UpcomingMarathons

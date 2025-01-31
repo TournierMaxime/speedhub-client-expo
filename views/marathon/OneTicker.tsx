@@ -4,6 +4,7 @@ import { Ticker } from "./interface"
 import Utils from "@/components/lib/Utils"
 import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
+import tickerStyle from "@/styles/views/ticker"
 
 interface Item {
   previous: {
@@ -39,7 +40,7 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
     return (
       <Fragment>
         {previous && (
-          <View style={style.card}>
+          <View style={tickerStyle.card}>
             <View style={{ width: "20%" }}>
               <Text>Previous</Text>
             </View>
@@ -54,7 +55,7 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
         )}
 
         {current && (
-          <View style={style.card}>
+          <View style={tickerStyle.card}>
             <View style={{ width: "20%" }}>
               <Text>Current</Text>
             </View>
@@ -69,7 +70,7 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
         )}
 
         {next && (
-          <View style={style.card}>
+          <View style={tickerStyle.card}>
             <View style={{ width: "20%" }}>
               <Text>Next</Text>
             </View>
@@ -91,48 +92,13 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
   }
 
   return (
-    <View style={style.container}>
-      <View style={style.header}>
-        <Text style={style.title}>Ticker</Text>
+    <View style={tickerStyle.container}>
+      <View style={tickerStyle.header}>
+        <Text style={tickerStyle.title}>Ticker</Text>
       </View>
       {renderCurrent(ticker.ticker)}
     </View>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "95%",
-    marginTop: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
-    padding: Utils.moderateScale(10),
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    backgroundColor: "#fff", // adapt theme
-  },
-  title: {
-    fontSize: Utils.moderateScale(18),
-    fontWeight: "bold",
-  },
-  header: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: Utils.moderateScale(10),
-  },
-})
 
 export default OneTicker

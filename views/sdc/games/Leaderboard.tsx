@@ -1,15 +1,15 @@
 import React, { useState } from "react"
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native"
+import { View, Text, Image, TouchableOpacity } from "react-native"
 import { useQuery } from "@tanstack/react-query"
 import { gameService } from "@/services/speedrunDotCom"
 import Runtime from "@/components/lib/RunTime"
-import Utils from "@/components/lib/Utils"
 import { Collapsible } from "@/components/Collapsible"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { VideoCam } from "@/components/lib/Icons"
+import { oneGameLeaderBoardStyle } from "@/styles/views/oneGame"
 
 const Leaderboard = ({
   gameId,
@@ -86,19 +86,22 @@ const Leaderboard = ({
           }
 
           return (
-            <View key={idx} style={style.row}>
-              <View style={style.trophyContainer}>
+            <View key={idx} style={oneGameLeaderBoardStyle.row}>
+              <View style={oneGameLeaderBoardStyle.trophyContainer}>
                 {getTrophyUri(run.place) && (
                   <Image
                     source={{ uri: getTrophyUri(run.place) }}
-                    style={style.trophy}
+                    style={oneGameLeaderBoardStyle.trophy}
                   />
                 )}
               </View>
-              <Text style={style.player}>{playerName}</Text>
-              <Runtime time={run.run.times.primary_t} css={style.time} />
+              <Text style={oneGameLeaderBoardStyle.player}>{playerName}</Text>
+              <Runtime
+                time={run.run.times.primary_t}
+                css={oneGameLeaderBoardStyle.time}
+              />
               <TouchableOpacity
-                style={style.icon}
+                style={oneGameLeaderBoardStyle.icon}
                 onPress={async () =>
                   handleRedirect(ROUTES.ONE_RUN, { id: run.run.id })
                 }
@@ -112,36 +115,5 @@ const Leaderboard = ({
     </Collapsible>
   )
 }
-
-const style = StyleSheet.create({
-  row: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    paddingVertical: Utils.moderateScale(5),
-    marginHorizontal: Utils.moderateScale(10),
-  },
-  trophyContainer: {
-    width: "15%",
-  },
-  trophy: {
-    width: Utils.moderateScale(20),
-    height: Utils.moderateScale(20),
-    resizeMode: "contain",
-  },
-  player: {
-    fontSize: Utils.moderateScale(16),
-    width: "40%",
-  },
-  time: {
-    fontSize: Utils.moderateScale(16),
-    width: "30%",
-  },
-  icon: {
-    width: "15%",
-  },
-})
 
 export default Leaderboard

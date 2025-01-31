@@ -1,13 +1,14 @@
-import { StyleSheet, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
 import MarathonLives from "./MarathonLives"
 import UpcomingMarathons from "./UpcomingMarathons"
 import AllReddits from "../reddit/Reddits"
 import AllRuns from "../sdc/runs/Runs"
+import mainStyle from "@/styles/base/main"
 
 const Home = () => {
   return (
-    <ScrollView style={style.container}>
+    <ScrollView style={mainStyle.container}>
       <Header backButton={false} />
       <AllReddits limit={5} />
       <AllRuns limit={5} />
@@ -16,11 +17,5 @@ const Home = () => {
     </ScrollView>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-  },
-})
 
 export default Home

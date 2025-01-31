@@ -1,6 +1,6 @@
 import Header from "@/components/lib/Header"
 import React from "react"
-import { View, StyleSheet } from "react-native"
+import { View } from "react-native"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
 import { Game } from "../interface"
@@ -10,6 +10,7 @@ import Tabs from "@/components/lib/Tabs"
 import CatchError from "@/components/lib/CatchError"
 import GameDetails from "./GameDetails"
 import { CategoriesTab } from "./GameTabs"
+import { oneGameStyle } from "@/styles/views/oneGame"
 
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
@@ -45,7 +46,7 @@ const OneGame = () => {
     : []
 
   return (
-    <View style={style.container}>
+    <View style={oneGameStyle.container}>
       <Header backButton />
       {isLoading ? (
         <IsLoading isLoading={isLoading} />
@@ -55,11 +56,5 @@ const OneGame = () => {
     </View>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-})
 
 export default OneGame

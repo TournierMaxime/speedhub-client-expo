@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { View, StyleSheet, Text, ActivityIndicator } from "react-native"
+import { View, Text } from "react-native"
 import Utils from "@/components/lib/Utils"
 import { splitIOService } from "@/services/speedrunDotCom"
 import { useQuery } from "@tanstack/react-query"
@@ -10,6 +10,8 @@ import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
+import splitsStyle from "@/styles/views/splits"
+import mainStyle from "@/styles/base/main"
 
 interface Props {
   splits: string
@@ -45,13 +47,11 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
       if (data && data.length > 0) {
         const splits = data.map((split, idx) => {
           return (
-            <View key={idx} style={style.cardSplit}>
+            <View key={idx} style={splitsStyle.cardSplit}>
               <Text
                 style={[
-                  style.textSplit,
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
+                  splitsStyle.textSplit,
+                  theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
                 ]}
               >
                 {split.name}
@@ -76,8 +76,8 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
         ) : (
           <Fragment>
             {data && data.run.splits.length > 0 ? (
-              <View style={style.cardInfo}>
-                <View style={style.cardTitle}>
+              <View style={splitsStyle.cardInfo}>
+                <View style={splitsStyle.cardTitle}>
                   <MaterialCommunityIcons
                     name="clock-fast"
                     size={Utils.moderateScale(28)}
@@ -87,10 +87,10 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
                   />
                   <Text
                     style={[
-                      style.textTitle,
+                      splitsStyle.textTitle,
                       theme === "dark"
-                        ? { color: Colors.dark.text }
-                        : { color: Colors.light.text },
+                        ? mainStyle.themeDark
+                        : mainStyle.themeLight,
                     ]}
                   >
                     Splits
@@ -106,42 +106,5 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
   }
   return null
 }
-
-const style = StyleSheet.create({
-  cardInfo: {
-    display: "flex",
-    flexDirection: "column",
-    marginHorizontal: Utils.moderateScale(5),
-    marginVertical: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    backgroundColor: "white", // adapt theme
-    padding: Utils.moderateScale(10),
-  },
-  cardSplit: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  textSplit: {
-    fontSize: Utils.moderateScale(16),
-    marginVertical: Utils.moderateScale(5),
-  },
-  textTitle: {
-    fontSize: Utils.moderateScale(18),
-    marginLeft: Utils.moderateScale(5),
-  },
-  cardTitle: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-})
 
 export default SplitsSheet

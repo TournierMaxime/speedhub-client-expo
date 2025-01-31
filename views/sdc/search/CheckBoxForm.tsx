@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { View, StyleSheet } from "react-native"
+import { View } from "react-native"
 import { DataState } from "@/hooks/auth/interface"
 import { FormCheckBox } from "@/components/lib/FormValidation"
+import searchStyle from "@/styles/components/search"
 
 interface Props {
   setSelectedOptionValue: React.Dispatch<React.SetStateAction<string>>
@@ -24,7 +25,7 @@ const CheckboxForm: React.FC<Props> = ({ setSelectedOptionValue }) => {
   }, [data.option?.value])
 
   return (
-    <View style={styles.optionContainer}>
+    <View style={searchStyle.optionContainer}>
       <FormCheckBox
         data={data}
         setData={setData}
@@ -42,13 +43,5 @@ const CheckboxForm: React.FC<Props> = ({ setSelectedOptionValue }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  optionContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-})
 
 export default CheckboxForm

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { StyleSheet, Text, ScrollView } from "react-native"
+import { Text, ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
@@ -10,6 +10,7 @@ import IsLoading from "@/components/lib/IsLoading"
 import OneSchedule from "./OneSchedule"
 import OneTicker from "./OneTicker"
 import TwitchIframe from "@/components/lib/TwitchIframe"
+import mainStyle from "@/styles/base/main"
 
 const OneMarathonLive = () => {
   const { horaroId } = useGlobalSearchParams()
@@ -49,17 +50,11 @@ const OneMarathonLive = () => {
   }
 
   return (
-    <ScrollView style={style.container}>
+    <ScrollView style={mainStyle.container}>
       <Header backButton={true} title="" />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonLive()}
     </ScrollView>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-  },
-})
 
 export default OneMarathonLive

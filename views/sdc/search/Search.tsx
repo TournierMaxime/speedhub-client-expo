@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { View, StyleSheet, Text, Image, ScrollView } from "react-native"
+import { View, Text, Image, ScrollView } from "react-native"
 import useHandleSearch from "@/hooks/search/useHandleSearch"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
 import ROUTES from "@/components/routes"
 import UserName from "@/components/lib/UserName"
 import CheckboxForm from "./CheckBoxForm"
@@ -16,6 +15,8 @@ import {
   FormButtonSubmit,
   FormInputText,
 } from "@/components/lib/FormValidation"
+import searchStyle from "@/styles/components/search"
+import mainStyle from "@/styles/base/main"
 
 const Search = () => {
   const [selectedOptionValue, setSelectedOptionValue] =
@@ -40,27 +41,14 @@ const Search = () => {
       case "games":
         return (
           <Card key={idx} route={ROUTES.ONE_GAME} routeParams={{ id: item.id }}>
-            <View style={style.cardLeft}>
+            <View style={searchStyle.cardLeft}>
               {item?.assets["cover-large"]?.uri ? (
                 <Image
-                  style={{
-                    width: Utils.moderateScale(80),
-                    height: Utils.moderateScale(80),
-                    resizeMode: "contain",
-                  }}
+                  style={searchStyle.img}
                   source={{ uri: item.assets["cover-large"].uri }}
                 />
               ) : null}
-              <Text
-                style={[
-                  style.cardItem,
-                  {
-                    fontSize: Utils.moderateScale(16),
-                    fontWeight: "bold",
-                    textAlign: "left",
-                  },
-                ]}
-              >
+              <Text style={searchStyle.cardItem}>
                 {item.names?.international}
               </Text>
             </View>
@@ -69,31 +57,20 @@ const Search = () => {
       default:
         return (
           <Card key={idx} route={ROUTES.ONE_USER} routeParams={{ id: item.id }}>
-            <View style={style.cardLeft}>
+            <View style={searchStyle.cardLeft}>
               {item?.assets?.image?.uri ? (
                 <Image
-                  style={{
-                    width: Utils.moderateScale(80),
-                    height: Utils.moderateScale(80),
-                    resizeMode: "contain",
-                  }}
+                  style={searchStyle.img}
                   source={{ uri: item.assets.image.uri }}
                 />
               ) : (
-                <Image
-                  style={{
-                    width: Utils.moderateScale(80),
-                    height: Utils.moderateScale(80),
-                    resizeMode: "contain",
-                  }}
-                  source={imageDefault}
-                />
+                <Image style={searchStyle.img} source={imageDefault} />
               )}
               <UserName
                 data={item}
                 width={Utils.moderateScale(200)}
                 height={Utils.moderateScale(45)}
-                style={style.cardItem}
+                style={searchStyle.cardItem}
               />
             </View>
           </Card>
@@ -114,13 +91,11 @@ const Search = () => {
       <Header backButton={true} title="" />
       <View
         style={[
-          style.container,
-          theme === "dark"
-            ? { backgroundColor: Colors.dark.background }
-            : { backgroundColor: Colors.light.background },
+          searchStyle.container,
+          theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
         ]}
       >
-        <View style={style.searchForm}>
+        <View style={searchStyle.searchForm}>
           <FormInputText
             data={data}
             setData={setData}
@@ -137,7 +112,7 @@ const Search = () => {
             <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
           </BottomModal>
         </View>
-        <View style={style.submitButton}>
+        <View style={searchStyle.submitButton}>
           <FormButtonSubmit
             type="info"
             label="Search"
@@ -157,63 +132,5 @@ const Search = () => {
     </ScrollView>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-    width: "95%",
-    marginHorizontal: "auto",
-    marginVertical: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
-    borderColor: "grey",
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-    paddingBottom: Utils.moderateScale(10),
-  },
-  searchForm: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "baseline",
-    justifyContent: "center",
-  },
-  submitButton: {
-    display: "flex",
-    alignItems: "center",
-  },
-  card: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "90%",
-    marginLeft: Utils.moderateScale(20),
-    marginVertical: Utils.moderateScale(5),
-    borderRadius: Utils.moderateScale(5),
-    padding: Utils.moderateScale(10),
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(0.25),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
-  },
-  cardItem: {
-    display: "flex",
-    alignItems: "center",
-    padding: Utils.moderateScale(10),
-    marginVertical: Utils.moderateScale(10),
-  },
-  cardLeft: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-})
 
 export default Search

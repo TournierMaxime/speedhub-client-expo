@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { StyleSheet, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
@@ -9,6 +9,7 @@ import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import OneSchedule from "./OneSchedule"
 import OneTicker from "./OneTicker"
+import mainStyle from "@/styles/base/main"
 
 const OneMarathonUpcoming = () => {
   const { horaroId } = useGlobalSearchParams()
@@ -43,17 +44,11 @@ const OneMarathonUpcoming = () => {
   }
 
   return (
-    <ScrollView style={style.container}>
+    <ScrollView style={mainStyle.container}>
       <Header backButton={true} title="" />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonUpcoming()}
     </ScrollView>
   )
 }
-
-const style = StyleSheet.create({
-  container: {
-    display: "flex",
-  },
-})
 
 export default OneMarathonUpcoming
