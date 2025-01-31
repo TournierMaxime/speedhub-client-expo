@@ -1,25 +1,17 @@
 import React from "react"
-import { Text, View, StyleSheet } from "react-native"
-import { Schedule } from "./interface"
+import { Text, View } from "react-native"
 import Utils from "@/components/lib/Utils"
 import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 import scheduleStyle from "@/styles/views/schedule"
+import { Schedule, Items } from "@/types/speedhub"
 
-interface Item {
-  length: string
-  length_t: number
-  scheduled: string
-  scheduled_t: number
-  data: string[]
-}
-
-const OneSchedule: React.FC<Schedule> = ({ schedule }) => {
+const OneSchedule = ({ schedule }: { schedule: Schedule }) => {
   if (!schedule) {
     return <CatchError error={"No schedule for this event"} />
   }
 
-  const renderItems = (items: Item[]) => {
+  const renderItems = (items: Items[]) => {
     if (items.length > 0) {
       return items.map((item, idx) => (
         <View style={scheduleStyle.card} key={idx}>

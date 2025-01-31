@@ -3,7 +3,7 @@ import { Text, ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { Live } from "../interface"
+import { Live } from "@/types/speedhub"
 import { horaroService } from "@/services/speedhub"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
@@ -33,7 +33,7 @@ const OneMarathonLive = () => {
           ) : (
             <Text>Twitch channel not provided</Text>
           )}
-          <OneTicker ticker={data.ticker} />
+          <OneTicker ticker={data.ticker.ticker} />
           <OneSchedule schedule={data.schedule} />
         </Fragment>
       )

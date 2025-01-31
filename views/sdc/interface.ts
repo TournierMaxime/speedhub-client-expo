@@ -7,11 +7,7 @@ interface Run {
         names: {
           international: string
         }
-        assets: {
-          "cover-large": {
-            uri: string
-          }
-        }
+        assets: Assets
       }
     }
     category: {
@@ -21,9 +17,7 @@ interface Run {
       }
     }
     videos: {
-      links: {
-        uri: string
-      }[]
+      links: Links[]
     }
     comment: string
     status: {
@@ -47,11 +41,7 @@ interface Run {
             dark: string
           }
         }
-        assets: {
-          image: {
-            uri: string
-          }
-        }
+        assets: Assets
       }[]
     }
     date: string
@@ -80,19 +70,7 @@ interface Runs {
       data: {
         id: string
         names: { international: string }
-        assets: {
-          logo: { uri: string }
-          "cover-tiny": { uri: string }
-          "cover-small": { uri: string }
-          "cover-medium": { uri: string }
-          "cover-large": { uri: string }
-          icon: { uri: string }
-          "trophy-1st": { uri: string }
-          "trophy-2nd": { uri: string }
-          "trophy-3rd": { uri: string }
-          background: { uri: string }
-          foreground: { uri: string }
-        }
+        assets: Assets
       }
     }
     category: {
@@ -164,14 +142,7 @@ interface User {
     speedrunslive: {
       uri: string
     }
-    assets: {
-      icon: {
-        uri: string
-      }
-      image: {
-        uri: string
-      }
-    }
+    assets: Assets
   }
 }
 
@@ -185,9 +156,7 @@ interface PersonalBests {
       level: string
       category: string
       videos: {
-        links: {
-          uri: string
-        }[]
+        links: Links[]
       }
       comment: string
       status: {
@@ -215,41 +184,7 @@ interface PersonalBests {
         released: number
         "release-date": string
         created: string
-        assets: {
-          logo: {
-            uri: string
-          }
-          "cover-tiny": {
-            uri: string
-          }
-          "cover-small": {
-            uri: string
-          }
-          "cover-medium": {
-            uri: string
-          }
-          "cover-large": {
-            uri: string
-          }
-          icon: {
-            uri: string
-          }
-          "trophy-1st": {
-            uri: string
-          }
-          "trophy-2nd": {
-            uri: string
-          }
-          "trophy-3rd": {
-            uri: string
-          }
-          background: {
-            uri: string
-          }
-          foreground: {
-            uri: string
-          }
-        }
+        assets: Assets
       }
     }
     category: {
@@ -306,6 +241,34 @@ interface Splits {
   }
 }
 
+interface EmbedGame {
+  data: {
+    id: string
+    name: string
+    links: Links[]
+  }[]
+}
+
+interface Links {
+  rel: string
+  uri: string
+}
+
+interface Assets {
+  logo: { uri: string }
+  "cover-tiny": { uri: string }
+  "cover-small": { uri: string }
+  "cover-medium": { uri: string }
+  "cover-large": { uri: string }
+  icon: { uri: string }
+  image: { uri: string }
+  "trophy-1st": { uri: string }
+  "trophy-2nd": { uri: string }
+  "trophy-3rd": { uri: string }
+  background: { uri: string }
+  foreground: { uri: string }
+}
+
 interface Game {
   data: {
     id: string
@@ -326,77 +289,13 @@ interface Game {
       "emulators-allowed": boolean
     }
     romhack: boolean
-    gametypes: {
-      data: {
-        id: string
-        name: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
-    platforms: {
-      data: {
-        id: string
-        name: string
-        released: number
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
-    regions: {
-      data: {
-        id: string
-        name: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
-    genres: {
-      data: {
-        id: string
-        name: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
-    engines: {
-      data: {
-        id: string
-        name: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
-    developers: {
-      data: {
-        id: string
-        name: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
-    publishers: {
-      data: {
-        id: string
-        name: string
-        links: {
-          rel: string
-          uri: string
-        }[]
-      }[]
-    }
+    gametypes: EmbedGame
+    platforms: EmbedGame
+    regions: EmbedGame
+    genres: EmbedGame
+    engines: EmbedGame
+    developers: EmbedGame
+    publishers: EmbedGame
     moderators: {
       data: {
         id: string
@@ -412,10 +311,7 @@ interface Game {
         weblink: string
         type: string
         rules: string
-        links: {
-          rel: string
-          uri: string
-        }[]
+        links: Links[]
         variables: {
           data: [
             {
@@ -442,58 +338,15 @@ interface Game {
                 default: string
               }
               "is-subcategory": boolean
-              links: {
-                rel: string
-                uri: string
-              }[]
+              links: Links[]
             }
           ]
         }
       }[]
     }
     created: string
-    assets: {
-      logo: {
-        uri: string
-      }
-      "cover-tiny": {
-        uri: string
-      }
-      "cover-small": {
-        uri: string
-      }
-      "cover-medium": {
-        uri: string
-      }
-      "cover-large": {
-        uri: string
-      }
-      icon: {
-        uri: string
-      }
-      "trophy-1st": {
-        uri: string
-      }
-      "trophy-2nd": {
-        uri: string
-      }
-      "trophy-3rd": {
-        uri: string
-      }
-      "trophy-4th": {
-        uri: string
-      }
-      background: {
-        uri: string
-      }
-      foreground: {
-        uri: string
-      }
-    }
-    links: {
-      rel: string
-      uri: string
-    }[]
+    assets: Assets
+    links: Links[]
   }
 }
 
@@ -511,9 +364,7 @@ interface LeaderBoard {
           game: string
           category: string
           videos: {
-            links: {
-              uri: string
-            }[]
+            links: Links[]
           }
           players: [
             {
@@ -531,10 +382,7 @@ interface LeaderBoard {
         }
       }
     ]
-    links: {
-      rel: string
-      uri: string
-    }[]
+    links: Links[]
 
     players: {
       data: [
@@ -544,10 +392,7 @@ interface LeaderBoard {
             international: string
           }
           weblink: string
-          links: {
-            rel: string
-            uri: string
-          }[]
+          links: Links[]
         }
       ]
     }

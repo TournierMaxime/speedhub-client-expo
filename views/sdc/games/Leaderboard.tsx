@@ -23,7 +23,7 @@ const Leaderboard = ({
   assets?: any
 }) => {
   const [isEnabled, setIsEnabled] = useState(false)
-  const { handleRedirect } = useHandleRouter()
+  const { handleReplace } = useHandleRouter()
 
   const {
     data: records,
@@ -103,7 +103,7 @@ const Leaderboard = ({
               <TouchableOpacity
                 style={oneGameLeaderBoardStyle.icon}
                 onPress={async () =>
-                  handleRedirect(ROUTES.ONE_RUN, { id: run.run.id })
+                  handleReplace(ROUTES.ONE_RUN, { id: run.run.id })
                 }
               >
                 <VideoCam />

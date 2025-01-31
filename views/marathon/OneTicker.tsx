@@ -1,42 +1,18 @@
 import React, { Fragment } from "react"
-import { Text, View, StyleSheet } from "react-native"
-import { Ticker } from "./interface"
+import { Text, View } from "react-native"
+import { Ticker, TickerChildren } from "@/types/speedhub"
 import Utils from "@/components/lib/Utils"
 import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 import tickerStyle from "@/styles/views/ticker"
 
-interface Item {
-  previous: {
-    length: string
-    length_t: number
-    scheduled: string
-    scheduled_t: number
-    data: string[]
-  } | null
-  current: {
-    length: string
-    length_t: number
-    scheduled: string
-    scheduled_t: number
-    data: string[]
-  } | null
-  next: {
-    length: string
-    length_t: number
-    scheduled: string
-    scheduled_t: number
-    data: string[]
-  } | null
-}
-
-const OneTicker: React.FC<Ticker> = ({ ticker }) => {
+const OneTicker = ({ ticker }: { ticker: TickerChildren }) => {
   if (!ticker) {
     return <CatchError error={"No ticker for this event"} />
   }
 
-  const renderCurrent = (item: Item) => {
-    const { previous, current, next } = item
+  const renderItem = () => {
+    const { previous, current, next } = ticker
     return (
       <Fragment>
         {previous && (
@@ -96,7 +72,7 @@ const OneTicker: React.FC<Ticker> = ({ ticker }) => {
       <View style={tickerStyle.header}>
         <Text style={tickerStyle.title}>Ticker</Text>
       </View>
-      {renderCurrent(ticker.ticker)}
+      {renderItem()}
     </View>
   )
 }
