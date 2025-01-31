@@ -6,7 +6,7 @@ import Utils from "@/components/lib/Utils"
 import Leaderboard from "./Leaderboard"
 
 const CategoriesTab = ({ data }: { data: Game["data"] }) => {
-  const filteredCategories = data.categories.data.filter(
+  const filteredCategories = data?.categories?.data?.filter(
     (c) => c.type === "per-game"
   )
 

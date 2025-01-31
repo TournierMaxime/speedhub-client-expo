@@ -87,15 +87,18 @@ const Leaderboard = ({
 
           return (
             <View key={idx} style={style.row}>
-              {getTrophyUri(run.place) && (
-                <Image
-                  source={{ uri: getTrophyUri(run.place) }}
-                  style={style.trophy}
-                />
-              )}
+              <View style={style.trophyContainer}>
+                {getTrophyUri(run.place) && (
+                  <Image
+                    source={{ uri: getTrophyUri(run.place) }}
+                    style={style.trophy}
+                  />
+                )}
+              </View>
               <Text style={style.player}>{playerName}</Text>
               <Runtime time={run.run.times.primary_t} css={style.time} />
               <TouchableOpacity
+                style={style.icon}
                 onPress={async () =>
                   handleRedirect(ROUTES.ONE_RUN, { id: run.run.id })
                 }
@@ -112,13 +115,16 @@ const Leaderboard = ({
 
 const style = StyleSheet.create({
   row: {
-    width: "90%",
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     flexWrap: "wrap",
     paddingVertical: Utils.moderateScale(5),
     marginHorizontal: Utils.moderateScale(10),
+  },
+  trophyContainer: {
+    width: "15%",
   },
   trophy: {
     width: Utils.moderateScale(20),
@@ -127,9 +133,14 @@ const style = StyleSheet.create({
   },
   player: {
     fontSize: Utils.moderateScale(16),
+    width: "40%",
   },
   time: {
     fontSize: Utils.moderateScale(16),
+    width: "30%",
+  },
+  icon: {
+    width: "15%",
   },
 })
 

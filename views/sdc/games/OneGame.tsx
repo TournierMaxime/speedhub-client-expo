@@ -27,21 +27,22 @@ const OneGame = () => {
 
   if (!data) {
     refetch()
-    return null
   }
 
-  const tabs = [
-    {
-      name: "Details",
-      component: GameDetails,
-      props: { data: data.data },
-    },
-    {
-      name: "Categories",
-      component: CategoriesTab,
-      props: { data: data.data },
-    },
-  ]
+  const tabs = data
+    ? [
+        {
+          name: "Details",
+          component: GameDetails,
+          props: { data: data.data },
+        },
+        {
+          name: "Categories",
+          component: CategoriesTab,
+          props: { data: data.data },
+        },
+      ]
+    : []
 
   return (
     <View style={style.container}>

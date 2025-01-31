@@ -88,79 +88,83 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
           : { backgroundColor: Colors.light.background },
       ]}
     >
-      <ImageBackground
-        source={{
-          uri: data.assets?.background?.uri ?? null,
-        }}
-        style={style.backgroungImg}
-        resizeMode="cover"
-        imageStyle={{ opacity: 0.2 }}
-      >
-        <View style={style.gameContainer}>
-          <Image
-            source={{
-              uri: data.assets["cover-large"]?.uri ?? undefined,
-            }}
-            style={style.img}
-          />
+      {data?.assets?.background?.uri ? (
+        <ImageBackground
+          source={{
+            uri: data?.assets?.background?.uri ?? null,
+          }}
+          style={style.backgroungImg}
+          resizeMode="cover"
+          imageStyle={{ opacity: 0.2 }}
+        >
+          <View style={style.gameContainer}>
+            {data?.assets["cover-large"]?.uri ? (
+              <Image
+                source={{
+                  uri: data?.assets["cover-large"]?.uri,
+                }}
+                style={style.img}
+              />
+            ) : null}
 
-          <View style={style.infoContainer}>
-            <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
-              {data.names.international}
-            </Text>
-            <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
-              {data.id}
-            </Text>
-            <Text style={[style.text, { color: "#fff" }]}>
-              {data["release-date"]}
-            </Text>
+            <View style={style.infoContainer}>
+              <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
+                {data?.names?.international}
+              </Text>
+              <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
+                {data?.id}
+              </Text>
+              <Text style={[style.text, { color: "#fff" }]}>
+                {data["release-date"]}
+              </Text>
 
-            <View style={style.externalLinkContainer}>
-              {data.weblink && (
-                <TouchableOpacity
-                  style={style.sdcContainer}
-                  onPress={() => Linking.openURL(data.weblink)}
-                >
-                  <SDCSVG />
-                </TouchableOpacity>
-              )}
-              {data.discord && (
-                <TouchableOpacity
-                  style={style.discordContainer}
-                  onPress={() => Linking.openURL(data.discord)}
-                >
-                  <Discord />
-                </TouchableOpacity>
-              )}
+              <View style={style.externalLinkContainer}>
+                {data?.weblink && (
+                  <TouchableOpacity
+                    style={style.sdcContainer}
+                    onPress={() => Linking.openURL(data?.weblink)}
+                  >
+                    <SDCSVG />
+                  </TouchableOpacity>
+                )}
+                {data?.discord && (
+                  <TouchableOpacity
+                    style={style.discordContainer}
+                    onPress={() => Linking.openURL(data?.discord)}
+                  >
+                    <Discord />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </View>
-        </View>
-        <View style={style.collapsiblesContainer}>
-          {data.platforms.data.length > 0 ? (
-            <BottomModal title="Platforms">
-              <Platforms platforms={data.platforms.data} />
-            </BottomModal>
-          ) : null}
+          <View style={style.collapsiblesContainer}>
+            {data?.platforms?.data?.length > 0 ? (
+              <BottomModal title="Platforms">
+                <Platforms platforms={data?.platforms?.data} />
+              </BottomModal>
+            ) : null}
 
-          {data.genres.data.length > 0 ? (
-            <BottomModal title="Genres">
-              <Genres genres={data.genres.data} />
-            </BottomModal>
-          ) : null}
+            {data?.genres?.data?.length > 0 ? (
+              <BottomModal title="Genres">
+                <Genres genres={data?.genres?.data} />
+              </BottomModal>
+            ) : null}
 
-          {data.publishers.data.length > 0 ? (
-            <BottomModal title="Publishers">
-              <Publishers publishers={data.publishers.data} />
-            </BottomModal>
-          ) : null}
+            {data?.publishers?.data?.length > 0 ? (
+              <BottomModal title="Publishers">
+                <Publishers publishers={data?.publishers?.data} />
+              </BottomModal>
+            ) : null}
 
-          {data.developers.data.length > 0 ? (
-            <BottomModal title="Developers">
-              <Developers developers={data.developers.data} />
-            </BottomModal>
-          ) : null}
-        </View>
-      </ImageBackground>
+            {data?.developers?.data?.length > 0 ? (
+              <BottomModal title="Developers">
+                <Developers developers={data?.developers?.data} />
+              </BottomModal>
+            ) : null}
+          </View>
+        </ImageBackground>
+      ) : null}
     </View>
   )
 }
