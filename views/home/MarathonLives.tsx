@@ -22,7 +22,9 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
   const { data, isLoading, error, refetch } = useInfiniteQuery({
     queryKey: ["getLives", limit],
     queryFn: async () => {
-      return await horaroService.getLives(limit ? { limit } : null)
+      return await horaroService.getLives(
+        limit ? { limit, isLive: true } : null
+      )
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -37,7 +39,7 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
   }
 
   const marathonsLive = () => {
-    if (lives && lives.length > 0) {
+    if (lives.length > 0) {
       return (
         <View
           style={[
@@ -48,18 +50,19 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
           ]}
         >
           {lives.map((live, idx) => {
-            if (live) {
+            if (live.isLive) {
               return (
                 <Card
                   header={idx === 0 ? "Marathons Live" : undefined}
                   route={ROUTES.ONE_MARATHON_LIVE}
-                  routeParams={{ horaroId: live?.horaroId }}
+                  routeParams={{ horaroId: live.horaroId }}
                   key={idx}
                 >
                   <Text style={style.cardText}>{live.name}</Text>
                 </Card>
               )
             }
+
             return null
           })}
         </View>
@@ -101,18 +104,18 @@ const style = StyleSheet.create({
   card: {
     display: "flex",
     flexDirection: "column",
-    width: "95%",
+    width: "100%",
     marginHorizontal: "auto",
     marginTop: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
     borderColor: "grey",
-    shadowOffset: {
+    /*     shadowOffset: {
       width: Utils.moderateScale(0),
       height: Utils.moderateScale(2),
     },
     shadowOpacity: Utils.moderateScale(0.25),
     shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
+    elevation: Utils.moderateScale(5), */
     paddingVertical: Utils.moderateScale(10),
   },
   cardItem: {

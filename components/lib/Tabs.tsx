@@ -22,7 +22,7 @@ const Tabs: React.FC<TabsProps> = ({ screens }) => {
       <Tab.Navigator
         screenOptions={{
           tabBarLabelStyle: {
-            fontSize: Utils.moderateScale(12),
+            fontSize: Utils.moderateScale(16),
             fontWeight: "bold",
           },
           tabBarStyle: { backgroundColor: "#dedede" },

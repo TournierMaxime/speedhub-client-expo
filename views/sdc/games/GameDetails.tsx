@@ -111,9 +111,6 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
               <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
                 {data?.names?.international}
               </Text>
-              <Text style={[style.text, { fontWeight: "bold", color: "#fff" }]}>
-                {data?.id}
-              </Text>
               <Text style={[style.text, { color: "#fff" }]}>
                 {data["release-date"]}
               </Text>
@@ -176,20 +173,42 @@ const style = StyleSheet.create({
     marginHorizontal: "auto",
   },
   gameContainer: {
+    display: "flex",
     flexDirection: "row",
-    marginBottom: Utils.moderateScale(10),
-    width: "100%",
+    alignSelf: "center",
+    width: "95%",
     position: "absolute",
-    top: Utils.moderateScale(30),
+    top: Utils.moderateScale(10),
+    backgroundColor: "#cacaca",
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
+    },
+    shadowOpacity: Utils.moderateScale(5),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
+    borderRadius: Utils.moderateScale(5),
+    padding: Utils.moderateScale(10),
   },
   collapsiblesContainer: {
     position: "absolute",
-    width: "100%",
+    width: "95%",
+    alignSelf: "center",
     padding: Utils.moderateScale(10),
-    top: Utils.moderateScale(250),
+    top: Utils.moderateScale(240),
     display: "flex",
+    alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
+    backgroundColor: "#fff",
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
+    },
+    shadowOpacity: Utils.moderateScale(5),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
+    borderRadius: Utils.moderateScale(5),
   },
   infoContainer: {
     //marginLeft: Utils.moderateScale(10),
@@ -256,24 +275,6 @@ const style = StyleSheet.create({
     margin: Utils.moderateScale(5),
     borderRadius: Utils.moderateScale(5),
     fontSize: Utils.moderateScale(16),
-  },
-  cardInfoItems: {
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    paddingVertical: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
-    backgroundColor: "white", // adapt theme
-    marginHorizontal: Utils.moderateScale(10),
-    marginVertical: Utils.moderateScale(10),
-    shadowOffset: {
-      width: Utils.moderateScale(0),
-      height: Utils.moderateScale(2),
-    },
-    shadowOpacity: Utils.moderateScale(5),
-    shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
   },
 })
 

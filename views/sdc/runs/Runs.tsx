@@ -127,15 +127,17 @@ const style = StyleSheet.create({
   card: {
     display: "flex",
     flexDirection: "column",
-    margin: Utils.moderateScale(10),
+    width: "100%",
+    marginHorizontal: "auto",
+    marginTop: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
-    shadowOffset: {
+    /*     shadowOffset: {
       width: Utils.moderateScale(0),
       height: Utils.moderateScale(2),
     },
     shadowOpacity: Utils.moderateScale(0.25),
     shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5),
+    elevation: Utils.moderateScale(5), */
   },
   cardImage: {
     display: "flex",
