@@ -1,9 +1,9 @@
 import React, { Fragment } from "react"
 import { FlatList, Text, ImageBackground, View } from "react-native"
-import { Game } from "../interface"
 import RenderItem from "@/components/lib/RenderItem"
 import Leaderboard from "./Leaderboard"
 import { oneGameTabsStyle } from "@/styles/views/oneGame"
+import { Game } from "@/types/sdc"
 
 const CategoriesTab = ({ data }: { data: Game["data"] }) => {
   const filteredCategories = data?.categories?.data?.filter(

@@ -4,7 +4,7 @@ import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { User } from "../interface"
+import { User } from "@/types/sdc"
 import { userService } from "@/services/speedrunDotCom"
 import PersonalBestsUser from "./PersonalBestsUser"
 import moment from "moment"
@@ -13,7 +13,6 @@ import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import UserName from "@/components/lib/UserName"
 import { oneUserStyle } from "@/styles/views/oneUser"
-import mainStyle from "@/styles/base/main"
 
 const OneUser = () => {
   const { id } = useGlobalSearchParams()

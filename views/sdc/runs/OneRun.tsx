@@ -4,7 +4,6 @@ import { View, Text, ScrollView, Image } from "react-native"
 import Header from "@/components/lib/Header"
 import { useQuery } from "@tanstack/react-query"
 import { runService } from "@/services/speedrunDotCom"
-import { Run } from "../interface"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import Runtime from "@/components/lib/RunTime"
 import Splits from "./Splits"
@@ -17,6 +16,7 @@ import { Comment } from "@/components/lib/Icons"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
+import { Run } from "@/types/sdc"
 
 const OneRun = () => {
   const { id } = useGlobalSearchParams()

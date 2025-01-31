@@ -12,7 +12,6 @@ import Header from "@/components/lib/Header"
 import { useQuery } from "@tanstack/react-query"
 import { redditService } from "@/services/reddit"
 import Utils from "@/components/lib/Utils"
-import { Reddit } from "./interface"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import { useColorScheme } from "react-native"
 import CatchError from "@/components/lib/CatchError"
@@ -22,6 +21,7 @@ import moment from "moment"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRedditStyle from "@/styles/views/oneReddit"
+import { Reddit } from "@/types/reddit"
 
 const OneReddit = () => {
   const { permalink } = useGlobalSearchParams()

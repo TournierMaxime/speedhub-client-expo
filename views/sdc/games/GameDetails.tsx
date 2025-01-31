@@ -7,7 +7,7 @@ import {
   Linking,
   ImageBackground,
 } from "react-native"
-import { Game } from "../interface"
+import { Game } from "@/types/sdc"
 import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import BottomModal from "@/components/lib/Modal"

@@ -8,9 +8,9 @@ import { useColorScheme } from "react-native"
 import ROUTES from "@/components/routes"
 import Card from "@/components/lib/Card"
 import { redditService } from "@/services/reddit"
-import { Reddits } from "./interface"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
+import { Reddits } from "@/types/reddit"
 
 interface Props {
   limit?: number

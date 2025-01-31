@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment } from "react"
 import { View, Text, Image } from "react-native"
 import { runService } from "@/services/speedrunDotCom"
-import { Runs } from "../interface"
+import { Runs } from "@/types/sdc"
 import Runtime from "@/components/lib/RunTime"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useColorScheme } from "react-native"
