@@ -4,10 +4,8 @@ import { StyleSheet } from "react-native"
 const searchStyle = StyleSheet.create({
   container: {
     display: "flex",
-    width: "95%",
-    marginHorizontal: "auto",
-    marginVertical: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
+    alignSelf: "auto",
+    width: "100%",
     borderColor: "grey",
     shadowOffset: {
       width: Utils.moderateScale(0),
@@ -16,17 +14,16 @@ const searchStyle = StyleSheet.create({
     shadowOpacity: Utils.moderateScale(0.25),
     shadowRadius: Utils.moderateScale(3.5),
     elevation: Utils.moderateScale(5),
-    paddingBottom: Utils.moderateScale(10),
+    padding: Utils.moderateScale(10),
   },
   searchForm: {
     display: "flex",
     flexDirection: "row",
     alignItems: "baseline",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   submitButton: {
     display: "flex",
-    alignItems: "center",
   },
   card: {
     display: "flex",

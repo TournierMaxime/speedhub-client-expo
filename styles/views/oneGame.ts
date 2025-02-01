@@ -13,22 +13,14 @@ const oneGameTabsStyle = StyleSheet.create({
   },
   tabContent: {
     flex: 1,
-    padding: Utils.moderateScale(10),
     marginVertical: Utils.moderateScale(10),
   },
   tags: {
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "#fff",
     padding: Utils.moderateScale(5),
-    margin: Utils.moderateScale(5),
+    marginVertical: Utils.moderateScale(5),
     borderRadius: Utils.moderateScale(5),
     fontSize: Utils.moderateScale(16),
-  },
-  backgroungImg: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
-    position: "relative",
-    backgroundColor: "rgba(0, 0, 0, 0.9)",
   },
   leaderboardContainer: {
     backgroundColor: "rgba(255,255,255,0.9)",
@@ -84,17 +76,13 @@ const oneGameDetailsStyle = StyleSheet.create({
     width: "100%",
     borderRadius: Utils.moderateScale(5),
   },
-  collapsiblesContainer: {
+  modalContainer: {
     width: "100%",
     alignSelf: "center",
-    padding: Utils.moderateScale(10),
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
-  },
-  infoContainer: {
-    //marginLeft: Utils.moderateScale(10),
   },
   img: {
     width: Utils.moderateScale(140),
@@ -122,25 +110,24 @@ const oneGameDetailsStyle = StyleSheet.create({
     fontSize: Utils.moderateScale(20),
     fontWeight: "bold",
     marginLeft: Utils.moderateScale(10),
+    marginTop: Utils.moderateScale(10),
   },
-  externalLinkContainer: {
+  infoContainer: {
     display: "flex",
     flexDirection: "column",
-    marginVertical: Utils.moderateScale(10),
   },
-  externalLinks: {
+  infoContent: {
     display: "flex",
     flexDirection: "row",
-    marginVertical: Utils.moderateScale(10),
   },
-  sdcContainer: {
+  buttonContainer: {
     backgroundColor: "#199c77",
     borderRadius: Utils.moderateScale(5),
     display: "flex",
     alignItems: "center",
     padding: Utils.moderateScale(5),
     width: Utils.moderateScale(80),
-    marginHorizontal: Utils.moderateScale(10),
+    margin: Utils.moderateScale(10),
   },
   sdcButton: {
     color: "#fff",
@@ -148,14 +135,6 @@ const oneGameDetailsStyle = StyleSheet.create({
     textAlign: "center",
     padding: Utils.moderateScale(10),
     fontSize: Utils.moderateScale(16),
-  },
-  discordContainer: {
-    backgroundColor: "#7289da",
-    borderRadius: Utils.moderateScale(5),
-    display: "flex",
-    alignItems: "center",
-    padding: Utils.moderateScale(5),
-    width: Utils.moderateScale(80),
   },
   discordButton: {
     color: "#fff",
@@ -174,6 +153,9 @@ const oneGameDetailsStyle = StyleSheet.create({
     padding: Utils.moderateScale(5),
     margin: Utils.moderateScale(5),
     borderRadius: Utils.moderateScale(5),
+    fontSize: Utils.moderateScale(16),
+  },
+  text: {
     fontSize: Utils.moderateScale(16),
   },
 })

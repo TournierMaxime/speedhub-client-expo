@@ -88,7 +88,7 @@ const Search = () => {
 
   return (
     <ScrollView>
-      <Header backButton={true} title="" />
+      <Header backButton={true} />
       <View
         style={[
           searchStyle.container,
@@ -105,20 +105,29 @@ const Search = () => {
             secure={false}
             readOnly={false}
             type=""
-            css={{ width: "95%", display: "flex" }}
           />
 
           <BottomModal icon={true} title="Filters">
             <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
           </BottomModal>
         </View>
+
         <View style={searchStyle.submitButton}>
-          <FormButtonSubmit
-            type="info"
-            label="Search"
-            fct={handleSearchWithFlag}
-            disabled={!data.query}
-          />
+          {theme === "dark" ? (
+            <FormButtonSubmit
+              type="secondary"
+              label="Search"
+              fct={handleSearchWithFlag}
+              disabled={!data.query}
+            />
+          ) : (
+            <FormButtonSubmit
+              type="primary"
+              label="Search"
+              fct={handleSearchWithFlag}
+              disabled={!data.query}
+            />
+          )}
         </View>
 
         {isLoading ? (

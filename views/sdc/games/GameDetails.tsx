@@ -6,78 +6,37 @@ import {
   TouchableOpacity,
   Linking,
   ImageBackground,
+  FlatList,
 } from "react-native"
 import { Game } from "@/types/sdc"
 import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
+import { Colors, discordColor, sdcColor } from "@/constants/Colors"
 import BottomModal from "@/components/lib/Modal"
 import { Discord } from "@/components/lib/Icons"
 import SDCSVG from "@/assets/images/SDCSVG"
 import { oneGameDetailsStyle } from "@/styles/views/oneGame"
 import mainStyle from "@/styles/base/main"
 
-const Platforms = ({
-  platforms,
-}: {
-  platforms: Game["data"]["platforms"]["data"]
-}) => {
-  return (
-    <Fragment>
-      {platforms.map((platform, idx) => (
-        <Text key={idx} style={oneGameDetailsStyle.tags}>
-          {platform.name}
-        </Text>
-      ))}
-    </Fragment>
-  )
-}
-
-const Genres = ({ genres }: { genres: Game["data"]["genres"]["data"] }) => {
-  return (
-    <Fragment>
-      {genres.map((genre, idx) => (
-        <Text key={idx} style={oneGameDetailsStyle.tags}>
-          {genre.name}
-        </Text>
-      ))}
-    </Fragment>
-  )
-}
-
-const Developers = ({
-  developers,
-}: {
-  developers: Game["data"]["developers"]["data"]
-}) => {
-  return (
-    <Fragment>
-      {developers.map((developer, idx) => (
-        <Text key={idx} style={oneGameDetailsStyle.tags}>
-          {developer.name}
-        </Text>
-      ))}
-    </Fragment>
-  )
-}
-
-const Publishers = ({
-  publishers,
-}: {
-  publishers: Game["data"]["publishers"]["data"]
-}) => {
-  return (
-    <Fragment>
-      {publishers.map((publisher, idx) => (
-        <Text key={idx} style={oneGameDetailsStyle.tags}>
-          {publisher.name}
-        </Text>
-      ))}
-    </Fragment>
-  )
-}
-
 const GameDetails = ({ data }: { data: Game["data"] }) => {
   const theme = useColorScheme() ?? "light"
+
+  const infoData = [
+    data?.["release-date"]
+      ? { title: "Release Date", content: data?.["release-date"] }
+      : null,
+    data?.platforms?.data?.length
+      ? { title: "Platforms", content: data.platforms.data }
+      : null,
+    data?.genres?.data?.length
+      ? { title: "Genres", content: data.genres.data }
+      : null,
+    data?.publishers?.data?.length
+      ? { title: "Publishers", content: data.publishers.data }
+      : null,
+    data?.developers?.data?.length
+      ? { title: "Developers", content: data.developers.data }
+      : null,
+  ].filter(Boolean)
 
   return (
     <View
@@ -107,16 +66,40 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
         </ImageBackground>
       </View>
 
-      {/*         <Text style={[oneGameDetailsStyle.text, { color: "#fff" }]}>
-          {data["release-date"]}
-        </Text> */}
+      <View style={oneGameDetailsStyle.infoContainer}>
+        <Text style={oneGameDetailsStyle.subTitle}>Informations</Text>
+        <View style={oneGameDetailsStyle.infoContent}>
+          <FlatList
+            data={infoData}
+            horizontal={true}
+            keyExtractor={(item) => item?.title ?? ""}
+            renderItem={({ item }) => (
+              <BottomModal title={item?.title ?? ""}>
+                {Array.isArray(item?.content) ? (
+                  item.content.map((elem, idx) => (
+                    <Text key={idx} style={oneGameDetailsStyle.tags}>
+                      {elem.name}
+                    </Text>
+                  ))
+                ) : (
+                  <Text style={oneGameDetailsStyle.tags}>{item?.content}</Text>
+                )}
+              </BottomModal>
+            )}
+            showsHorizontalScrollIndicator={true}
+          />
+        </View>
+      </View>
 
-      <View style={oneGameDetailsStyle.externalLinkContainer}>
-        <Text style={oneGameDetailsStyle.subTitle}>External link</Text>
-        <View style={oneGameDetailsStyle.externalLinks}>
+      <View style={oneGameDetailsStyle.infoContainer}>
+        <Text style={oneGameDetailsStyle.subTitle}>External links</Text>
+        <View style={oneGameDetailsStyle.infoContent}>
           {data?.weblink && (
             <TouchableOpacity
-              style={oneGameDetailsStyle.sdcContainer}
+              style={[
+                oneGameDetailsStyle.buttonContainer,
+                { backgroundColor: sdcColor },
+              ]}
               onPress={() => Linking.openURL(data?.weblink)}
             >
               <SDCSVG />
@@ -124,7 +107,10 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
           )}
           {data?.discord && (
             <TouchableOpacity
-              style={oneGameDetailsStyle.discordContainer}
+              style={[
+                oneGameDetailsStyle.buttonContainer,
+                { backgroundColor: discordColor },
+              ]}
               onPress={() => Linking.openURL(data?.discord)}
             >
               <Discord />
@@ -132,32 +118,6 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
           )}
         </View>
       </View>
-
-      {/*       <View style={oneGameDetailsStyle.collapsiblesContainer}>
-        {data?.platforms?.data?.length > 0 ? (
-          <BottomModal title="Platforms">
-            <Platforms platforms={data?.platforms?.data} />
-          </BottomModal>
-        ) : null}
-
-        {data?.genres?.data?.length > 0 ? (
-          <BottomModal title="Genres">
-            <Genres genres={data?.genres?.data} />
-          </BottomModal>
-        ) : null}
-
-        {data?.publishers?.data?.length > 0 ? (
-          <BottomModal title="Publishers">
-            <Publishers publishers={data?.publishers?.data} />
-          </BottomModal>
-        ) : null}
-
-        {data?.developers?.data?.length > 0 ? (
-          <BottomModal title="Developers">
-            <Developers developers={data?.developers?.data} />
-          </BottomModal>
-        ) : null}
-      </View> */}
     </View>
   )
 }

@@ -20,6 +20,8 @@ import useOnChange from "@/hooks/utils/useOnChange"
 type SetFormData = React.Dispatch<React.SetStateAction<DataState>>
 
 const TypeSubmitStyles = {
+  primary: { backgroundColor: "black", color: "white" },
+  secondary: { backgroundColor: "white", color: "black" },
   info: { backgroundColor: "blue", color: "white" },
   success: { backgroundColor: "green", color: "white" },
   warning: { backgroundColor: "orange", color: "white" },
@@ -276,7 +278,7 @@ const style = StyleSheet.create({
   btnContainer: {
     display: "flex",
     borderRadius: Utils.moderateScale(5),
-    width: "90%",
+    width: "100%",
     alignItems: "center",
     marginVertical: Utils.moderateScale(10),
   },

@@ -21,8 +21,9 @@ const style = StyleSheet.create({
     margin: Utils.moderateScale(10),
   },
   text: {
-    padding: Utils.moderateScale(10),
-    fontSize: Utils.moderateScale(16),
+    paddingHorizontal: Utils.moderateScale(10),
+    paddingVertical: Utils.moderateScale(5),
+    fontSize: Utils.moderateScale(12),
     color: "#fff",
   },
 })
