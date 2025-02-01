@@ -31,6 +31,19 @@ interface Times {
   realtime_t: number
 }
 
+interface Values {
+  values: {
+    [key: string]: {
+      label: string
+      rules: string
+      flags: {
+        miscellaneous: boolean
+      }
+    }
+  }
+  default: string
+}
+
 interface Run {
   data: {
     id: string
@@ -325,19 +338,7 @@ interface Game {
               mandatory: boolean
               "user-defined": boolean
               obsoletes: boolean
-              values: {
-                values: Record<
-                  string,
-                  {
-                    label: string
-                    rules: string
-                    flags: {
-                      miscellaneous: boolean
-                    }
-                  }
-                >
-                default: string
-              }
+              values: Values
               "is-subcategory": boolean
               links: Links[]
             }
@@ -397,4 +398,14 @@ interface LeaderBoard {
   }
 }
 
-export { Run, Runs, User, PersonalBests, Splits, Game, LeaderBoard }
+export {
+  Run,
+  Runs,
+  User,
+  PersonalBests,
+  Splits,
+  Game,
+  LeaderBoard,
+  Assets,
+  Values,
+}

@@ -10,6 +10,7 @@ import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { VideoCam } from "@/components/lib/Icons"
 import { oneGameLeaderBoardStyle } from "@/styles/views/oneGame"
+import { Assets } from "@/types/sdc"
 
 const Leaderboard = ({
   gameId,
@@ -20,7 +21,7 @@ const Leaderboard = ({
   gameId: string
   categoryId: string
   variables?: Record<string, string>
-  assets?: any
+  assets: Assets
 }) => {
   const [isEnabled, setIsEnabled] = useState(false)
   const { handleReplace } = useHandleRouter()
@@ -81,7 +82,7 @@ const Leaderboard = ({
               case 3:
                 return assets["trophy-3rd"]?.uri
               default:
-                return null
+                return undefined
             }
           }
 

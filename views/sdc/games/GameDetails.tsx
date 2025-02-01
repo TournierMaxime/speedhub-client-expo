@@ -14,6 +14,7 @@ import BottomModal from "@/components/lib/Modal"
 import { Discord } from "@/components/lib/Icons"
 import SDCSVG from "@/assets/images/SDCSVG"
 import { oneGameDetailsStyle } from "@/styles/views/oneGame"
+import mainStyle from "@/styles/base/main"
 
 const Platforms = ({
   platforms,
@@ -82,12 +83,10 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
     <View
       style={[
         oneGameDetailsStyle.contentContainer,
-        theme === "dark"
-          ? { backgroundColor: Colors.dark.background }
-          : { backgroundColor: Colors.light.background },
+        theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
       ]}
     >
-      {data?.assets?.background?.uri ? (
+      <View style={oneGameDetailsStyle.gameContainer}>
         <ImageBackground
           source={{
             uri: data?.assets?.background?.uri ?? null,
@@ -96,76 +95,69 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
           resizeMode="cover"
           imageStyle={{ opacity: 0.2 }}
         >
-          <View style={oneGameDetailsStyle.gameContainer}>
-            {data?.assets["cover-large"]?.uri ? (
-              <Image
-                source={{
-                  uri: data?.assets["cover-large"]?.uri,
-                }}
-                style={oneGameDetailsStyle.img}
-              />
-            ) : null}
-
-            <View style={oneGameDetailsStyle.infoContainer}>
-              <Text
-                style={[
-                  oneGameDetailsStyle.text,
-                  { fontWeight: "bold", color: "#fff" },
-                ]}
-              >
-                {data?.names?.international}
-              </Text>
-              <Text style={[oneGameDetailsStyle.text, { color: "#fff" }]}>
-                {data["release-date"]}
-              </Text>
-
-              <View style={oneGameDetailsStyle.externalLinkContainer}>
-                {data?.weblink && (
-                  <TouchableOpacity
-                    style={oneGameDetailsStyle.sdcContainer}
-                    onPress={() => Linking.openURL(data?.weblink)}
-                  >
-                    <SDCSVG />
-                  </TouchableOpacity>
-                )}
-                {data?.discord && (
-                  <TouchableOpacity
-                    style={oneGameDetailsStyle.discordContainer}
-                    onPress={() => Linking.openURL(data?.discord)}
-                  >
-                    <Discord />
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-          </View>
-          <View style={oneGameDetailsStyle.collapsiblesContainer}>
-            {data?.platforms?.data?.length > 0 ? (
-              <BottomModal title="Platforms">
-                <Platforms platforms={data?.platforms?.data} />
-              </BottomModal>
-            ) : null}
-
-            {data?.genres?.data?.length > 0 ? (
-              <BottomModal title="Genres">
-                <Genres genres={data?.genres?.data} />
-              </BottomModal>
-            ) : null}
-
-            {data?.publishers?.data?.length > 0 ? (
-              <BottomModal title="Publishers">
-                <Publishers publishers={data?.publishers?.data} />
-              </BottomModal>
-            ) : null}
-
-            {data?.developers?.data?.length > 0 ? (
-              <BottomModal title="Developers">
-                <Developers developers={data?.developers?.data} />
-              </BottomModal>
-            ) : null}
-          </View>
+          <Image
+            source={{
+              uri: data?.assets["cover-large"]?.uri ?? null,
+            }}
+            style={oneGameDetailsStyle.img}
+          />
+          <Text style={oneGameDetailsStyle.gameTitle}>
+            {data?.names?.international}
+          </Text>
         </ImageBackground>
-      ) : null}
+      </View>
+
+      {/*         <Text style={[oneGameDetailsStyle.text, { color: "#fff" }]}>
+          {data["release-date"]}
+        </Text> */}
+
+      <View style={oneGameDetailsStyle.externalLinkContainer}>
+        <Text style={oneGameDetailsStyle.subTitle}>External link</Text>
+        <View style={oneGameDetailsStyle.externalLinks}>
+          {data?.weblink && (
+            <TouchableOpacity
+              style={oneGameDetailsStyle.sdcContainer}
+              onPress={() => Linking.openURL(data?.weblink)}
+            >
+              <SDCSVG />
+            </TouchableOpacity>
+          )}
+          {data?.discord && (
+            <TouchableOpacity
+              style={oneGameDetailsStyle.discordContainer}
+              onPress={() => Linking.openURL(data?.discord)}
+            >
+              <Discord />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+
+      {/*       <View style={oneGameDetailsStyle.collapsiblesContainer}>
+        {data?.platforms?.data?.length > 0 ? (
+          <BottomModal title="Platforms">
+            <Platforms platforms={data?.platforms?.data} />
+          </BottomModal>
+        ) : null}
+
+        {data?.genres?.data?.length > 0 ? (
+          <BottomModal title="Genres">
+            <Genres genres={data?.genres?.data} />
+          </BottomModal>
+        ) : null}
+
+        {data?.publishers?.data?.length > 0 ? (
+          <BottomModal title="Publishers">
+            <Publishers publishers={data?.publishers?.data} />
+          </BottomModal>
+        ) : null}
+
+        {data?.developers?.data?.length > 0 ? (
+          <BottomModal title="Developers">
+            <Developers developers={data?.developers?.data} />
+          </BottomModal>
+        ) : null}
+      </View> */}
     </View>
   )
 }
