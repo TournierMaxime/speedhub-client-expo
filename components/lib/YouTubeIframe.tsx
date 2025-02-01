@@ -1,6 +1,5 @@
 import React from "react"
 import YoutubePlayer from "react-native-youtube-iframe"
-import Utils from "./Utils"
 import useResponsive from "@/hooks/utils/useResponsive"
 import { StyleSheet, View } from "react-native"
 

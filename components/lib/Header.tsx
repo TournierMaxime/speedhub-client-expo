@@ -1,13 +1,12 @@
 import React from "react"
 import { View, TouchableOpacity, Image } from "react-native"
-import Utils from "./Utils"
 import { useAuth } from "@/contexts/AuthContext"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { useColorScheme } from "react-native"
-import { Colors } from "@/constants/Colors"
 import ROUTES from "../routes"
 import { LeftArrow, Search, User } from "./Icons"
 import headerStyle from "@/styles/base/header"
+import mainStyle from "@/styles/base/main"
 
 interface HeaderProps {
   backButton: boolean
@@ -29,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
         <View
           style={[
             headerStyle.header,
-            theme === "dark" ? headerStyle.themeDark : headerStyle.themeLight,
+            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
           {backButton ? (
@@ -56,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
         <View
           style={[
             headerStyle.header,
-            theme === "dark" ? headerStyle.themeDark : headerStyle.themeLight,
+            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
           {backButton ? (

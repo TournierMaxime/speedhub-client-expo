@@ -1,3 +1,36 @@
+interface EmbedGame {
+  data: {
+    id: string
+    name: string
+    links: Links[]
+  }[]
+}
+
+interface Links {
+  rel: string
+  uri: string
+}
+
+interface Assets {
+  logo: { uri: string }
+  "cover-tiny": { uri: string }
+  "cover-small": { uri: string }
+  "cover-medium": { uri: string }
+  "cover-large": { uri: string }
+  icon: { uri: string }
+  image: { uri: string }
+  "trophy-1st": { uri: string }
+  "trophy-2nd": { uri: string }
+  "trophy-3rd": { uri: string }
+  background: { uri: string }
+  foreground: { uri: string }
+}
+
+interface Times {
+  primary_t: number
+  realtime_t: number
+}
+
 interface Run {
   data: {
     id: string
@@ -46,9 +79,7 @@ interface Run {
     }
     date: string
     submitted: string
-    times: {
-      primary_t: number
-    }
+    times: Times
     splits: {
       rel: string
       uri: string
@@ -90,7 +121,7 @@ interface Runs {
         }
       }[]
     }
-    times: { primary_t: number }
+    times: Times
   }[]
 }
 
@@ -166,9 +197,7 @@ interface PersonalBests {
       }
       date: string
       submitted: string
-      times: {
-        primary_t: number
-      }
+      times: Times
       splits: {
         uri: string
       }
@@ -239,34 +268,6 @@ interface Splits {
       skipped: boolean
     }[]
   }
-}
-
-interface EmbedGame {
-  data: {
-    id: string
-    name: string
-    links: Links[]
-  }[]
-}
-
-interface Links {
-  rel: string
-  uri: string
-}
-
-interface Assets {
-  logo: { uri: string }
-  "cover-tiny": { uri: string }
-  "cover-small": { uri: string }
-  "cover-medium": { uri: string }
-  "cover-large": { uri: string }
-  icon: { uri: string }
-  image: { uri: string }
-  "trophy-1st": { uri: string }
-  "trophy-2nd": { uri: string }
-  "trophy-3rd": { uri: string }
-  background: { uri: string }
-  foreground: { uri: string }
 }
 
 interface Game {
@@ -375,10 +376,7 @@ interface LeaderBoard {
           ]
           date: string
           submitted: string
-          times: {
-            primary_t: number
-            realtime_t: number
-          }
+          times: Times
         }
       }
     ]

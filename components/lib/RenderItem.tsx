@@ -4,7 +4,7 @@ import { View, StyleProp, ViewStyle } from "react-native"
 interface Props<T> {
   item: T
   style?: StyleProp<ViewStyle>
-  renderProperty: (item: T) => React.ReactNode // Fonction pour définir ce qui est affiché
+  renderProperty: (item: T) => React.ReactNode
 }
 
 const RenderItem = <T,>({ item, style, renderProperty }: Props<T>) => {
