@@ -51,8 +51,9 @@ const searchStyle = StyleSheet.create({
     fontSize: Utils.moderateScale(16),
     fontWeight: "bold",
     textAlign: "left",
+    width: "70%",
   },
-  cardLeft: {
+  cardContent: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

@@ -41,7 +41,7 @@ const Search = () => {
       case "games":
         return (
           <Card key={idx} route={ROUTES.ONE_GAME} routeParams={{ id: item.id }}>
-            <View style={searchStyle.cardLeft}>
+            <View style={searchStyle.cardContent}>
               {item?.assets["cover-large"]?.uri ? (
                 <Image
                   style={searchStyle.img}
@@ -57,7 +57,7 @@ const Search = () => {
       default:
         return (
           <Card key={idx} route={ROUTES.ONE_USER} routeParams={{ id: item.id }}>
-            <View style={searchStyle.cardLeft}>
+            <View style={searchStyle.cardContent}>
               {item?.assets?.image?.uri ? (
                 <Image
                   style={searchStyle.img}
