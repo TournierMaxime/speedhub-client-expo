@@ -1,14 +1,50 @@
-import React, { Fragment } from "react"
-import { FlatList, Text, ImageBackground, View } from "react-native"
+import React, { Fragment, useState, useEffect } from "react"
+import { FlatList, Text, View } from "react-native"
 import RenderItem from "@/components/lib/RenderItem"
 import Leaderboard from "./Leaderboard"
 import { oneGameTabsStyle } from "@/styles/views/oneGame"
-import { Game } from "@/types/sdc"
+import { Game, Values } from "@/types/sdc"
+import Chip from "@/components/lib/Chip"
 
 const CategoriesTab = ({ data }: { data: Game["data"] }) => {
   const filteredCategories = data?.categories?.data?.filter(
     (c) => c.type === "per-game"
   )
+
+  const [selectedVariablesMap, setSelectedVariablesMap] = useState<
+    Record<string, Record<string, string>>
+  >({})
+
+  useEffect(() => {
+    const initialVariablesMap: Record<string, Record<string, string>> = {}
+
+    filteredCategories.forEach((category) => {
+      const categoryVariables = category.variables?.data ?? []
+      const initialVariables: Record<string, string> = {}
+
+      categoryVariables.forEach((variable) => {
+        initialVariables[`var-${variable.id}`] = variable.values.default
+      })
+
+      initialVariablesMap[category.id] = initialVariables
+    })
+
+    setSelectedVariablesMap(initialVariablesMap)
+  }, [])
+
+  const handleSelectVariable = (
+    categoryId: string,
+    variableId: string,
+    valueId: string
+  ) => {
+    setSelectedVariablesMap((prev) => ({
+      ...prev,
+      [categoryId]: {
+        ...prev[categoryId],
+        [`var-${variableId}`]: valueId,
+      },
+    }))
+  }
 
   return (
     <FlatList
@@ -17,13 +53,7 @@ const CategoriesTab = ({ data }: { data: Game["data"] }) => {
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => {
         const categoryVariables = item.variables?.data ?? []
-
-        const selectedVariables: Record<string, string> = {}
-
-        categoryVariables.forEach((variable) => {
-          const defaultValueId = variable.values.default
-          selectedVariables[`var-${variable.id}`] = defaultValueId
-        })
+        const selectedVariables = selectedVariablesMap[item.id] || {}
 
         return (
           <RenderItem
@@ -35,21 +65,40 @@ const CategoriesTab = ({ data }: { data: Game["data"] }) => {
 
                 {categoryVariables.length > 0 ? (
                   categoryVariables.map((variable) => {
-                    const defaultValueId = variable.values.default
-                    const variableLabel =
-                      variable.values.values[defaultValueId]?.label ?? "Unknown"
+                    const values: Values = variable.values
 
                     return (
                       <View
                         key={variable.id}
                         style={oneGameTabsStyle.variableContainer}
                       >
-                        <Text style={oneGameTabsStyle.variableTitle}>
-                          {variable.name}:
-                        </Text>
-                        <Text style={oneGameTabsStyle.variableValue}>
-                          {variableLabel}
-                        </Text>
+                        <FlatList
+                          data={Object.keys(values.values)}
+                          keyExtractor={(key) => key}
+                          horizontal
+                          renderItem={({ item: valueId }) => {
+                            const value = values.values[valueId]
+
+                            const isSelected =
+                              selectedVariables[`var-${variable.id}`] ===
+                              valueId
+
+                            return (
+                              <Chip
+                                title={value.label}
+                                key={valueId}
+                                isSelected={isSelected}
+                                onPress={() =>
+                                  handleSelectVariable(
+                                    item.id,
+                                    variable.id,
+                                    valueId
+                                  )
+                                }
+                              />
+                            )
+                          }}
+                        />
                       </View>
                     )
                   })

@@ -1,22 +1,39 @@
-import React from "react"
-import { Text, View, StyleSheet } from "react-native"
+import React, { Fragment } from "react"
+import { Text, StyleSheet, TouchableOpacity, View } from "react-native"
 import Utils from "./Utils"
 
 interface Props {
   title: string
+  isSelected?: boolean
+  onPress?: () => void
 }
 
-const Chip: React.FC<Props> = ({ title }) => {
+const Chip: React.FC<Props> = ({ title, isSelected, onPress }) => {
   return (
-    <View style={style.container}>
-      <Text style={style.text}>{title}</Text>
-    </View>
+    <Fragment>
+      {onPress ? (
+        <TouchableOpacity
+          onPress={onPress}
+          style={[
+            style.container,
+            isSelected
+              ? { backgroundColor: "blue" }
+              : { backgroundColor: "grey" },
+          ]}
+        >
+          <Text style={style.text}>{title}</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={[style.container, { backgroundColor: "grey" }]}>
+          <Text style={style.text}>{title}</Text>
+        </View>
+      )}
+    </Fragment>
   )
 }
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: "grey",
     borderRadius: Utils.moderateScale(20),
     margin: Utils.moderateScale(10),
   },

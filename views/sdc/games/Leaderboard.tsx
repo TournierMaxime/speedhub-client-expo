@@ -17,14 +17,29 @@ const Leaderboard = ({
   categoryId,
   variables = {},
   assets,
+  isSelected,
 }: {
   gameId: string
   categoryId: string
   variables?: Record<string, string>
   assets: Assets
+  isSelected?: boolean
 }) => {
   const [isEnabled, setIsEnabled] = useState(false)
   const { handleReplace } = useHandleRouter()
+
+  const getTrophyUri = (place: number) => {
+    switch (place) {
+      case 1:
+        return assets["trophy-1st"]?.uri
+      case 2:
+        return assets["trophy-2nd"]?.uri
+      case 3:
+        return assets["trophy-3rd"]?.uri
+      default:
+        return undefined
+    }
+  }
 
   const {
     data: records,
@@ -61,6 +76,10 @@ const Leaderboard = ({
         if (isOpen === true) {
           refetch()
         }
+        if (!isSelected) {
+          setIsEnabled(!isOpen)
+          refetch()
+        }
       }}
     >
       {isLoading ? (
@@ -72,19 +91,6 @@ const Leaderboard = ({
             (p: any) => p.id === playerId
           )
           const playerName = player?.names?.international ?? "Unknown Player"
-
-          const getTrophyUri = (place: number) => {
-            switch (place) {
-              case 1:
-                return assets["trophy-1st"]?.uri
-              case 2:
-                return assets["trophy-2nd"]?.uri
-              case 3:
-                return assets["trophy-3rd"]?.uri
-              default:
-                return undefined
-            }
-          }
 
           return (
             <View key={idx} style={oneGameLeaderBoardStyle.row}>
