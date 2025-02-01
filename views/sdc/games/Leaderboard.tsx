@@ -17,13 +17,11 @@ const Leaderboard = ({
   categoryId,
   variables = {},
   assets,
-  isSelected,
 }: {
   gameId: string
   categoryId: string
   variables?: Record<string, string>
   assets: Assets
-  isSelected?: boolean
 }) => {
   const [isEnabled, setIsEnabled] = useState(false)
   const { handleReplace } = useHandleRouter()
@@ -67,20 +65,18 @@ const Leaderboard = ({
     return <Text>No records available</Text>
   }
 
+  const handleCollapsible = (isOpen: boolean) => {
+    console.log("isOpen", isOpen)
+    setIsEnabled(isOpen)
+    if (isOpen === true) {
+      refetch()
+    }
+  }
+
   return (
     <Collapsible
       title="Leaderboard"
-      onToggle={(isOpen) => {
-        console.log("isOpen", isOpen)
-        setIsEnabled(isOpen)
-        if (isOpen === true) {
-          refetch()
-        }
-        if (!isSelected) {
-          setIsEnabled(!isOpen)
-          refetch()
-        }
-      }}
+      onToggle={(isOpen) => handleCollapsible(isOpen)}
     >
       {isLoading ? (
         <IsLoading isLoading={isLoading} />
