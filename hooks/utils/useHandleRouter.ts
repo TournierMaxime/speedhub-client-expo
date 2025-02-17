@@ -24,7 +24,10 @@ const useHandleRouter = () => {
   }
 
   const handleBack = async () => {
-    router.back()
+    const canGoBack = router.canGoBack()
+    if (canGoBack) {
+      router.back()
+    }
   }
 
   return {

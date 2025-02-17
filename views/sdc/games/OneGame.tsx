@@ -9,7 +9,7 @@ import IsLoading from "@/components/lib/IsLoading"
 import Tabs from "@/components/lib/Tabs"
 import CatchError from "@/components/lib/CatchError"
 import GameDetails from "./GameDetails"
-import { CategoriesTab } from "./GameTabs"
+import { CategoriesTab } from "./CategoriesTab"
 import { oneGameStyle } from "@/styles/views/oneGame"
 
 const OneGame = () => {

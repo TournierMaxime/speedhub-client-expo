@@ -15,8 +15,6 @@ const CategoriesTab = ({ data }: { data: Game["data"] }) => {
     Record<string, Record<string, string>>
   >({})
 
-  console.log("selectedVariablesMap", selectedVariablesMap)
-
   useEffect(() => {
     const initialVariablesMap: Record<string, Record<string, string>> = {}
 
