@@ -11,6 +11,7 @@ import ROUTES from "@/components/routes"
 import Card from "@/components/lib/Card"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
 
 interface Props {
   limit?: number
@@ -18,6 +19,8 @@ interface Props {
 
 const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
   const theme = useColorScheme() ?? "light"
+
+  const { currentPath } = useHandleRouter()
 
   const { data, isLoading, error, refetch } = useInfiniteQuery({
     queryKey: ["getUpcomings", limit],
@@ -51,6 +54,7 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
               route={ROUTES.ONE_MARATHON_UPCOMING}
               routeParams={{ horaroId: upcoming.horaroId }}
               key={idx}
+              currentPath={currentPath(ROUTES.MARATHONS)}
             >
               <Text style={cardStyle.cardText}>{upcoming.name}</Text>
             </Card>

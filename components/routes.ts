@@ -9,13 +9,15 @@ const ROUTES = {
   ONE_RUN: "/(tabs)/(main)/(runs)/run" as RelativePathString,
   ONE_USER: "/(tabs)/(main)/(user)/user" as RelativePathString,
   ONE_GAME: "/(tabs)/(main)/(games)/game" as RelativePathString,
-  RUNS: "/(tabs)/(main)/(runs)/run" as RelativePathString,
+  RUNS: "/(tabs)/runs" as RelativePathString,
   FORGET_PASSWORD: "/(auth)/forget-password" as RelativePathString,
   ONE_MARATHON_LIVE:
     "/(tabs)/(main)/(marathon)/oneMarathonLive" as RelativePathString,
   ONE_MARATHON_UPCOMING:
     "/(tabs)/(main)/(marathon)/oneMarathonUpcoming" as RelativePathString,
   ONE_REDDIT: "/(tabs)/(main)/(reddit)/reddit" as RelativePathString,
+  REDDITS: "/(tabs)/reddits" as RelativePathString,
+  MARATHONS: "/(tabs)/marathons" as RelativePathString,
 } as const
 
 export default ROUTES

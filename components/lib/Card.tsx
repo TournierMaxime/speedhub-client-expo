@@ -11,6 +11,7 @@ interface CardProps {
   children: React.ReactNode
   route: Pathname
   routeParams?: any
+  currentPath?: (pathname: Pathname, params?: any) => void
 }
 
 const Card: React.FC<CardProps> = ({
@@ -18,6 +19,7 @@ const Card: React.FC<CardProps> = ({
   children,
   route,
   routeParams,
+  currentPath,
 }) => {
   const theme = useColorScheme() ?? "light"
 
@@ -27,11 +29,15 @@ const Card: React.FC<CardProps> = ({
     <Fragment>
       {header && <Text style={style.title}>{header}</Text>}
       <TouchableOpacity
-        onPress={() =>
+        onPress={() => {
+          if (currentPath) {
+            currentPath(route, routeParams)
+          }
+
           handleRedirect(route, {
             ...routeParams,
           })
-        }
+        }}
         style={[
           style.cardItem,
           theme === "dark"
