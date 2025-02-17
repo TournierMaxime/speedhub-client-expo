@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router"
 import { MaterialCommunityIcons, AntDesign, Ionicons } from "@expo/vector-icons"
 import Utils from "@/components/lib/Utils"
+import { Platform } from "react-native"
 
 export default function TabsLayout() {
   return (
@@ -9,7 +10,10 @@ export default function TabsLayout() {
         tabBarActiveTintColor: "blue",
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: { height: Utils.moderateScale(40) },
+        tabBarStyle:
+          Platform.OS === "ios"
+            ? { height: Utils.moderateScale(60) }
+            : { height: Utils.moderateScale(40) },
       }}
     >
       <Tabs.Screen

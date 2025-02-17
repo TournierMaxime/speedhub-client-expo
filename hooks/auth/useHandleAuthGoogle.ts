@@ -6,9 +6,11 @@ import ROUTES from "@/components/routes"
 import useHandleRouter from "../utils/useHandleRouter"
 import { userService } from "@/services/speedhub"
 import { authService } from "@/services/speedhub"
+import { useAuth } from "@/contexts/AuthContext"
 
 const useHandleAuthGoogle = () => {
   const { handleRedirect } = useHandleRouter()
+  const { login } = useAuth()
 
   const [isProcessing, setIsProcessing] = useState(false)
 
@@ -59,6 +61,7 @@ const useHandleAuthGoogle = () => {
         const userId = users.users[0].userId
 
         await authService.login({ userId })
+        await login({ userId })
 
         await handleRedirect(ROUTES.HOME)
 
@@ -77,6 +80,7 @@ const useHandleAuthGoogle = () => {
         })
 
         authService.login({ userId: response.user.userId })
+        await login({ userId: response.user.userId })
 
         await handleRedirect(ROUTES.HOME)
 

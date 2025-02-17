@@ -5,10 +5,12 @@ import { authService } from "@/services/speedhub"
 import { userService } from "@/services/speedhub"
 import ROUTES from "@/components/routes"
 import useHandleRouter from "../utils/useHandleRouter"
+import { useAuth } from "@/contexts/AuthContext"
 
 const useHandleAuthApple = () => {
   const [isProcessingApple, setIsProcessingApple] = useState<boolean>(false)
   const { handleRedirect } = useHandleRouter()
+  const { login } = useAuth()
 
   const onAppleButtonPress = async () => {
     setIsProcessingApple(true)
@@ -44,12 +46,18 @@ const useHandleAuthApple = () => {
         const userId = users.users[0].userId
 
         await authService.login({ userId })
+        await login({ userId })
 
         await handleRedirect(ROUTES.HOME)
 
         setIsProcessingApple(false)
       } else {
-        const token = await registerForPushNotificationsAsync()
+        let token
+
+        if (token) {
+          token = await registerForPushNotificationsAsync()
+        }
+
         const response = await authService.register({
           pseudo: `${credential.fullName?.givenName ?? ""} ${
             credential.fullName?.familyName ?? ""
@@ -58,11 +66,12 @@ const useHandleAuthApple = () => {
           password: credential.user,
           provider: "Apple",
           verified: true,
-          expoPushToken: token,
+          expoPushToken: token ?? "",
           lang: "en",
         })
 
         authService.login({ userId: response.user.userId })
+        await login({ userId: response.user.userId })
 
         await handleRedirect(ROUTES.HOME)
 

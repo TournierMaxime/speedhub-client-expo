@@ -274,11 +274,12 @@ const style = StyleSheet.create({
     fontSize: Utils.moderateScale(18),
     borderWidth: Utils.moderateScale(1),
     borderRadius: Utils.moderateScale(5),
+    height: Utils.moderateScale(40),
   },
   btnContainer: {
     display: "flex",
     borderRadius: Utils.moderateScale(5),
-    width: "100%",
+    width: "90%",
     alignItems: "center",
     marginVertical: Utils.moderateScale(10),
   },

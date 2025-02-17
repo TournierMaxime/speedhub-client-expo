@@ -50,41 +50,41 @@ const LoginScreen = () => {
         <Fragment>
           <Header backButton={false} title="Login" />
 
-          <View style={style.section}>
-            <StepAuth />
-            <FormButtonSubmit
-              type="error"
-              label="Forgot your password"
-              fct={async () => await handleRedirect(ROUTES.FORGET_PASSWORD)}
-              disabled={false}
-            />
-          </View>
-
-          <View style={style.section}>
-            <TouchableOpacity
-              style={style.googleCard}
-              onPress={() => loginWithGoogle()}
-            >
-              <GoogleSVG />
-              <Text
-                style={[
-                  style.text,
-                  { marginLeft: Utils.moderateScale(10) },
-                  theme === "dark"
-                    ? { color: Colors.dark.text }
-                    : { color: Colors.light.text },
-                ]}
-              >
-                Continue with Google
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {Platform.OS === "ios" ? (
+          <View style={style.form}>
             <View style={style.section}>
-              <View style={""}>
+              <StepAuth />
+              <FormButtonSubmit
+                type="error"
+                label="Forgot your password"
+                fct={async () => await handleRedirect(ROUTES.FORGET_PASSWORD)}
+                disabled={false}
+              />
+            </View>
+
+            <View style={style.section}>
+              <TouchableOpacity
+                style={style.thirdParty}
+                onPress={() => loginWithGoogle()}
+              >
+                <GoogleSVG />
+                <Text
+                  style={[
+                    style.text,
+                    { marginLeft: Utils.moderateScale(10) },
+                    theme === "dark"
+                      ? { color: Colors.dark.text }
+                      : { color: Colors.light.text },
+                  ]}
+                >
+                  Continue with Google
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {Platform.OS === "ios" ? (
+              <View style={style.section}>
                 <TouchableOpacity
-                  style={""}
+                  style={style.thirdParty}
                   onPress={() => onAppleButtonPress()}
                 >
                   <AppleSVG />
@@ -100,8 +100,8 @@ const LoginScreen = () => {
                   </Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          ) : null}
+            ) : null}
+          </View>
         </Fragment>
       )}
     </View>
@@ -118,6 +118,9 @@ const style = StyleSheet.create({
     alignItems: "center",
     marginTop: Utils.moderateScale(20),
   },
+  form: {
+    marginTop: Utils.moderateScale(20),
+  },
   section: {
     display: "flex",
     alignItems: "center",
@@ -125,7 +128,7 @@ const style = StyleSheet.create({
   text: {
     fontSize: Utils.moderateScale(20),
   },
-  googleCard: {
+  thirdParty: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",

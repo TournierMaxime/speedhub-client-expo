@@ -1,10 +1,13 @@
+import Utils from "@/components/lib/Utils"
 import React from "react"
 import Svg, { G, Path } from "react-native-svg"
 
 const AppleSVG = () => {
   return (
     <Svg
-      style={""}
+      style={{
+        marginRight: Utils.moderateScale(10),
+      }}
       width={24}
       height={24}
       viewBox="0 0 22.773 22.773"
