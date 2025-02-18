@@ -10,6 +10,7 @@ import IsLoading from "@/components/lib/IsLoading"
 import OneSchedule from "./OneSchedule"
 import OneTicker from "./OneTicker"
 import mainStyle from "@/styles/base/main"
+import ROUTES from "@/components/routes"
 
 const OneMarathonUpcoming = () => {
   const { horaroId } = useGlobalSearchParams()
@@ -45,7 +46,7 @@ const OneMarathonUpcoming = () => {
 
   return (
     <ScrollView style={mainStyle.container}>
-      <Header backButton={true} title="" />
+      <Header backButton={true} lastPath={{ pathname: ROUTES.MARATHONS }} />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonUpcoming()}
     </ScrollView>
   )

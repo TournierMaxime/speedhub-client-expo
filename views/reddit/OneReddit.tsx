@@ -22,6 +22,7 @@ import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRedditStyle from "@/styles/views/oneReddit"
 import { Reddit } from "@/types/reddit"
+import ROUTES from "@/components/routes"
 
 const OneReddit = () => {
   const { permalink } = useGlobalSearchParams()
@@ -167,7 +168,7 @@ const OneReddit = () => {
 
   return (
     <ScrollView style={mainStyle.container}>
-      <Header backButton={true} title="" />
+      <Header backButton={true} lastPath={{ pathname: ROUTES.REDDITS }} />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneReddit()}
     </ScrollView>
   )

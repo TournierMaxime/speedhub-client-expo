@@ -1,19 +1,9 @@
 import { ExternalPathString, RelativePathString, useRouter } from "expo-router"
-import {
-  addToHistory,
-  removeLastPath,
-  getLastPath,
-} from "@/components/lib/navigationHistory"
 
 export type Pathname = RelativePathString | ExternalPathString
 
 const useHandleRouter = () => {
   const router = useRouter()
-
-  const currentPath = (pathname: Pathname, params?: any) => {
-    addToHistory(pathname, params)
-    return getLastPath
-  }
 
   const handleRedirect = async (pathname: Pathname, params?: any) => {
     router.push({
@@ -33,12 +23,22 @@ const useHandleRouter = () => {
     })
   }
 
-  const handleBack = async () => {
+  const handleBack = async (pathname?: Pathname, params?: any) => {
     const canGoBack = router.canGoBack()
-    const path = getLastPath() as Pathname
-    console.log("handleRedirect getLastPath", path)
+
     if (canGoBack) {
-      router.push(path)
+      if (pathname) {
+        router.push({
+          pathname,
+        })
+      } else if (pathname && params) {
+        router.push({
+          pathname,
+          params,
+        })
+      } else {
+        router.back()
+      }
     }
   }
 
@@ -46,7 +46,6 @@ const useHandleRouter = () => {
     handleRedirect,
     handleReplace,
     handleBack,
-    currentPath,
   }
 }
 

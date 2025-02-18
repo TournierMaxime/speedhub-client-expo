@@ -11,7 +11,6 @@ import { redditService } from "@/services/reddit"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import { Reddits } from "@/types/reddit"
-import useHandleRouter from "@/hooks/utils/useHandleRouter"
 
 interface Props {
   limit?: number
@@ -19,8 +18,6 @@ interface Props {
 
 const AllReddits: React.FC<Props> = ({ limit }) => {
   const theme = useColorScheme() ?? "light"
-
-  const { currentPath } = useHandleRouter()
 
   const { data, isLoading, error } = useInfiniteQuery({
     queryKey: ["getReddits", limit],
@@ -57,7 +54,6 @@ const AllReddits: React.FC<Props> = ({ limit }) => {
                   permalink: `${permalink.substring(11)}.json`,
                 }}
                 key={idx}
-                currentPath={currentPath(ROUTES.REDDITS)}
               >
                 <Text style={cardStyle.cardText}>{reddit?.data?.title}</Text>
               </Card>

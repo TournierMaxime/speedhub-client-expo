@@ -17,6 +17,7 @@ import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
 import { Run } from "@/types/sdc"
+import ROUTES from "@/components/routes"
 
 const OneRun = () => {
   const { id } = useGlobalSearchParams()
@@ -183,7 +184,7 @@ const OneRun = () => {
 
   return (
     <ScrollView style={mainStyle.container}>
-      <Header backButton={true} />
+      <Header backButton={true} lastPath={{ pathname: ROUTES.RUNS }} />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneRun()}
     </ScrollView>
   )

@@ -88,7 +88,7 @@ const Search = () => {
 
   return (
     <ScrollView>
-      <Header backButton={true} />
+      <Header backButton={true} lastPath={{ pathname: ROUTES.HOME }} />
       <View
         style={[
           searchStyle.container,
@@ -99,7 +99,9 @@ const Search = () => {
           <FormInputText
             data={data}
             setData={setData}
-            label="Search"
+            label={
+              selectedOptionValue === "users" ? "Search users" : "Search games"
+            }
             name="query"
             value={data.query ?? ""}
             secure={false}

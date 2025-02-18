@@ -1,7 +1,7 @@
 import React from "react"
 import { View, TouchableOpacity, Image, Platform } from "react-native"
 import { useAuth } from "@/contexts/AuthContext"
-import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import useHandleRouter, { Pathname } from "@/hooks/utils/useHandleRouter"
 import { useColorScheme } from "react-native"
 import ROUTES from "../routes"
 import { LeftArrow, Search, User } from "./Icons"
@@ -12,9 +12,10 @@ import Utils from "./Utils"
 interface HeaderProps {
   backButton: boolean
   title?: string
+  lastPath?: { pathname: Pathname; params?: any }
 }
 
-const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
+const Header: React.FC<HeaderProps> = ({ backButton, title, lastPath }) => {
   const { user, isAuthenticated } = useAuth()
 
   const theme = useColorScheme() ?? "light"
@@ -67,7 +68,14 @@ const Header: React.FC<HeaderProps> = ({ backButton, title }) => {
         >
           {backButton ? (
             <View style={headerStyle.backButton}>
-              <TouchableOpacity onPress={async () => await handleBack()}>
+              <TouchableOpacity
+                onPress={async () =>
+                  await handleBack(
+                    lastPath?.pathname ?? undefined,
+                    lastPath?.params ?? undefined
+                  )
+                }
+              >
                 <LeftArrow />
               </TouchableOpacity>
             </View>

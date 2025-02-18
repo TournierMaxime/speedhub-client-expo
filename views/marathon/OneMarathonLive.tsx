@@ -11,6 +11,7 @@ import OneSchedule from "./OneSchedule"
 import OneTicker from "./OneTicker"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import mainStyle from "@/styles/base/main"
+import ROUTES from "@/components/routes"
 
 const OneMarathonLive = () => {
   const { horaroId } = useGlobalSearchParams()
@@ -51,7 +52,7 @@ const OneMarathonLive = () => {
 
   return (
     <ScrollView style={mainStyle.container}>
-      <Header backButton={true} title="" />
+      <Header backButton={true} lastPath={{ pathname: ROUTES.MARATHONS }} />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonLive()}
     </ScrollView>
   )

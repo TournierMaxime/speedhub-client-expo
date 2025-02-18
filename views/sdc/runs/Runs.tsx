@@ -12,7 +12,6 @@ import UserName from "@/components/lib/UserName"
 import Card from "@/components/lib/Card"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
-import useHandleRouter from "@/hooks/utils/useHandleRouter"
 
 interface Props {
   limit?: number
@@ -20,8 +19,6 @@ interface Props {
 
 const AllRuns: React.FC<Props> = ({ limit }) => {
   const theme = useColorScheme() ?? "light"
-
-  const { currentPath } = useHandleRouter()
 
   const { data, isLoading, error } = useInfiniteQuery({
     queryKey: ["getRuns", limit],
@@ -67,7 +64,6 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
               route={ROUTES.ONE_RUN}
               routeParams={{ id: run.id }}
               key={idx}
-              currentPath={currentPath(ROUTES.RUNS)}
             >
               <Fragment>
                 <View style={cardStyle.cardImage}>
