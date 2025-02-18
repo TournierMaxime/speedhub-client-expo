@@ -156,7 +156,12 @@ const VideoCam = () => {
   )
 }
 
+const Settings = () => {
+  return <Feather name="settings" size={Utils.moderateScale(20)} />
+}
+
 export {
+  Settings,
   VideoCam,
   Discord,
   Chevron,
