@@ -11,13 +11,6 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.hoggy.speedhubclientexpo",
-      infoPlist: {
-        CFBundleURLTypes: [
-          {
-            CFBundleURLSchemes: [process.env.GOOGLE_REDIRECT_URI_IOS],
-          },
-        ],
-      },
     },
     android: {
       adaptiveIcon: {
@@ -40,15 +33,6 @@ export default {
           imageWidth: 200,
           resizeMode: "contain",
           backgroundColor: "#ffffff",
-        },
-      ],
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          reservedClientId: process.env.GOOGLE_AUTH_CLIENT_ID_IOS,
-          scopes: ["profile", "email"],
-          webClientId: process.env.GOOGLE_AUTH_CLIENT_ID,
-          iosUrlScheme: `com.googleusercontent.apps.${process.env.GOOGLE_REDIRECT_URI_IOS}`,
         },
       ],
     ],
