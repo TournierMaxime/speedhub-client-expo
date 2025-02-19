@@ -18,6 +18,9 @@ const ROUTES = {
   ONE_REDDIT: "/(tabs)/(main)/(reddit)/reddit" as RelativePathString,
   REDDITS: "/(tabs)/reddits" as RelativePathString,
   MARATHONS: "/(tabs)/marathons" as RelativePathString,
+  SETTINGS: "/(tabs)/(main)/(profile)/settings" as RelativePathString,
+  PRIVACY_POLICY:
+    "/(tabs)/(main)/(profile)/privacy-policy" as RelativePathString,
 } as const
 
 export default ROUTES

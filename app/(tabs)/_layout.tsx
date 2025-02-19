@@ -20,7 +20,11 @@ export default function TabsLayout() {
         name="home"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
+            <Ionicons
+              name="home"
+              color={color}
+              size={Utils.moderateScale(18)}
+            />
           ),
         }}
       />
@@ -28,7 +32,11 @@ export default function TabsLayout() {
         name="runs"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="run" size={size} color={color} />
+            <MaterialCommunityIcons
+              name="run"
+              size={Utils.moderateScale(18)}
+              color={color}
+            />
           ),
         }}
       />
@@ -36,7 +44,11 @@ export default function TabsLayout() {
         name="marathons"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="calendar" size={size} color={color} />
+            <AntDesign
+              name="calendar"
+              size={Utils.moderateScale(18)}
+              color={color}
+            />
           ),
         }}
       />
@@ -44,7 +56,11 @@ export default function TabsLayout() {
         name="reddits"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="newspaper-outline" size={size} color={color} />
+            <Ionicons
+              name="newspaper-outline"
+              size={Utils.moderateScale(18)}
+              color={color}
+            />
           ),
         }}
       />

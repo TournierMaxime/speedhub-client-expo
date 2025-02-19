@@ -1,0 +1,40 @@
+{
+  "cli": {
+    "version": ">= 7.6.1"
+  },
+  "build": {
+    "development": {
+      "env": {
+        "GOOGLE_AUTH_CLIENT_ID": "GOOGLE_AUTH_CLIENT_ID",
+        "GOOGLE_REDIRECT_URI": "GOOGLE_REDIRECT_URI",
+        "GOOGLE_AUTH_CLIENT_ID_IOS": "GOOGLE_AUTH_CLIENT_ID_IOS",
+        "GOOGLE_REDIRECT_URI_IOS": "GOOGLE_REDIRECT_URI_IOS"
+      },
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "channel": "development"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "channel": "preview"
+    },
+    "production": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "channel": "production"
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

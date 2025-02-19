@@ -6,7 +6,7 @@ import Header from "@/components/lib/Header"
 export default function MarathonsScreen() {
   return (
     <ScrollView style={styles.container}>
-      <Header backButton={false} title="" />
+      <Header backButton={false} />
       <MarathonLives />
       <UpcomingMarathons />
     </ScrollView>
@@ -16,5 +16,6 @@ export default function MarathonsScreen() {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
+    backgroundColor: "#fff",
   },
 })

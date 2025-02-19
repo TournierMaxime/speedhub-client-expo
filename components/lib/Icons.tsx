@@ -160,7 +160,12 @@ const Settings = () => {
   return <Feather name="settings" size={Utils.moderateScale(20)} />
 }
 
+const Shield = () => {
+  return <Feather name="shield" size={Utils.moderateScale(20)} />
+}
+
 export {
+  Shield,
   Settings,
   VideoCam,
   Discord,

@@ -7,7 +7,8 @@ import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"
 import mainStyle from "@/styles/base/main"
 import profileStyle from "@/styles/views/profile"
-import { Chevron, Settings } from "@/components/lib/Icons"
+import { Chevron, Settings, Shield } from "@/components/lib/Icons"
+import Utils from "@/components/lib/Utils"
 
 interface Item {
   path: Pathname
@@ -30,16 +31,16 @@ const OneUser = () => {
 
   const items: Item[] = [
     {
-      path: ROUTES.HOME,
+      path: ROUTES.SETTINGS,
       params: undefined,
       title: "Settings",
       icon: <Settings />,
     },
     {
-      path: ROUTES.MARATHONS,
+      path: ROUTES.PRIVACY_POLICY,
       params: undefined,
       title: "Privacy Policy",
-      icon: <Settings />,
+      icon: <Shield />,
     },
   ]
 
@@ -51,7 +52,17 @@ const OneUser = () => {
           return (
             <TouchableOpacity
               key={idx}
-              style={profileStyle.item}
+              style={[
+                profileStyle.item,
+                idx === 0
+                  ? {
+                      borderTopWidth: Utils.moderateScale(2),
+                    }
+                  : {
+                      borderTopWidth: Utils.moderateScale(2),
+                      borderBottomWidth: Utils.moderateScale(2),
+                    },
+              ]}
               onPress={() => handleRedirect(item.path, item.params)}
             >
               <Text style={profileStyle.itemText}>

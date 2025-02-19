@@ -61,25 +61,27 @@ const LoginScreen = () => {
               />
             </View>
 
-            <View style={style.section}>
-              <TouchableOpacity
-                style={style.thirdParty}
-                onPress={() => loginWithGoogle()}
-              >
-                <GoogleSVG />
-                <Text
-                  style={[
-                    style.text,
-                    { marginLeft: Utils.moderateScale(10) },
-                    theme === "dark"
-                      ? { color: Colors.dark.text }
-                      : { color: Colors.light.text },
-                  ]}
+            {Platform.OS === "android" ? (
+              <View style={style.section}>
+                <TouchableOpacity
+                  style={style.thirdParty}
+                  onPress={() => loginWithGoogle()}
                 >
-                  Continue with Google
-                </Text>
-              </TouchableOpacity>
-            </View>
+                  <GoogleSVG />
+                  <Text
+                    style={[
+                      style.text,
+                      { marginLeft: Utils.moderateScale(10) },
+                      theme === "dark"
+                        ? { color: Colors.dark.text }
+                        : { color: Colors.light.text },
+                    ]}
+                  >
+                    Continue with Google
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
 
             {Platform.OS === "ios" ? (
               <View style={style.section}>
