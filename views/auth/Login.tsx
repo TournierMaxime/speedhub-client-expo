@@ -18,7 +18,7 @@ import { Colors } from "@/constants/Colors"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { FormButtonSubmit } from "@/components/lib/FormValidation"
-import useHandleAuthTwitch from "@/hooks/auth/useHandleAuthTwitch"
+import useHandleAuthSDC from "@/hooks/auth/useHandleAuthSDC"
 
 const LoginScreen = () => {
   const { handleRedirect } = useHandleRouter()
@@ -27,7 +27,7 @@ const LoginScreen = () => {
 
   const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()
 
-  const { loginWithTwitch } = useHandleAuthTwitch()
+  const { loginWithSDC } = useHandleAuthSDC()
 
   return (
     <View
@@ -57,27 +57,25 @@ const LoginScreen = () => {
               />
             </View>
 
-            {Platform.OS === "android" ? (
-              <View style={style.section}>
-                <TouchableOpacity
-                  style={style.thirdParty}
-                  onPress={() => loginWithTwitch()}
+            <View style={style.section}>
+              <TouchableOpacity
+                style={style.thirdParty}
+                onPress={() => handleRedirect(ROUTES.AUTH_SDC)}
+              >
+                <GoogleSVG />
+                <Text
+                  style={[
+                    style.text,
+                    { marginLeft: Utils.moderateScale(10) },
+                    theme === "dark"
+                      ? { color: Colors.dark.text }
+                      : { color: Colors.light.text },
+                  ]}
                 >
-                  <GoogleSVG />
-                  <Text
-                    style={[
-                      style.text,
-                      { marginLeft: Utils.moderateScale(10) },
-                      theme === "dark"
-                        ? { color: Colors.dark.text }
-                        : { color: Colors.light.text },
-                    ]}
-                  >
-                    Continue with Twitch
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : null}
+                  Continue with speedrun.com
+                </Text>
+              </TouchableOpacity>
+            </View>
 
             {Platform.OS === "ios" ? (
               <View style={style.section}>

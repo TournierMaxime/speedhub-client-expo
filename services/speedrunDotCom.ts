@@ -26,6 +26,10 @@ interface UserInterface {
   getPersonalBests(id: string | string[]): Promise<any>
 }
 
+interface ProfileInterface {
+  getProfile(xApiKey: string): Promise<any>
+}
+
 class Users implements UserInterface {
   private http = http
 
@@ -129,7 +133,21 @@ class Games implements GameInterface {
   }
 }
 
+class Profile implements ProfileInterface {
+  private http = http
+
+  async getProfile(xApiKey: string) {
+    const response = await this.http.get("/profile", {
+      headers: {
+        "X-API-Key": xApiKey,
+      },
+    })
+    return response.data
+  }
+}
+
 export const gameService = new Games()
 export const runService = new Runs()
 export const splitIOService = new Split()
 export const userService = new Users()
+export const profileService = new Profile()

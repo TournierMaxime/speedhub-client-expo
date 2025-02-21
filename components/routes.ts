@@ -21,6 +21,7 @@ const ROUTES = {
   SETTINGS: "/(tabs)/(main)/(profile)/settings" as RelativePathString,
   PRIVACY_POLICY:
     "/(tabs)/(main)/(profile)/privacy-policy" as RelativePathString,
+  AUTH_SDC: "/(auth)/auth-sdc" as RelativePathString,
 } as const
 
 export default ROUTES

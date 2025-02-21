@@ -235,7 +235,7 @@ const FormButtonSubmit = ({
   disabled,
 }: {
   type: TypeSubmit
-  label: string
+  label: string | React.JSX.Element
   fct: () => Promise<void>
   disabled: boolean
 }) => {

@@ -9,6 +9,7 @@ export interface DataState {
   userId?: string
   lang?: string
   query?: string
+  xApiKey?: string
   option?: {
     name?: string
     value?: string
