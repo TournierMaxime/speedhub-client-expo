@@ -5,12 +5,21 @@ export default {
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "myapp",
+    scheme: "com.hoggy.videotekclientexpo",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.hoggy.speedhubclientexpo",
+      infoPlist: {
+        CFBundleURLTypes: [
+          {
+            CFBundleURLSchemes: [
+              "com.googleusercontent.apps.725923225701-o7lln8hsuklrhofcrh4qh2752unhfhah",
+            ],
+          },
+        ],
+      },
     },
     android: {
       adaptiveIcon: {
@@ -18,12 +27,26 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.hoggy.speedhubclientexpo",
+      intentFilters: [
+        {
+          action: "VIEW",
+          data: [
+            {
+              scheme: "com.hoggy.videotekclientexpo",
+              host: "oauth2redirect",
+              pathPrefix: "/google",
+            },
+          ],
+          category: ["BROWSABLE", "DEFAULT"],
+        },
+      ],
     },
     web: {
       bundler: "metro",
       output: "static",
       favicon: "./assets/images/favicon.png",
     },
+    assetBundlePatterns: ["**/*"],
     plugins: [
       "expo-router",
       [
@@ -35,6 +58,13 @@ export default {
           backgroundColor: "#ffffff",
         },
       ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          iosUrlScheme:
+            "com.googleusercontent.apps.725923225701-o7lln8hsuklrhofcrh4qh2752unhfhah",
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,
@@ -44,6 +74,7 @@ export default {
       GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
       GOOGLE_AUTH_CLIENT_ID_IOS: process.env.GOOGLE_AUTH_CLIENT_ID_IOS,
       GOOGLE_REDIRECT_URI_IOS: process.env.GOOGLE_REDIRECT_URI_IOS,
+      appAuthRedirectScheme: "com.hoggy.speedhubclientexpo",
       router: {
         origin: false,
       },

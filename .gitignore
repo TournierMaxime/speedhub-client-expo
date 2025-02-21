@@ -38,3 +38,5 @@ yarn-error.*
 
 app-example
 deployment_cert.der
+*.apk
+client_secret_725923225701-m2nejmr6c26kbslbr9vpgoplt0mok483.apps.googleusercontent.com.json

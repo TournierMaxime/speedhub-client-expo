@@ -1,5 +1,9 @@
-import { authorize, AuthConfiguration } from "react-native-app-auth"
-import axios from "axios"
+import {
+  GoogleSignin,
+  statusCodes,
+  isErrorWithCode,
+  isSuccessResponse,
+} from "@react-native-google-signin/google-signin"
 import { useState } from "react"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
 import ROUTES from "@/components/routes"
@@ -14,80 +18,86 @@ const useHandleAuthGoogle = () => {
 
   const [isProcessing, setIsProcessing] = useState(false)
 
-  const config: AuthConfiguration = {
-    issuer: "https://accounts.google.com",
-    clientId: process.env.GOOGLE_AUTH_CLIENT_ID || "",
-    redirectUrl: process.env.GOOGLE_REDIRECT_URI || "",
-    scopes: ["openid", "profile", "email"],
-    serviceConfiguration: {
-      authorizationEndpoint: "https://accounts.google.com/o/oauth2/auth",
-      tokenEndpoint: "https://oauth2.googleapis.com/token",
-    },
-  }
-
   const loginWithGoogle = async () => {
     setIsProcessing(true)
     try {
-      const result = await authorize(config)
-      const { accessToken } = result
+      await GoogleSignin.hasPlayServices()
+      const response = await GoogleSignin.signIn()
 
-      /*       const refreshedState = await refresh(config, {
-        refreshToken: result.refreshToken,
-      })
+      console.log("response", response)
 
-   
-      await revoke(config, {
-        tokenToRevoke: refreshedState.refreshToken,
-      }) */
+      if (isSuccessResponse(response)) {
+        const data = response.data
+        const email = data.user.email.toString()
 
-      const response = await axios.get(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+        console.log("email", email)
+
+        const users = await userService.searchUsers(
+          { email: email },
+          { page: 1, size: 1 }
+        )
+
+        console.log("users", users)
+
+        if (users.users && users.users.length > 0) {
+          const userId = users.users[0].userId
+
+          await authService.login({ userId })
+          await login({ userId })
+
+          await handleRedirect(ROUTES.HOME)
+
+          setIsProcessing(false)
+        } else {
+          let token
+
+          if (token) {
+            token = await registerForPushNotificationsAsync()
+          }
+
+          const response = await authService.register({
+            pseudo: data.user.name,
+            email: data.user.email,
+            password: data.user.id,
+            image: data.user.photo,
+            provider: "Google",
+            verified: true,
+            expoPushToken: token,
+            lang: "en",
+          })
+
+          authService.login({ userId: response.user.userId })
+          await login({ userId: response.user.userId })
+
+          await handleRedirect(ROUTES.HOME)
+
+          setIsProcessing(false)
         }
-      )
-
-      const userData = response.data
-      const email = userData.email.toString()
-
-      const users = await userService.searchUsers(
-        { email: email },
-        { page: 1, size: 1 }
-      )
-
-      if (users.users && users.users.length > 0) {
-        const userId = users.users[0].userId
-
-        await authService.login({ userId })
-        await login({ userId })
-
-        await handleRedirect(ROUTES.HOME)
-
-        setIsProcessing(false)
-      } else {
-        const token = await registerForPushNotificationsAsync()
-        const response = await authService.register({
-          pseudo: userData.name,
-          email: userData.email,
-          password: userData.sub,
-          image: userData.picture,
-          provider: "Google",
-          verified: true,
-          expoPushToken: token,
-          lang: "en",
-        })
-
-        authService.login({ userId: response.user.userId })
-        await login({ userId: response.user.userId })
-
-        await handleRedirect(ROUTES.HOME)
-
-        setIsProcessing(false)
-      }
+      } // else if (isNoSavedCredentialFoundResponse(response)) {
+      // Android and Apple only.
+      // No saved credential found (user has not signed in yet, or they revoked access)
+      // call `createAccount()`
+      // }
     } catch (error: any) {
       setIsProcessing(false)
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.SIGN_IN_CANCELLED:
+            // Android-only, you probably have hit rate limiting.
+            // You can still call `presentExplicitSignIn` in this case.
+            break
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // Android: play services not available or outdated.
+            // Get more details from `error.userInfo`.
+            // Web: when calling an unimplemented api (requestAuthorization)
+            // or when the Google Client Library is not loaded yet.
+            break
+          default:
+          // something else happened
+        }
+      } else {
+        // an error that's not related to google sign in occurred
+      }
       throw new Error(error)
     }
     return {
