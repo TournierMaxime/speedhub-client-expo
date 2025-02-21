@@ -7,8 +7,8 @@ export default function MarathonsScreen() {
   return (
     <ScrollView style={styles.container}>
       <Header backButton={false} />
-      <MarathonLives />
-      <UpcomingMarathons />
+      <MarathonLives limit={10} />
+      <UpcomingMarathons limit={10} />
     </ScrollView>
   )
 }

@@ -27,19 +27,6 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.hoggy.speedhubclientexpo",
-      intentFilters: [
-        {
-          action: "VIEW",
-          data: [
-            {
-              scheme: "com.hoggy.videotekclientexpo",
-              host: "oauth2redirect",
-              pathPrefix: "/google",
-            },
-          ],
-          category: ["BROWSABLE", "DEFAULT"],
-        },
-      ],
     },
     web: {
       bundler: "metro",
@@ -56,13 +43,6 @@ export default {
           imageWidth: 200,
           resizeMode: "contain",
           backgroundColor: "#ffffff",
-        },
-      ],
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          iosUrlScheme:
-            "com.googleusercontent.apps.725923225701-o7lln8hsuklrhofcrh4qh2752unhfhah",
         },
       ],
     ],

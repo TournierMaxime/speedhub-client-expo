@@ -16,7 +16,6 @@ import ToastManager from "toastify-react-native"
 import Utils from "@/components/lib/Utils"
 import { ActivityIndicator } from "react-native"
 import { Colors } from "@/constants/Colors"
-import { GoogleSignin } from "@react-native-google-signin/google-signin"
 
 SplashScreen.preventAutoHideAsync()
 
@@ -27,16 +26,6 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   })
-
-  useEffect(() => {
-    const config = GoogleSignin.configure({
-      webClientId:
-        "725923225701-m2nejmr6c26kbslbr9vpgoplt0mok483.apps.googleusercontent.com",
-      iosClientId:
-        "725923225701-o7lln8hsuklrhofcrh4qh2752unhfhah.apps.googleusercontent.com",
-    })
-    console.log("config", config)
-  }, [])
 
   useEffect(() => {
     if (loaded) {

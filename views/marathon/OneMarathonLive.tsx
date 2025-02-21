@@ -34,8 +34,8 @@ const OneMarathonLive = () => {
           ) : (
             <Text>Twitch channel not provided</Text>
           )}
-          <OneTicker ticker={data.ticker.ticker} />
-          <OneSchedule schedule={data.schedule} />
+          <OneTicker ticker={data?.ticker?.ticker} />
+          <OneSchedule schedule={data?.schedule} />
         </Fragment>
       )
     }

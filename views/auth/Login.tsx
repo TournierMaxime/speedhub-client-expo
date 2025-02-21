@@ -9,7 +9,6 @@ import {
 } from "react-native"
 import GoogleSVG from "../../assets/images/GoogleSVG"
 import AppleSVG from "../../assets/images/AppleSVG"
-import useHandleAuthGoogle from "@/hooks/auth/useHandleAuthGoogle"
 import Utils from "@/components/lib/Utils"
 import useHandleAuthApple from "@/hooks/auth/useHandleAuthApple"
 import StepAuth from "./StepAuth"
@@ -19,6 +18,7 @@ import { Colors } from "@/constants/Colors"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { FormButtonSubmit } from "@/components/lib/FormValidation"
+import useHandleAuthTwitch from "@/hooks/auth/useHandleAuthTwitch"
 
 const LoginScreen = () => {
   const { handleRedirect } = useHandleRouter()
@@ -27,7 +27,7 @@ const LoginScreen = () => {
 
   const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()
 
-  const { loginWithGoogle, isProcessing } = useHandleAuthGoogle()
+  const { loginWithTwitch } = useHandleAuthTwitch()
 
   return (
     <View
@@ -38,11 +38,7 @@ const LoginScreen = () => {
           : { backgroundColor: Colors.light.background },
       ]}
     >
-      {isProcessing ? (
-        <View style={""}>
-          <ActivityIndicator size={"large"} />
-        </View>
-      ) : isProcessingApple ? (
+      {isProcessingApple ? (
         <View style={""}>
           <ActivityIndicator size={"large"} />
         </View>
@@ -65,7 +61,7 @@ const LoginScreen = () => {
               <View style={style.section}>
                 <TouchableOpacity
                   style={style.thirdParty}
-                  onPress={() => loginWithGoogle()}
+                  onPress={() => loginWithTwitch()}
                 >
                   <GoogleSVG />
                   <Text
@@ -77,7 +73,7 @@ const LoginScreen = () => {
                         : { color: Colors.light.text },
                     ]}
                   >
-                    Continue with Google
+                    Continue with Twitch
                   </Text>
                 </TouchableOpacity>
               </View>
