@@ -1,33 +1,27 @@
 import React, { Fragment } from "react"
-import { ScrollView } from "react-native"
-import Header from "@/components/lib/Header"
-import { useGlobalSearchParams } from "expo-router"
-import { useQuery } from "@tanstack/react-query"
-import { Live } from "@/types/speedhub"
-import { horaroService } from "@/services/speedhub"
-import CatchError from "@/components/lib/CatchError"
-import IsLoading from "@/components/lib/IsLoading"
+import { Text, View } from "react-native"
+import { Upcoming, Upcomings } from "@/types/speedhub"
 import OneSchedule from "./OneSchedule"
 import OneTicker from "./OneTicker"
 import mainStyle from "@/styles/base/main"
-import ROUTES from "@/components/routes"
+import Utils from "@/components/lib/Utils"
 
-const OneMarathonUpcoming = () => {
-  const { horaroId } = useGlobalSearchParams()
-
-  const { data, isLoading, error, refetch } = useQuery<Live>({
-    queryKey: ["getUpcoming", horaroId],
-    queryFn: async () => {
-      if (!horaroId) throw new Error("Missing ID")
-      return await horaroService.getUpcoming(horaroId)
-    },
-    enabled: !!horaroId,
-  })
-
+const OneMarathonUpcoming = ({ data }: { data: Upcoming }) => {
   const oneMarathonUpcoming = () => {
     if (data) {
       return (
         <Fragment>
+          <Text
+            style={{
+              fontSize: Utils.moderateScale(18),
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: Utils.moderateScale(20),
+              marginBottom: Utils.moderateScale(10),
+            }}
+          >
+            {data.name}
+          </Text>
           <OneTicker ticker={data.ticker.ticker} />
           <OneSchedule schedule={data.schedule} />
         </Fragment>
@@ -36,19 +30,10 @@ const OneMarathonUpcoming = () => {
     return null
   }
 
-  if (error) {
-    return <CatchError error={error} />
-  }
-
-  if (data === undefined && !isLoading) {
-    refetch()
-  }
-
   return (
-    <ScrollView style={mainStyle.container}>
-      <Header backButton={true} lastPath={{ pathname: ROUTES.MARATHONS }} />
-      {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonUpcoming()}
-    </ScrollView>
+    <View style={mainStyle.container}>
+      {!data ? null : oneMarathonUpcoming()}
+    </View>
   )
 }
 

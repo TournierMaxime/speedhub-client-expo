@@ -1,7 +1,5 @@
 import React from "react"
-import { useGlobalSearchParams } from "expo-router"
 import { View, Text, ScrollView, Image } from "react-native"
-import Header from "@/components/lib/Header"
 import { useQuery } from "@tanstack/react-query"
 import { runService } from "@/services/speedrunDotCom"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
@@ -17,11 +15,8 @@ import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
 import { Run } from "@/types/sdc"
-import ROUTES from "@/components/routes"
 
-const OneRun = () => {
-  const { id } = useGlobalSearchParams()
-
+const OneRun = ({ id }: { id: string }) => {
   const theme = useColorScheme() ?? "light"
 
   const { data, isLoading, error, refetch } = useQuery<Run>({
@@ -153,7 +148,6 @@ const OneRun = () => {
             theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
-          {videoComponent}
           <View style={oneRunStyle.cardInfo}>
             {data?.data ? (
               <View style={oneRunStyle.cardInfoItems}>
@@ -167,6 +161,7 @@ const OneRun = () => {
               </View>
             ) : null}
           </View>
+          {videoComponent}
           <Splits splits={data?.data?.splits?.uri} />
         </View>
       )
@@ -182,12 +177,7 @@ const OneRun = () => {
     refetch()
   }
 
-  return (
-    <ScrollView style={mainStyle.container}>
-      <Header backButton={true} lastPath={{ pathname: ROUTES.RUNS }} />
-      {isLoading ? <IsLoading isLoading={isLoading} /> : oneRun()}
-    </ScrollView>
-  )
+  return <View style={mainStyle.container}>{isLoading ? null : oneRun()}</View>
 }
 
 export default OneRun

@@ -83,41 +83,7 @@ interface Lives {
 }
 
 interface Upcomings {
-  data: {
-    horaroId: string
-    scheduleId: string | null
-    name: string
-    link: string
-    slug: string
-    datetime: string
-    schedules: {
-      link: string
-      name: string
-    }[]
-    createdAt: string
-    schedule: Schedule
-    ticker: {
-      schedule: TickerSchedule
-      ticker: TickerChildren
-      links: Links[]
-    }
-  }[]
-}
-
-interface Live {
-  horaroId: string
-  scheduleId: string
-  name: string
-  link: string
-  slug: string
-  isLive: boolean
-  createdAt: string
-  schedule: Schedule
-  ticker: {
-    schedule: TickerSchedule
-    ticker: TickerChildren
-    links: Links[]
-  }
+  data: Upcoming[]
 }
 
 interface Upcoming {
@@ -131,6 +97,22 @@ interface Upcoming {
     link: string
     name: string
   }[]
+  createdAt: string
+  schedule: Schedule
+  ticker: {
+    schedule: TickerSchedule
+    ticker: TickerChildren
+    links: Links[]
+  }
+}
+
+interface Live {
+  horaroId: string
+  scheduleId: string
+  name: string
+  link: string
+  slug: string
+  isLive: boolean
   createdAt: string
   schedule: Schedule
   ticker: {

@@ -5,7 +5,7 @@ import Header from "@/components/lib/Header"
 const Tab = () => {
   return (
     <ScrollView style={style.container}>
-      <Header backButton={false} title="" />
+      <Header backButton={false} />
       <AllReddits />
     </ScrollView>
   )
@@ -14,6 +14,7 @@ const Tab = () => {
 const style = StyleSheet.create({
   container: {
     display: "flex",
+    backgroundColor: "white",
   },
 })
 

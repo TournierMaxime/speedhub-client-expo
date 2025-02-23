@@ -1,47 +1,23 @@
 import React from "react"
-import { useGlobalSearchParams } from "expo-router"
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  Linking,
-  TouchableOpacity,
-} from "react-native"
-import Header from "@/components/lib/Header"
-import { useQuery } from "@tanstack/react-query"
-import { redditService } from "@/services/reddit"
+import { View, Text, Image, Linking, TouchableOpacity } from "react-native"
 import Utils from "@/components/lib/Utils"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import { useColorScheme } from "react-native"
-import CatchError from "@/components/lib/CatchError"
-import IsLoading from "@/components/lib/IsLoading"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import moment from "moment"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRedditStyle from "@/styles/views/oneReddit"
 import { Reddit } from "@/types/reddit"
-import ROUTES from "@/components/routes"
 
-const OneReddit = () => {
-  const { permalink } = useGlobalSearchParams()
+const OneReddit = ({ data }: { data: Reddit }) => {
   const theme = useColorScheme() ?? "light"
 
   const userDefaultImg = require("../../assets/images/default.png")
 
-  const { data, isLoading, error, refetch } = useQuery<Reddit[]>({
-    queryKey: ["getReddit", permalink],
-    queryFn: async () => {
-      if (!permalink) throw new Error("Missing permalink")
-      return await redditService.getOneNews(permalink)
-    },
-    enabled: !!permalink,
-  })
-
   const oneReddit = () => {
-    if (data && data.length > 0) {
-      const post = data[0]?.data?.children?.[0]?.data
+    if (data) {
+      const post = data
 
       if (!post) return <Text>Post not found</Text>
 
@@ -97,7 +73,6 @@ const OneReddit = () => {
             theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
-          {videoComponent}
           <View style={oneRedditStyle.cardInfo}>
             <View style={oneRedditStyle.author}>
               <Image
@@ -136,6 +111,8 @@ const OneReddit = () => {
               </Text>
             ) : null}
 
+            {videoComponent}
+
             <Text
               style={[
                 oneRedditStyle.text,
@@ -144,12 +121,21 @@ const OneReddit = () => {
             >
               {moment.unix(created).format("YYYY-MM-DD h:mm a")}
             </Text>
-            <TouchableOpacity
-              style={oneRedditStyle.btnContainer}
-              onPress={() => Linking.openURL(url)}
-            >
-              <Text style={oneRedditStyle.btnLabel}>Watch on Reddit</Text>
-            </TouchableOpacity>
+            {url.includes("reddit") ? (
+              <TouchableOpacity
+                style={oneRedditStyle.btnContainer}
+                onPress={() => Linking.openURL(url)}
+              >
+                <Text style={oneRedditStyle.btnLabel}>Watch on Reddit</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={oneRedditStyle.btnContainer}
+                onPress={() => Linking.openURL(url)}
+              >
+                <Text style={oneRedditStyle.btnLabel}>Watch elsewhere</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       )
@@ -158,20 +144,7 @@ const OneReddit = () => {
     return null
   }
 
-  if (error) {
-    return <CatchError error={error} />
-  }
-
-  if (data === undefined && !isLoading) {
-    refetch()
-  }
-
-  return (
-    <ScrollView style={mainStyle.container}>
-      <Header backButton={true} lastPath={{ pathname: ROUTES.REDDITS }} />
-      {isLoading ? <IsLoading isLoading={isLoading} /> : oneReddit()}
-    </ScrollView>
-  )
+  return <View style={mainStyle.container}>{!data ? null : oneReddit()}</View>
 }
 
 export default OneReddit

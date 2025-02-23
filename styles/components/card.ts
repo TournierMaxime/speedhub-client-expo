@@ -9,17 +9,18 @@ const cardStyle = StyleSheet.create({
     width: "100%",
     marginHorizontal: "auto",
     alignSelf: "auto",
-    marginTop: Utils.moderateScale(10),
+    marginVertical: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
     borderColor: "grey",
-    /*     shadowOffset: {
+    shadowOffset: {
       width: Utils.moderateScale(0),
       height: Utils.moderateScale(2),
     },
     shadowOpacity: Utils.moderateScale(0.25),
     shadowRadius: Utils.moderateScale(3.5),
-    elevation: Utils.moderateScale(5), */
+    elevation: Utils.moderateScale(5),
     paddingVertical: Utils.moderateScale(10),
+    //backgroundColor: "#fff",
   },
   cardText: {
     fontSize: Utils.moderateScale(16),

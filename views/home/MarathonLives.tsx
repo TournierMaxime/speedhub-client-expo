@@ -5,12 +5,14 @@ import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { Lives } from "@/types/speedhub"
 import { useState, useEffect } from "react"
-import { View, Text } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 import { useColorScheme } from "react-native"
 import ROUTES from "@/components/routes"
 import Card from "@/components/lib/Card"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
+import { BroadCast } from "@/components/lib/Icons"
+import Utils from "@/components/lib/Utils"
 
 interface Props {
   limit?: number
@@ -30,6 +32,7 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
     getNextPageParam: (lastPage) => {
       return lastPage.nextPage || undefined
     },
+    staleTime: 1000 * 60 * 30,
   })
 
   const [lives, setLives] = useState<Lives["data"]>([])
@@ -41,29 +44,35 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
   const marathonsLive = () => {
     if (lives.length > 0) {
       return (
-        <View
-          style={[
-            cardStyle.card,
-            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
-          ]}
-        >
-          {lives.map((live, idx) => {
-            if (live.isLive) {
-              return (
-                <Card
-                  header={idx === 0 ? "Marathons Live" : undefined}
-                  route={ROUTES.ONE_MARATHON_LIVE}
-                  routeParams={{ horaroId: live.horaroId }}
-                  key={idx}
-                >
-                  <Text style={cardStyle.cardText}>{live.name}</Text>
-                </Card>
-              )
-            }
+        <Fragment>
+          <View style={style.titleAndIcon}>
+            <Text style={style.title}>Live Marathons</Text>
+            <BroadCast />
+          </View>
+          <View
+            style={[
+              cardStyle.card,
+              theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
+            ]}
+          >
+            {lives.map((live, idx) => {
+              if (live.isLive) {
+                return (
+                  <Card
+                    header={idx === 0 ? "Marathons Live" : undefined}
+                    route={ROUTES.ONE_MARATHON_LIVE}
+                    routeParams={{ horaroId: live.horaroId }}
+                    key={idx}
+                  >
+                    <Text style={cardStyle.cardText}>{live.name}</Text>
+                  </Card>
+                )
+              }
 
-            return null
-          })}
-        </View>
+              return null
+            })}
+          </View>
+        </Fragment>
       )
     }
 
@@ -94,5 +103,19 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
     </Fragment>
   )
 }
+
+const style = StyleSheet.create({
+  title: {
+    fontSize: Utils.moderateScale(20),
+    fontWeight: "bold",
+  },
+  titleAndIcon: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: Utils.moderateScale(10),
+  },
+})
 
 export default MarathonLives

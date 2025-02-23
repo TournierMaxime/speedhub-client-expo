@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from "react"
-import { View, Text, Image } from "react-native"
+import { View, Text, Image, ScrollView } from "react-native"
 import { runService } from "@/services/speedrunDotCom"
 import { Runs } from "@/types/sdc"
 import Runtime from "@/components/lib/RunTime"
@@ -12,6 +12,7 @@ import UserName from "@/components/lib/UserName"
 import Card from "@/components/lib/Card"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
+import OneRun from "./OneRun"
 
 interface Props {
   limit?: number
@@ -29,6 +30,7 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
     getNextPageParam: (lastPage) => {
       return lastPage.nextPage || undefined
     },
+    staleTime: 1000 * 60 * 30,
   })
 
   const [runs, setRuns] = useState<Runs["data"]>([])
@@ -50,40 +52,8 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
   }
 
   const allRuns = () => {
-    if (runs.length > 0) {
-      return (
-        <View
-          style={[
-            cardStyle.card,
-            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
-          ]}
-        >
-          {runs.map((run, idx) => (
-            <Card
-              header={idx === 0 ? "Latest Runs" : undefined}
-              route={ROUTES.ONE_RUN}
-              routeParams={{ id: run.id }}
-              key={idx}
-            >
-              <Fragment>
-                <View style={cardStyle.cardImage}>
-                  <Image
-                    source={{
-                      uri: run.game.data.assets["cover-large"].uri,
-                    }}
-                    style={cardStyle.image}
-                  />
-                </View>
-                <View style={cardStyle.cardInfo}>
-                  {getPlayers(run.players.data)}
-                  {getCategory(run.category.data)}
-                  <Runtime time={run.times.primary_t} />
-                </View>
-              </Fragment>
-            </Card>
-          ))}
-        </View>
-      )
+    if (runs && runs.length > 0) {
+      return runs.map((run, idx) => <OneRun key={idx} id={run.id} />)
     }
     return null
   }
@@ -100,9 +70,9 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
   }
 
   return (
-    <View style={mainStyle.container}>
+    <ScrollView style={mainStyle.container}>
       {isLoading ? <IsLoading isLoading={isLoading} /> : allRuns()}
-    </View>
+    </ScrollView>
   )
 }
 

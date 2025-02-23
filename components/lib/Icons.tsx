@@ -9,6 +9,7 @@ import {
   MaterialCommunityIcons,
   AntDesign,
   Feather,
+  Octicons,
 } from "@expo/vector-icons"
 import Utils from "./Utils"
 import { useColorScheme } from "react-native"
@@ -164,7 +165,22 @@ const Shield = () => {
   return <Feather name="shield" size={Utils.moderateScale(20)} />
 }
 
+const News = () => {
+  return <Ionicons name="newspaper-outline" size={Utils.moderateScale(25)} />
+}
+
+const Calendar = () => {
+  return <Ionicons name="calendar-number-sharp" size={24} />
+}
+
+const BroadCast = () => {
+  return <Octicons name="broadcast" size={24} />
+}
+
 export {
+  BroadCast,
+  Calendar,
+  News,
   Shield,
   Settings,
   VideoCam,

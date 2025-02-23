@@ -5,18 +5,13 @@ import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { Upcomings } from "@/types/speedhub"
 import { useState, useEffect } from "react"
-import { View, Text } from "react-native"
+import { View } from "react-native"
 import { useColorScheme } from "react-native"
-import ROUTES from "@/components/routes"
-import Card from "@/components/lib/Card"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
+import OneMarathonUpcoming from "../marathon/OneMarathonUpcoming"
 
-interface Props {
-  limit?: number
-}
-
-const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
+const UpcomingMarathons = ({ limit }: { limit: number }) => {
   const theme = useColorScheme() ?? "light"
 
   const { data, isLoading, error, refetch } = useInfiniteQuery({
@@ -28,6 +23,7 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
     getNextPageParam: (lastPage) => {
       return lastPage.nextPage || undefined
     },
+    staleTime: 1000 * 60 * 30,
   })
 
   const [upcomings, setUpcomings] = useState<Upcomings["data"]>([])
@@ -46,14 +42,7 @@ const UpcomingMarathons: React.FC<Props> = ({ limit }) => {
           ]}
         >
           {upcomings.map((upcoming, idx) => (
-            <Card
-              header={idx === 0 ? "Upcoming Marathons" : undefined}
-              route={ROUTES.ONE_MARATHON_UPCOMING}
-              routeParams={{ horaroId: upcoming.horaroId }}
-              key={idx}
-            >
-              <Text style={cardStyle.cardText}>{upcoming.name}</Text>
-            </Card>
+            <OneMarathonUpcoming key={idx} data={upcoming} />
           ))}
         </View>
       )
