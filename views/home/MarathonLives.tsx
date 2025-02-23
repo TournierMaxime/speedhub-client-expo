@@ -7,18 +7,13 @@ import { Lives } from "@/types/speedhub"
 import { useState, useEffect } from "react"
 import { View, Text, StyleSheet } from "react-native"
 import { useColorScheme } from "react-native"
-import ROUTES from "@/components/routes"
-import Card from "@/components/lib/Card"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import { BroadCast } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
+import OneMarathonLive from "../marathon/OneMarathonLive"
 
-interface Props {
-  limit?: number
-}
-
-const MarathonLives: React.FC<Props> = ({ limit }) => {
+const MarathonLives = ({ limit }: { limit: number }) => {
   const theme = useColorScheme() ?? "light"
 
   const { data, isLoading, error, refetch } = useInfiniteQuery({
@@ -37,10 +32,6 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
 
   const [lives, setLives] = useState<Lives["data"]>([])
 
-  if (error) {
-    return <CatchError error={error} />
-  }
-
   const marathonsLive = () => {
     if (lives.length > 0) {
       return (
@@ -57,16 +48,7 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
           >
             {lives.map((live, idx) => {
               if (live.isLive) {
-                return (
-                  <Card
-                    header={idx === 0 ? "Marathons Live" : undefined}
-                    route={ROUTES.ONE_MARATHON_LIVE}
-                    routeParams={{ horaroId: live.horaroId }}
-                    key={idx}
-                  >
-                    <Text style={cardStyle.cardText}>{live.name}</Text>
-                  </Card>
-                )
+                return <OneMarathonLive key={idx} data={live} />
               }
 
               return null
@@ -86,6 +68,10 @@ const MarathonLives: React.FC<Props> = ({ limit }) => {
       setLives(filteredData)
     }
   }, [data])
+
+  if (error) {
+    return <CatchError error={error} />
+  }
 
   if (lives === undefined && !isLoading) {
     refetch()

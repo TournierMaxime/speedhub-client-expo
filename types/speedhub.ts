@@ -64,24 +64,6 @@ interface Ticker {
 
 // Marathons Live and Upcoming
 
-interface Lives {
-  data: {
-    horaroId: string
-    scheduleId: string | null
-    name: string
-    link: string
-    slug: string
-    isLive: boolean
-    createdAt: string
-    schedule: Schedule
-    ticker: {
-      schedule: TickerSchedule
-      ticker: TickerChildren
-      links: Links[]
-    }
-  }[]
-}
-
 interface Upcomings {
   data: Upcoming[]
 }
@@ -104,6 +86,10 @@ interface Upcoming {
     ticker: TickerChildren
     links: Links[]
   }
+}
+
+interface Lives {
+  data: Live[]
 }
 
 interface Live {
