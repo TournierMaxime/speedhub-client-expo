@@ -1,4 +1,3 @@
-import { useGlobalSearchParams } from "expo-router"
 import React from "react"
 import { View, Text, TouchableOpacity, ScrollView } from "react-native"
 import useHandleRouter, { Pathname } from "@/hooks/utils/useHandleRouter"
@@ -7,9 +6,8 @@ import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"
 import mainStyle from "@/styles/base/main"
 import profileStyle from "@/styles/views/profile"
-import { Chevron, Logout, Settings, Shield, User } from "@/components/lib/Icons"
+import { Avatar, Chevron, Email, User } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
-import app from "../../package.json"
 
 interface Item {
   path: Pathname | undefined
@@ -19,49 +17,38 @@ interface Item {
   action?: () => Promise<void>
 }
 
-const OneUser = () => {
-  const { userId } = useGlobalSearchParams()
-
+const Profile = () => {
   const { handleReplace, handleRedirect } = useHandleRouter()
 
   const { logout, user } = useAuth()
-
-  const handleLogout = async () => {
-    await logout()
-    await handleReplace(ROUTES.AUTH)
-  }
 
   const items: Item[] = [
     {
       path: ROUTES.PROFILE,
       params: undefined,
-      title: "Profile",
+      title: "Username",
       icon: <User size={20} />,
     },
     {
       path: ROUTES.SETTINGS,
       params: undefined,
-      title: "Settings",
-      icon: <Settings />,
+      title: "Email",
+      icon: <Email />,
     },
     {
       path: ROUTES.PRIVACY_POLICY,
       params: undefined,
-      title: "Privacy Policy",
-      icon: <Shield />,
-    },
-    {
-      path: undefined,
-      params: undefined,
-      title: "Log out",
-      icon: <Logout />,
-      action: async () => await handleLogout(),
+      title: "Avatar",
+      icon: <Avatar />,
     },
   ]
 
   return (
     <View style={[mainStyle.container, { flex: 1 }]}>
-      <Header backButton={true} lastPath={{ pathname: ROUTES.HOME }} />
+      <Header
+        backButton={true}
+        lastPath={{ pathname: ROUTES.ONE_USER_PROFILE }}
+      />
       <ScrollView style={profileStyle.container}>
         {items.map((item, idx) => {
           return (
@@ -79,11 +66,7 @@ const OneUser = () => {
                     },
               ]}
               onPress={() =>
-                item.path
-                  ? handleRedirect(item.path, item.params)
-                  : item.action
-                  ? item.action()
-                  : null
+                item.path ? handleRedirect(item.path, item.params) : undefined
               }
             >
               <Text
@@ -98,13 +81,9 @@ const OneUser = () => {
             </TouchableOpacity>
           )
         })}
-
-        <View style={profileStyle.version}>
-          <Text style={profileStyle.versionText}>{app.version}</Text>
-        </View>
       </ScrollView>
     </View>
   )
 }
 
-export default OneUser
+export default Profile

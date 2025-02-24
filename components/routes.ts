@@ -4,6 +4,7 @@ const ROUTES = {
   HOME: "/(tabs)/home" as RelativePathString,
   CONFIRM_EMAIL: "/(auth)/confirm-email" as RelativePathString,
   ONE_USER_PROFILE: "/(tabs)/(main)/(profile)/user" as RelativePathString,
+  PROFILE: "/(tabs)/(main)/(profile)/profile" as RelativePathString,
   SEARCH: "/(tabs)/(main)/(search)/search" as RelativePathString,
   AUTH: "/(auth)" as RelativePathString,
   ONE_RUN: "/(tabs)/(main)/(runs)/run" as RelativePathString,

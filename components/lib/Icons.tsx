@@ -39,13 +39,13 @@ const LeftArrow = () => {
   )
 }
 
-const User = () => {
+const User = ({ size, color }: { size?: number; color?: string }) => {
   const theme = useColorScheme() ?? "light"
 
   return (
     <FontAwesome5
       name="user"
-      size={Utils.moderateScale(25)}
+      size={Utils.moderateScale(size ?? 25)}
       color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
     />
   )
@@ -177,7 +177,22 @@ const BroadCast = () => {
   return <Octicons name="broadcast" size={24} />
 }
 
+const Logout = () => {
+  return <AntDesign name="logout" size={20} />
+}
+
+const Email = () => {
+  return <MaterialIcons name="email" size={20} />
+}
+
+const Avatar = () => {
+  return <AntDesign name="picture" size={20} />
+}
+
 export {
+  Email,
+  Avatar,
+  Logout,
   BroadCast,
   Calendar,
   News,

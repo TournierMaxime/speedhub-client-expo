@@ -141,7 +141,7 @@ class UserService implements UserServiceInterface {
     const response = await this.http.put(`/users/${userId}`, data, {
       ...this.defaultOptions,
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": data.image ? "multipart/form-data" : "application/json",
       },
     })
     return response.data

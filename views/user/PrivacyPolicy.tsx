@@ -8,11 +8,9 @@ import { useColorScheme } from "react-native"
 import { PrivacyPolicyProps } from "@/types/speedhub"
 import privacyPolicyStyle from "@/styles/views/privacyPolicy"
 
-const n = "\n\n"
-
 const privacyPolicyData: PrivacyPolicyProps[] = [
   {
-    title: `Privacy Policy${n}`,
+    title: "Privacy Policy",
     content: [
       "Last updated: February 18, 2025",
       "This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.",

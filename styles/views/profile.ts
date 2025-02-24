@@ -19,13 +19,12 @@ const profileStyle = StyleSheet.create({
     fontSize: Utils.moderateScale(18),
     fontWeight: "bold",
   },
-  logout: {
+  version: {
     display: "flex",
     alignItems: "center",
   },
-  logoutText: {
+  versionText: {
     fontSize: Utils.moderateScale(18),
-    color: "red",
     fontWeight: "bold",
     paddingHorizontal: Utils.moderateScale(10),
     paddingVertical: Utils.moderateScale(15),
