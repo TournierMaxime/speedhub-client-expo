@@ -24,7 +24,11 @@ const OneMarathonLive = ({ data }: { data: Live }) => {
             {data.name}
           </Text>
           {data?.schedule?.twitch ? (
-            <TwitchIframe channel={data.schedule.twitch} />
+            <TwitchIframe
+              channel={data.schedule.twitch}
+              width={360}
+              height={210}
+            />
           ) : (
             <Text>Twitch channel not provided</Text>
           )}

@@ -55,6 +55,7 @@ const useHandleAuthSDC = () => {
           verified: true,
           expoPushToken: token ?? "",
           lang: "en",
+          image: sdc.data.assets.image.uri,
         })
 
         authService.login({ userId: response.user.userId })

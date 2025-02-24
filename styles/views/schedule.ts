@@ -5,11 +5,10 @@ const scheduleStyle = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    marginLeft: "auto",
-    marginRight: "auto",
+    marginHorizontal: "auto",
     width: "95%",
     marginTop: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
+    /*     borderRadius: Utils.moderateScale(5),
     padding: Utils.moderateScale(10),
     shadowOffset: {
       width: Utils.moderateScale(0),
@@ -18,7 +17,7 @@ const scheduleStyle = StyleSheet.create({
     shadowOpacity: Utils.moderateScale(0.25),
     shadowRadius: Utils.moderateScale(3.5),
     elevation: Utils.moderateScale(5),
-    backgroundColor: "#fff", // adapt theme
+    backgroundColor: "#fff",  */
   },
   title: {
     fontSize: Utils.moderateScale(18),

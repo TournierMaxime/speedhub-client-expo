@@ -6,12 +6,11 @@ const cardStyle = StyleSheet.create({
   card: {
     display: "flex",
     flexDirection: "column",
-    width: "100%",
+    width: "95%",
     marginHorizontal: "auto",
     alignSelf: "auto",
     marginVertical: Utils.moderateScale(10),
     borderRadius: Utils.moderateScale(5),
-    borderColor: "grey",
     shadowOffset: {
       width: Utils.moderateScale(0),
       height: Utils.moderateScale(2),

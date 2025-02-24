@@ -7,7 +7,7 @@ const splitsStyle = StyleSheet.create({
     flexDirection: "column",
     marginHorizontal: Utils.moderateScale(5),
     marginVertical: Utils.moderateScale(10),
-    borderRadius: Utils.moderateScale(5),
+    /*     borderRadius: Utils.moderateScale(5),
     shadowOffset: {
       width: Utils.moderateScale(0),
       height: Utils.moderateScale(2),
@@ -15,7 +15,7 @@ const splitsStyle = StyleSheet.create({
     shadowOpacity: Utils.moderateScale(0.25),
     shadowRadius: Utils.moderateScale(3.5),
     elevation: Utils.moderateScale(5),
-    backgroundColor: "white", // adapt theme
+    backgroundColor: "white", */
     padding: Utils.moderateScale(10),
   },
   cardSplit: {

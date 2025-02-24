@@ -108,7 +108,15 @@ interface Live {
   }
 }
 
+// Privacy Policy
+
+interface PrivacyPolicyProps {
+  title: string
+  content: string[]
+}
+
 export {
+  PrivacyPolicyProps,
   Schedule,
   Ticker,
   Items,
