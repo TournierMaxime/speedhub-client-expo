@@ -5,6 +5,7 @@ import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 import scheduleStyle from "@/styles/views/schedule"
 import { Schedule, Items } from "@/types/speedhub"
+import { Collapsible } from "@/components/Collapsible"
 
 const OneSchedule = ({ schedule }: { schedule: Schedule }) => {
   if (!schedule) {
@@ -31,10 +32,10 @@ const OneSchedule = ({ schedule }: { schedule: Schedule }) => {
   return (
     <View style={scheduleStyle.container}>
       <View style={scheduleStyle.header}>
-        <Text style={scheduleStyle.title}>Schedule</Text>
-        <Text style={scheduleStyle.subTitle}>{schedule.name}</Text>
+        <Collapsible title="Schedule">
+          {renderItems(schedule.items)}
+        </Collapsible>
       </View>
-      {renderItems(schedule.items)}
     </View>
   )
 }

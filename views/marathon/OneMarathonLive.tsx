@@ -29,9 +29,7 @@ const OneMarathonLive = ({ data }: { data: Live }) => {
               width={360}
               height={210}
             />
-          ) : (
-            <Text>Twitch channel not provided</Text>
-          )}
+          ) : null}
           <OneTicker ticker={data?.ticker?.ticker} />
           <OneSchedule schedule={data?.schedule} />
         </Fragment>

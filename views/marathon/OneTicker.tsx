@@ -5,6 +5,7 @@ import Utils from "@/components/lib/Utils"
 import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 import tickerStyle from "@/styles/views/ticker"
+import { Collapsible } from "@/components/Collapsible"
 
 const OneTicker = ({ ticker }: { ticker: TickerChildren }) => {
   if (!ticker) {
@@ -70,9 +71,8 @@ const OneTicker = ({ ticker }: { ticker: TickerChildren }) => {
   return (
     <View style={tickerStyle.container}>
       <View style={tickerStyle.header}>
-        <Text style={tickerStyle.title}>Ticker</Text>
+        <Collapsible title="Ticker">{renderItem()}</Collapsible>
       </View>
-      {renderItem()}
     </View>
   )
 }

@@ -13,13 +13,12 @@ const oneRunStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flexWrap: "wrap",
+    marginTop: Utils.moderateScale(10),
   },
   commentContainer: {
     display: "flex",
     flexDirection: "row",
     padding: Utils.moderateScale(10),
-    width: "90%",
-    margin: "auto",
   },
   text: {
     fontSize: Utils.moderateScale(16),
@@ -29,17 +28,16 @@ const oneRunStyle = StyleSheet.create({
   cardInfo: {
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
+    padding: Utils.moderateScale(5),
   },
   cardInfoItems: {
     display: "flex",
     flexDirection: "column",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    paddingVertical: Utils.moderateScale(10),
+    //flexWrap: "wrap",
     borderRadius: Utils.moderateScale(5),
     backgroundColor: "white", // adapt theme
     marginHorizontal: Utils.moderateScale(10),
-    marginVertical: Utils.moderateScale(10),
   },
 })
 

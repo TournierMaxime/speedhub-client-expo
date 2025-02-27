@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { ScrollView } from "react-native"
+import { View, FlatList } from "react-native"
 import { runService } from "@/services/speedrunDotCom"
 import { Runs } from "@/types/sdc"
 import { useInfiniteQuery } from "@tanstack/react-query"
@@ -7,13 +7,13 @@ import { useColorScheme } from "react-native"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import mainStyle from "@/styles/base/main"
-import OneRun from "./OneRun"
+import OneRunHome from "./OneRunHome"
 
 interface Props {
   limit?: number
 }
 
-const AllRuns: React.FC<Props> = ({ limit }) => {
+const RunsHome: React.FC<Props> = ({ limit }) => {
   const theme = useColorScheme() ?? "light"
 
   const { data, isLoading, error } = useInfiniteQuery({
@@ -30,9 +30,13 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
 
   const [runs, setRuns] = useState<Runs["data"]>([])
 
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
+    return <OneRunHome key={index} id={item.id} />
+  }
+
   const allRuns = () => {
     if (runs && runs.length > 0) {
-      return runs.map((run, idx) => <OneRun key={idx} id={run.id} />)
+      return <FlatList horizontal={true} data={runs} renderItem={renderItem} />
     }
     return null
   }
@@ -49,10 +53,10 @@ const AllRuns: React.FC<Props> = ({ limit }) => {
   }
 
   return (
-    <ScrollView style={mainStyle.container}>
+    <View style={mainStyle.container}>
       {isLoading ? <IsLoading isLoading={isLoading} /> : allRuns()}
-    </ScrollView>
+    </View>
   )
 }
 
-export default AllRuns
+export default RunsHome

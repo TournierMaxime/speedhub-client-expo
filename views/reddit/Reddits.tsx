@@ -3,11 +3,10 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { useState, useEffect } from "react"
-import { View, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { useColorScheme } from "react-native"
 import { redditService } from "@/services/reddit"
 import mainStyle from "@/styles/base/main"
-import cardStyle from "@/styles/components/card"
 import { Reddits } from "@/types/reddit"
 import OneReddit from "./OneReddit"
 
@@ -27,7 +26,7 @@ const AllReddits: React.FC<Props> = ({ limit }) => {
     getNextPageParam: (lastPage) => {
       return lastPage.nextPage || undefined
     },
-    staleTime: 1000 * 60 * 30,
+    //staleTime: 1000 * 60 * 30,
   })
 
   const [reddits, setReddits] = useState<Reddits["data"]["children"]>([])

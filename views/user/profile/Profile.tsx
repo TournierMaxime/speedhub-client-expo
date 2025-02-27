@@ -1,7 +1,6 @@
 import React from "react"
 import { View, Text, TouchableOpacity, ScrollView } from "react-native"
 import useHandleRouter, { Pathname } from "@/hooks/utils/useHandleRouter"
-import { useAuth } from "@/contexts/AuthContext"
 import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"
 import mainStyle from "@/styles/base/main"
@@ -18,25 +17,23 @@ interface Item {
 }
 
 const Profile = () => {
-  const { handleReplace, handleRedirect } = useHandleRouter()
-
-  const { logout, user } = useAuth()
+  const { handleRedirect } = useHandleRouter()
 
   const items: Item[] = [
     {
-      path: ROUTES.PROFILE,
+      path: ROUTES.UPDATE_USERNAME,
       params: undefined,
       title: "Username",
       icon: <User size={20} />,
     },
     {
-      path: ROUTES.SETTINGS,
+      path: ROUTES.UPDATE_EMAIL,
       params: undefined,
       title: "Email",
       icon: <Email />,
     },
     {
-      path: ROUTES.PRIVACY_POLICY,
+      path: ROUTES.UPDATE_AVATAR,
       params: undefined,
       title: "Avatar",
       icon: <Avatar />,

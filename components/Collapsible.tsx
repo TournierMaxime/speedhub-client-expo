@@ -1,5 +1,11 @@
 import { PropsWithChildren, useState } from "react"
-import { StyleSheet, TouchableOpacity, View } from "react-native"
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  StyleProp,
+  TextStyle,
+} from "react-native"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { IconSymbol } from "@/components/ui/IconSymbol"
@@ -11,9 +17,11 @@ export function Collapsible({
   children,
   title,
   onToggle,
+  style,
 }: PropsWithChildren & {
   title: string
   onToggle?: (isOpen: boolean) => void
+  style?: StyleProp<TextStyle>
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const theme = useColorScheme() ?? "light"
@@ -41,7 +49,12 @@ export function Collapsible({
             color={theme === "light" ? Colors.light.icon : Colors.dark.icon}
             style={{ transform: [{ rotate: isOpen ? "90deg" : "0deg" }] }}
           />
-          <ThemedText type="defaultSemiBold">{title}</ThemedText>
+          <ThemedText
+            type="defaultSemiBold"
+            style={{ fontWeight: "bold", fontSize: Utils.moderateScale(18) }}
+          >
+            {title}
+          </ThemedText>
         </View>
       </TouchableOpacity>
       {isOpen && <View style={styles.contentContainer}>{children}</View>}

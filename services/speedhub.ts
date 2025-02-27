@@ -17,7 +17,7 @@ interface UserServiceInterface {
     pagination: { page: number; size: number }
   ): Promise<any>
   getOneUser(userId: string): Promise<any>
-  updateUser(data: any, userId: string): Promise<any>
+  updateUser(userId: string, data: any, file?: string): Promise<any>
   deleteUser(userId: string): Promise<any>
 }
 
@@ -70,6 +70,13 @@ class HoraroService implements HoraroServiceInterface {
 
 class AuthService implements AuthServiceInterface {
   private http = http
+
+  async verifyToken(refreshToken?: any) {
+    const response = await this.http.post("/auth/verify-token", {
+      refreshToken,
+    })
+    return response.data
+  }
 
   async register(data: any) {
     const response = await this.http.post("/auth/register", data)
@@ -137,13 +144,20 @@ class UserService implements UserServiceInterface {
     return response.data
   }
 
-  async updateUser(data: any, userId: string) {
+  async updateUser(userId: string, data: any, file?: string) {
+    let headers: any
+
+    if (file) {
+      headers = { "Content-Type": "multipart/form-data" }
+    } else {
+      headers = { "Content-Type": "application/json" }
+    }
+
     const response = await this.http.put(`/users/${userId}`, data, {
       ...this.defaultOptions,
-      headers: {
-        "Content-Type": data.image ? "multipart/form-data" : "application/json",
-      },
+      headers,
     })
+
     return response.data
   }
 

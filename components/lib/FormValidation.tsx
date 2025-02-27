@@ -16,6 +16,7 @@ import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 import Checkbox from "expo-checkbox"
 import useOnChange from "@/hooks/utils/useOnChange"
+import * as DocumentPicker from "expo-document-picker"
 
 type SetFormData = React.Dispatch<React.SetStateAction<DataState>>
 
@@ -205,25 +206,48 @@ const FormInputSwitch = ({
   )
 }
 
-const FormUploadFile = ({ data, fct }: { data: string; fct: () => void }) => {
+const FormUploadFile = ({
+  data,
+  setData,
+  name,
+  value,
+  type,
+}: {
+  data: DataState
+  setData: SetFormData
+  name: keyof DataState
+  value: string
+  type?: string
+}) => {
+  const { onChange } = useOnChange({ data, setData })
+
+  const { isValid, error } = validateField(type, value)
+  const borderColor = !value ? "grey" : isValid ? "green" : "red"
   return (
     <View>
-      <View>
-        <Image
-          source={{
-            uri: `${data}?t=${new Date().getTime()}`,
-          }}
-          style={{
-            width: Utils.moderateScale(48),
-            height: Utils.moderateScale(48),
-          }}
-        />
-      </View>
-      <View>
-        <TouchableOpacity style={""} onPress={() => fct()}>
-          <Text style={""}>Change avatar</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        onPress={async () => {
+          try {
+            const result = await DocumentPicker.getDocumentAsync({
+              type: "image/*",
+            })
+
+            if (!result.canceled && result.assets) {
+              const pickedFile = result.assets[0]
+              const fileUri = pickedFile.uri
+
+              onChange({ name, value: fileUri })
+            }
+          } catch (error) {
+            console.log("🚨 Erreur lors de la sélection du fichier :", error)
+          }
+        }}
+      >
+        <Text style={""}>Change avatar</Text>
+      </TouchableOpacity>
+      <Text style={{ color: "red", fontSize: Utils.moderateScale(14) }}>
+        {error}
+      </Text>
     </View>
   )
 }

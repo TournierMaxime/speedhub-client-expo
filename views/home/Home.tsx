@@ -3,7 +3,7 @@ import Header from "@/components/lib/Header"
 import MarathonLives from "./MarathonLives"
 import UpcomingMarathons from "./UpcomingMarathons"
 import AllReddits from "../reddit/Reddits"
-import AllRuns from "../sdc/runs/Runs"
+import RunsHome from "../sdc/runs/RunsHome"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import { Calendar, News, Runner } from "@/components/lib/Icons"
@@ -21,7 +21,7 @@ const Home = () => {
         <Text style={style.title}>Latest Runs</Text>
         <Runner />
       </View>
-      <AllRuns limit={5} />
+      <RunsHome limit={5} />
       <MarathonLives limit={5} />
       <View style={style.titleAndIcon}>
         <Text style={style.title}>Upcoming Marathons</Text>

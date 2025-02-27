@@ -9,7 +9,7 @@ const oneRedditStyle = StyleSheet.create({
     margin: "auto",
     alignItems: "center",
     marginVertical: Utils.moderateScale(10),
-    backgroundColor: "#d93a00",
+    backgroundColor: "blue",
   },
   btnLabel: {
     fontSize: Utils.moderateScale(18),

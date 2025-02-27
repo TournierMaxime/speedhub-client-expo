@@ -16,7 +16,7 @@ import oneRunStyle from "@/styles/views/oneRun"
 import { Run } from "@/types/sdc"
 import Utils from "@/components/lib/Utils"
 
-const OneRun = ({ id }: { id: string }) => {
+const OneRunHome = ({ id }: { id: string }) => {
   const theme = useColorScheme() ?? "light"
 
   const { data, isLoading, error, refetch } = useQuery<Run>({
@@ -52,30 +52,16 @@ const OneRun = ({ id }: { id: string }) => {
     return null
   }
 
-  const getComment = (data: any) => {
-    if (data) {
-      const comment = data
-      return (
-        <Text style={[cardStyle.text, { marginTop: Utils.moderateScale(10) }]}>
-          {comment}
-        </Text>
-      )
-    }
-
-    return null
-  }
-
   const getContent = (data: Run["data"]) => {
     if (data) {
       return (
         <View style={oneRunStyle.playerContainer}>
           <View>
+            {getPlayers(data?.players?.data)}
             <Text style={cardStyle.text}>
               {data.game.data.names.international}
             </Text>
-            {getPlayers(data?.players?.data)}
             {getCategoryAndTime(data)}
-            {data?.comment ? getComment(data?.comment) : null}
           </View>
         </View>
       )
@@ -104,26 +90,26 @@ const OneRun = ({ id }: { id: string }) => {
         case "youtube":
           const youtubeId = videoUri.substring(32, 43)
           videoComponent = (
-            <YoutubeIframe videoId={youtubeId} width={380} height={220} />
+            <YoutubeIframe videoId={youtubeId} width={340} height={180} />
           )
           break
 
         case "twitch":
           const twitchId = videoUri.substring(29)
           videoComponent = (
-            <TwitchIframe id={twitchId} width={380} height={220} />
+            <TwitchIframe id={twitchId} width={340} height={180} />
           )
           break
 
         case "youtu.be":
           const youtuBeId = videoUri.substring(17)
           videoComponent = (
-            <YoutubeIframe videoId={youtuBeId} width={380} height={220} />
+            <YoutubeIframe videoId={youtuBeId} width={340} height={180} />
           )
           break
 
         default:
-          return <Text>Unsupported video platform</Text>
+          return null
       }
 
       return (
@@ -141,7 +127,6 @@ const OneRun = ({ id }: { id: string }) => {
               </View>
             ) : null}
           </View>
-          <Splits splits={data?.data?.splits?.uri} />
         </View>
       )
     }
@@ -159,4 +144,4 @@ const OneRun = ({ id }: { id: string }) => {
   return <View style={mainStyle.container}>{isLoading ? null : oneRun()}</View>
 }
 
-export default OneRun
+export default OneRunHome

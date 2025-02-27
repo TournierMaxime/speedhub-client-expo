@@ -1,5 +1,12 @@
 import React from "react"
-import { View, Text, Image, Linking, TouchableOpacity } from "react-native"
+import {
+  View,
+  Text,
+  Image,
+  Linking,
+  TouchableOpacity,
+  Alert,
+} from "react-native"
 import Utils from "@/components/lib/Utils"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import { useColorScheme } from "react-native"
@@ -100,17 +107,6 @@ const OneReddit = ({ data }: { data: Reddit }) => {
               {title}
             </Text>
 
-            {selftext ? (
-              <Text
-                style={[
-                  oneRedditStyle.text,
-                  theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
-                ]}
-              >
-                {selftext}
-              </Text>
-            ) : null}
-
             {videoComponent}
 
             <Text
@@ -121,21 +117,34 @@ const OneReddit = ({ data }: { data: Reddit }) => {
             >
               {moment.unix(created).format("YYYY-MM-DD h:mm a")}
             </Text>
-            {url.includes("reddit") ? (
-              <TouchableOpacity
-                style={oneRedditStyle.btnContainer}
-                onPress={() => Linking.openURL(url)}
-              >
-                <Text style={oneRedditStyle.btnLabel}>Watch on Reddit</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={oneRedditStyle.btnContainer}
-                onPress={() => Linking.openURL(url)}
-              >
-                <Text style={oneRedditStyle.btnLabel}>Watch elsewhere</Text>
-              </TouchableOpacity>
-            )}
+
+            <TouchableOpacity
+              style={oneRedditStyle.btnContainer}
+              onPress={async () => {
+                const canOpenUrl = await Linking.canOpenURL(url)
+                let message
+                if (canOpenUrl === true) {
+                  message = Alert.alert(
+                    "Redirection link",
+                    "You will be redirect to " +
+                      url +
+                      " are you sure to continue ?",
+                    [
+                      {
+                        text: "Yes",
+                        onPress: () => Linking.openURL(url),
+                      },
+                      {
+                        text: "No",
+                      },
+                    ]
+                  )
+                } else {
+                }
+              }}
+            >
+              <Text style={oneRedditStyle.btnLabel}>More</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )

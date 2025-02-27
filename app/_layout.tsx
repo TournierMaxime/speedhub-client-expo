@@ -63,9 +63,9 @@ function Navigation() {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push("/(tabs)/home")
+      router.replace("/(tabs)/home")
     } else if (!isLoading && !isAuthenticated) {
-      router.push("/(auth)/login")
+      router.replace("/(auth)/login")
     }
   }, [isAuthenticated, isLoading])
 

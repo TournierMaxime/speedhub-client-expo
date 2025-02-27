@@ -2,6 +2,7 @@ export interface DataState {
   email?: string
   password?: string
   pseudo?: string
+  image?: string
   expoPushToken?: string
   code?: string
   verificationCode?: string
