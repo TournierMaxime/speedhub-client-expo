@@ -69,12 +69,9 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
       <View style={oneGameDetailsStyle.infoContainer}>
         <Text style={oneGameDetailsStyle.subTitle}>Informations</Text>
         <View style={oneGameDetailsStyle.infoContent}>
-          <FlatList
-            data={infoData}
-            horizontal={true}
-            keyExtractor={(item) => item?.title ?? ""}
-            renderItem={({ item }) => (
-              <BottomModal title={item?.title ?? ""}>
+          {infoData.map((item, idx) => {
+            return (
+              <BottomModal key={idx} title={item?.title ?? ""}>
                 {Array.isArray(item?.content) ? (
                   item.content.map((elem, idx) => (
                     <Text key={idx} style={oneGameDetailsStyle.tags}>
@@ -85,9 +82,8 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
                   <Text style={oneGameDetailsStyle.tags}>{item?.content}</Text>
                 )}
               </BottomModal>
-            )}
-            showsHorizontalScrollIndicator={true}
-          />
+            )
+          })}
         </View>
       </View>
 
