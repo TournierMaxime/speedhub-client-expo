@@ -17,6 +17,7 @@ const YoutubeIframe: React.FC<Props> = ({ videoId, width, height }) => {
         width={width ?? video.dimension.w}
         height={height ?? video.dimension.h}
         play={false}
+        mute={true}
         videoId={videoId}
       />
     </View>

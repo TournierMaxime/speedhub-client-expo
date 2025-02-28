@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text } from "react-native"
+import { View, Text, ScrollView } from "react-native"
 import { useQuery } from "@tanstack/react-query"
 import { runService } from "@/services/speedrunDotCom"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
@@ -15,17 +15,19 @@ import oneRunStyle from "@/styles/views/oneRun"
 import { Run } from "@/types/sdc"
 import Utils from "@/components/lib/Utils"
 import { Collapsible } from "@/components/Collapsible"
+import { useLocalSearchParams } from "expo-router"
+import Header from "@/components/lib/Header"
 
-const OneRun = ({ id }: { id: string }) => {
+const OneRun = ({ id }: { id?: string }) => {
   const theme = useColorScheme() ?? "light"
+  const { id: pbRunId } = useLocalSearchParams()
 
   const { data, isLoading, error, refetch } = useQuery<Run>({
-    queryKey: ["getRun", id],
+    queryKey: ["getRun", pbRunId ?? id],
     queryFn: async () => {
-      if (!id) throw new Error("Missing ID")
-      return await runService.getRun(id)
+      return await runService.getRun(pbRunId ?? id)
     },
-    enabled: !!id,
+    enabled: pbRunId ? !!pbRunId : !!id,
   })
 
   const getPlayers = (data: Run["data"]["players"]["data"]) => {
@@ -92,7 +94,7 @@ const OneRun = ({ id }: { id: string }) => {
             {getPlayers(data?.players?.data)}
             {getCategoryAndTime(data)}
             {data?.comment ? getComment(data?.comment) : null}
-            {data.splits ? getSplits(data.splits) : null}
+            {data?.splits ? getSplits(data.splits) : null}
           </View>
         </View>
       )
@@ -172,7 +174,12 @@ const OneRun = ({ id }: { id: string }) => {
     refetch()
   }
 
-  return <View style={mainStyle.container}>{isLoading ? null : oneRun()}</View>
+  return (
+    <ScrollView style={mainStyle.container}>
+      <Header backButton={true} />
+      {isLoading ? null : oneRun()}
+    </ScrollView>
+  )
 }
 
 export default OneRun

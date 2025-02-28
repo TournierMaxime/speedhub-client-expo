@@ -9,8 +9,6 @@ import moment from "moment"
 const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
   const theme = useColorScheme() ?? "light"
 
-  console.log(data.ticker.ticker.next.data)
-
   const oneMarathonUpcoming = () => {
     if (data) {
       return (
