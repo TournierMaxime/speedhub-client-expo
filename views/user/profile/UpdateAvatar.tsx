@@ -8,8 +8,11 @@ import mainStyle from "@/styles/base/main"
 import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"
 import useHandleUpdate from "@/hooks/user/useHandleUpdate"
+import { useAuth } from "@/contexts/AuthContext"
 
 const UpdateAvatar = () => {
+  const { user } = useAuth()
+  console.log("user", user)
   const { handleUpdateAvatar, data, setData } = useHandleUpdate()
   return (
     <View style={mainStyle.container}>

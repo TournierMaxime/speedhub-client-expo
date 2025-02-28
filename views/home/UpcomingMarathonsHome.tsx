@@ -3,18 +3,13 @@ import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
-import { Upcomings } from "@/types/speedhub"
+import { Upcoming, Upcomings } from "@/types/speedhub"
 import { useState, useEffect } from "react"
-import { View, useColorScheme, StyleSheet, Text } from "react-native"
+import { FlatList, View } from "react-native"
 import mainStyle from "@/styles/base/main"
-import cardStyle from "@/styles/components/card"
-import OneMarathonUpcoming from "../marathon/OneMarathonUpcoming"
-import Utils from "@/components/lib/Utils"
-import { Calendar } from "@/components/lib/Icons"
+import OneMarathonUpcomingHome from "../marathon/OneMarathonUpcomingHome"
 
-const UpcomingMarathons = ({ limit }: { limit: number }) => {
-  const theme = useColorScheme() ?? "light"
-
+const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
   const { data, isLoading, error, refetch } = useInfiniteQuery({
     queryKey: ["getUpcomings", limit],
     queryFn: async () => {
@@ -33,19 +28,14 @@ const UpcomingMarathons = ({ limit }: { limit: number }) => {
     return <CatchError error={error} />
   }
 
-  const upcomingMarathons = () => {
-    if (upcomings.length > 0) {
-      return (
-        <Fragment>
-          <View style={style.titleAndIcon}>
-            <Text style={style.title}>Upcoming Marathons</Text>
-            <Calendar />
-          </View>
+  const renderItem = ({ item, index }: { item: Upcoming; index: number }) => {
+    return <OneMarathonUpcomingHome key={index} data={item} />
+  }
 
-          {upcomings.map((upcoming, idx) => (
-            <OneMarathonUpcoming key={idx} data={upcoming} />
-          ))}
-        </Fragment>
+  const upcomingMarathons = () => {
+    if (upcomings && upcomings.length > 0) {
+      return (
+        <FlatList horizontal={true} data={upcomings} renderItem={renderItem} />
       )
     }
 
@@ -77,18 +67,4 @@ const UpcomingMarathons = ({ limit }: { limit: number }) => {
   )
 }
 
-const style = StyleSheet.create({
-  title: {
-    fontSize: Utils.moderateScale(20),
-    fontWeight: "bold",
-  },
-  titleAndIcon: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: Utils.moderateScale(10),
-  },
-})
-
-export default UpcomingMarathons
+export default UpcomingMarathonsHome

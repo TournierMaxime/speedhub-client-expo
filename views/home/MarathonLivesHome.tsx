@@ -3,22 +3,21 @@ import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
-import { Upcomings } from "@/types/speedhub"
+import { Live, Lives } from "@/types/speedhub"
 import { useState, useEffect } from "react"
-import { View, useColorScheme, StyleSheet, Text } from "react-native"
+import { View, Text, StyleSheet, FlatList } from "react-native"
 import mainStyle from "@/styles/base/main"
-import cardStyle from "@/styles/components/card"
-import OneMarathonUpcoming from "../marathon/OneMarathonUpcoming"
+import { BroadCast } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
-import { Calendar } from "@/components/lib/Icons"
+import OneMarathonLiveHome from "../marathon/OneMarathonLiveHome"
 
-const UpcomingMarathons = ({ limit }: { limit: number }) => {
-  const theme = useColorScheme() ?? "light"
-
+const MarathonLivesHome = ({ limit }: { limit: number }) => {
   const { data, isLoading, error, refetch } = useInfiniteQuery({
-    queryKey: ["getUpcomings", limit],
+    queryKey: ["getLives", limit],
     queryFn: async () => {
-      return await horaroService.getUpcomings(limit ? { limit } : null)
+      return await horaroService.getLives(
+        limit ? { limit, isLive: true } : null
+      )
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -27,24 +26,24 @@ const UpcomingMarathons = ({ limit }: { limit: number }) => {
     staleTime: 1000 * 60 * 30,
   })
 
-  const [upcomings, setUpcomings] = useState<Upcomings["data"]>([])
-
-  if (error) {
-    return <CatchError error={error} />
+  const renderItem = ({ item, index }: { item: Live; index: number }) => {
+    if (item.isLive) {
+      return <OneMarathonLiveHome key={index} data={item} />
+    }
+    return null
   }
 
-  const upcomingMarathons = () => {
-    if (upcomings.length > 0) {
+  const [lives, setLives] = useState<Lives["data"]>([])
+
+  const marathonsLive = () => {
+    if (lives && lives.length > 0) {
       return (
         <Fragment>
           <View style={style.titleAndIcon}>
-            <Text style={style.title}>Upcoming Marathons</Text>
-            <Calendar />
+            <Text style={style.title}>Live Marathons</Text>
+            <BroadCast />
           </View>
-
-          {upcomings.map((upcoming, idx) => (
-            <OneMarathonUpcoming key={idx} data={upcoming} />
-          ))}
+          <FlatList horizontal={true} data={lives} renderItem={renderItem} />
         </Fragment>
       )
     }
@@ -56,11 +55,15 @@ const UpcomingMarathons = ({ limit }: { limit: number }) => {
     if (data?.pages) {
       const mergedData = data.pages.flatMap((page) => page.data)
       const filteredData = mergedData.filter((item) => item !== undefined)
-      setUpcomings(filteredData)
+      setLives(filteredData)
     }
   }, [data])
 
-  if (upcomings === undefined && !isLoading) {
+  if (error) {
+    return <CatchError error={error} />
+  }
+
+  if (lives === undefined && !isLoading) {
     refetch()
   }
 
@@ -70,7 +73,7 @@ const UpcomingMarathons = ({ limit }: { limit: number }) => {
         {isLoading ? (
           <IsLoading isLoading={isLoading} />
         ) : (
-          upcomings && upcomings.length > 0 && upcomingMarathons()
+          lives && lives.length > 0 && marathonsLive()
         )}
       </View>
     </Fragment>
@@ -91,4 +94,4 @@ const style = StyleSheet.create({
   },
 })
 
-export default UpcomingMarathons
+export default MarathonLivesHome

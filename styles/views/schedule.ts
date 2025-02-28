@@ -5,8 +5,6 @@ const scheduleStyle = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    marginHorizontal: "auto",
-    width: "95%",
     marginTop: Utils.moderateScale(10),
     /*     borderRadius: Utils.moderateScale(5),
     padding: Utils.moderateScale(10),
@@ -35,6 +33,8 @@ const scheduleStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: Utils.moderateScale(10),
+    marginHorizontal: Utils.moderateScale(10),
+    width: "100%",
   },
 })
 

@@ -1,11 +1,10 @@
 import React, { Fragment } from "react"
 import { Text, View } from "react-native"
-import { Ticker, TickerChildren } from "@/types/speedhub"
+import { TickerChildren } from "@/types/speedhub"
 import Utils from "@/components/lib/Utils"
 import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 import tickerStyle from "@/styles/views/ticker"
-import { Collapsible } from "@/components/Collapsible"
 
 const OneTicker = ({ ticker }: { ticker: TickerChildren }) => {
   if (!ticker) {
@@ -70,9 +69,7 @@ const OneTicker = ({ ticker }: { ticker: TickerChildren }) => {
 
   return (
     <View style={tickerStyle.container}>
-      <View style={tickerStyle.header}>
-        <Collapsible title="Ticker">{renderItem()}</Collapsible>
-      </View>
+      <View style={tickerStyle.header}>{renderItem()}</View>
     </View>
   )
 }

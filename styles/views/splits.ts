@@ -17,6 +17,7 @@ const splitsStyle = StyleSheet.create({
     elevation: Utils.moderateScale(5),
     backgroundColor: "white", */
     padding: Utils.moderateScale(10),
+    width: "100%",
   },
   cardSplit: {
     display: "flex",

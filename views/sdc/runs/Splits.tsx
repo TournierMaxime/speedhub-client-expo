@@ -77,25 +77,6 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
           <Fragment>
             {data && data.run.splits.length > 0 ? (
               <View style={splitsStyle.cardInfo}>
-                <View style={splitsStyle.cardTitle}>
-                  <MaterialCommunityIcons
-                    name="clock-fast"
-                    size={Utils.moderateScale(28)}
-                    color={
-                      theme == "dark" ? Colors.dark.icon : Colors.light.icon
-                    }
-                  />
-                  <Text
-                    style={[
-                      splitsStyle.textTitle,
-                      theme === "dark"
-                        ? mainStyle.themeDark
-                        : mainStyle.themeLight,
-                    ]}
-                  >
-                    Splits
-                  </Text>
-                </View>
                 {getSplits(data?.run?.splits)}
               </View>
             ) : null}

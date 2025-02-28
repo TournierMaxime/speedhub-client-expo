@@ -13,6 +13,7 @@ import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import UserName from "@/components/lib/UserName"
 import { oneUserStyle } from "@/styles/views/oneUser"
+import ROUTES from "@/components/routes"
 
 const OneUser = () => {
   const { id } = useGlobalSearchParams()
@@ -110,7 +111,7 @@ const OneUser = () => {
 
   return (
     <ScrollView style={oneUserStyle.container}>
-      <Header backButton={true} />
+      <Header backButton={true} lastPath={{ pathname: ROUTES.SEARCH }} />
       {isLoading ? <IsLoading isLoading={isLoading} /> : oneUser()}
       <PersonalBestsUser />
     </ScrollView>

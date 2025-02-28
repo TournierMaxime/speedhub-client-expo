@@ -32,6 +32,8 @@ const useHandleAuthApple = () => {
         identityToken: credential.identityToken,
       })
 
+      console.log(appleToken)
+
       if (appleToken) {
         users = await userService.searchUsers(
           { email: appleToken.decodedToken.email },

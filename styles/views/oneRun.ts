@@ -28,7 +28,7 @@ const oneRunStyle = StyleSheet.create({
   cardInfo: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    //alignItems: "center",
     padding: Utils.moderateScale(5),
   },
   cardInfoItems: {

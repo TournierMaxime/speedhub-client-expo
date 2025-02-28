@@ -9,7 +9,7 @@ import Utils from "@/components/lib/Utils"
 
 const OneMarathonLive = ({ data }: { data: Live }) => {
   const oneMarathonLive = () => {
-    if (data.scheduleId) {
+    if (data.scheduleId && data?.schedule?.twitch) {
       return (
         <Fragment>
           <Text

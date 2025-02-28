@@ -11,6 +11,7 @@ import CatchError from "@/components/lib/CatchError"
 import GameDetails from "./GameDetails"
 import { CategoriesTab } from "./CategoriesTab"
 import { oneGameStyle } from "@/styles/views/oneGame"
+import ROUTES from "@/components/routes"
 
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
@@ -47,7 +48,7 @@ const OneGame = () => {
 
   return (
     <View style={oneGameStyle.container}>
-      <Header backButton />
+      <Header backButton={true} lastPath={{ pathname: ROUTES.SEARCH }} />
       {isLoading ? (
         <IsLoading isLoading={isLoading} />
       ) : (

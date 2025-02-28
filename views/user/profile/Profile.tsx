@@ -27,12 +27,6 @@ const Profile = () => {
       icon: <User size={20} />,
     },
     {
-      path: ROUTES.UPDATE_EMAIL,
-      params: undefined,
-      title: "Email",
-      icon: <Email />,
-    },
-    {
       path: ROUTES.UPDATE_AVATAR,
       params: undefined,
       title: "Avatar",

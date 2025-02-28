@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, Image } from "react-native"
+import { View, Text } from "react-native"
 import { useQuery } from "@tanstack/react-query"
 import { runService } from "@/services/speedrunDotCom"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
@@ -9,12 +9,12 @@ import { useColorScheme } from "react-native"
 import CatchError from "@/components/lib/CatchError"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import UserName from "@/components/lib/UserName"
-import { Comment } from "@/components/lib/Icons"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
 import { Run } from "@/types/sdc"
 import Utils from "@/components/lib/Utils"
+import { Collapsible } from "@/components/Collapsible"
 
 const OneRun = ({ id }: { id: string }) => {
   const theme = useColorScheme() ?? "light"
@@ -56,12 +56,28 @@ const OneRun = ({ id }: { id: string }) => {
     if (data) {
       const comment = data
       return (
-        <Text style={[cardStyle.text, { marginTop: Utils.moderateScale(10) }]}>
-          {comment}
-        </Text>
+        <Collapsible title="Comment">
+          <Text
+            style={[cardStyle.text, { marginTop: Utils.moderateScale(10) }]}
+          >
+            {comment}
+          </Text>
+        </Collapsible>
       )
     }
 
+    return null
+  }
+
+  const getSplits = (data: Run["data"]["splits"]) => {
+    if (data) {
+      const splits = data
+      return (
+        <Collapsible title="Splits">
+          <Splits splits={splits.uri} />
+        </Collapsible>
+      )
+    }
     return null
   }
 
@@ -76,6 +92,7 @@ const OneRun = ({ id }: { id: string }) => {
             {getPlayers(data?.players?.data)}
             {getCategoryAndTime(data)}
             {data?.comment ? getComment(data?.comment) : null}
+            {data.splits ? getSplits(data.splits) : null}
           </View>
         </View>
       )
@@ -141,7 +158,6 @@ const OneRun = ({ id }: { id: string }) => {
               </View>
             ) : null}
           </View>
-          <Splits splits={data?.data?.splits?.uri} />
         </View>
       )
     }

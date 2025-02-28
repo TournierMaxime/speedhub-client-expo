@@ -1,30 +1,37 @@
-import React, { Fragment } from "react"
-import { Text, View } from "react-native"
-import { Upcoming, Upcomings } from "@/types/speedhub"
+import React from "react"
+import { Text, View, useColorScheme } from "react-native"
+import { Upcoming } from "@/types/speedhub"
 import OneSchedule from "./OneSchedule"
 import OneTicker from "./OneTicker"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
+import cardStyle from "@/styles/components/card"
 
 const OneMarathonUpcoming = ({ data }: { data: Upcoming }) => {
+  const theme = useColorScheme() ?? "light"
+
   const oneMarathonUpcoming = () => {
     if (data) {
       return (
-        <Fragment>
+        <View
+          style={[
+            cardStyle.card,
+            theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
+          ]}
+        >
           <Text
             style={{
               fontSize: Utils.moderateScale(18),
               fontWeight: "bold",
-              textAlign: "center",
-              marginTop: Utils.moderateScale(20),
-              marginBottom: Utils.moderateScale(10),
+              marginLeft: Utils.moderateScale(10),
+              marginVertical: Utils.moderateScale(10),
             }}
           >
             {data.name}
           </Text>
           <OneTicker ticker={data.ticker.ticker} />
           <OneSchedule schedule={data.schedule} />
-        </Fragment>
+        </View>
       )
     }
     return null

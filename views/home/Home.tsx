@@ -1,12 +1,12 @@
 import { ScrollView, Text, StyleSheet, View } from "react-native"
 import Header from "@/components/lib/Header"
-import MarathonLives from "./MarathonLives"
-import UpcomingMarathons from "./UpcomingMarathons"
+import MarathonLivesHome from "./MarathonLivesHome"
 import AllReddits from "../reddit/Reddits"
 import RunsHome from "../sdc/runs/RunsHome"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import { Calendar, News, Runner } from "@/components/lib/Icons"
+import UpcomingMarathonsHome from "./UpcomingMarathonsHome"
 
 const Home = () => {
   return (
@@ -22,12 +22,12 @@ const Home = () => {
         <Runner />
       </View>
       <RunsHome limit={5} />
-      <MarathonLives limit={5} />
+      <MarathonLivesHome limit={5} />
       <View style={style.titleAndIcon}>
         <Text style={style.title}>Upcoming Marathons</Text>
         <Calendar />
       </View>
-      <UpcomingMarathons limit={5} />
+      <UpcomingMarathonsHome limit={5} />
     </ScrollView>
   )
 }
