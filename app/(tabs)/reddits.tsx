@@ -5,7 +5,7 @@ import Header from "@/components/lib/Header"
 const Tab = () => {
   return (
     <ScrollView style={style.container}>
-      <Header backButton={false} />
+      <Header backButton={true} />
       <AllReddits />
     </ScrollView>
   )

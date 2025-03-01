@@ -5,16 +5,13 @@ import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { Upcomings } from "@/types/speedhub"
 import { useState, useEffect } from "react"
-import { View, useColorScheme, StyleSheet, Text } from "react-native"
+import { View, StyleSheet, Text } from "react-native"
 import mainStyle from "@/styles/base/main"
-import cardStyle from "@/styles/components/card"
 import OneMarathonUpcoming from "../marathon/OneMarathonUpcoming"
 import Utils from "@/components/lib/Utils"
 import { Calendar } from "@/components/lib/Icons"
 
 const UpcomingMarathons = ({ limit }: { limit: number }) => {
-  const theme = useColorScheme() ?? "light"
-
   const { data, isLoading, error, refetch } = useInfiniteQuery({
     queryKey: ["getUpcomings", limit],
     queryFn: async () => {

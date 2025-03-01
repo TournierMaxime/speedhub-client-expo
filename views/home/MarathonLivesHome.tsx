@@ -9,7 +9,7 @@ import { View, Text, StyleSheet, FlatList } from "react-native"
 import mainStyle from "@/styles/base/main"
 import { BroadCast } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
-import OneMarathonLiveHome from "../marathon/OneMarathonLiveHome"
+import OneMarathonLiveHome from "./OneMarathonLiveHome"
 
 const MarathonLivesHome = ({ limit }: { limit: number }) => {
   const { data, isLoading, error, refetch } = useInfiniteQuery({

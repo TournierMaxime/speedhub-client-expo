@@ -16,7 +16,6 @@ import { Run } from "@/types/sdc"
 import Utils from "@/components/lib/Utils"
 import { Collapsible } from "@/components/Collapsible"
 import { useLocalSearchParams } from "expo-router"
-import Header from "@/components/lib/Header"
 
 const OneRun = ({ id }: { id?: string }) => {
   const theme = useColorScheme() ?? "light"
@@ -176,7 +175,6 @@ const OneRun = ({ id }: { id?: string }) => {
 
   return (
     <ScrollView style={mainStyle.container}>
-      <Header backButton={true} />
       {isLoading ? null : oneRun()}
     </ScrollView>
   )

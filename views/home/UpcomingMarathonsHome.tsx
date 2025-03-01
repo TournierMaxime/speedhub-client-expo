@@ -7,7 +7,7 @@ import { Upcoming, Upcomings } from "@/types/speedhub"
 import { useState, useEffect } from "react"
 import { FlatList, View } from "react-native"
 import mainStyle from "@/styles/base/main"
-import OneMarathonUpcomingHome from "../marathon/OneMarathonUpcomingHome"
+import OneMarathonUpcomingHome from "./OneMarathonUpcomingHome"
 
 const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
   const { data, isLoading, error, refetch } = useInfiniteQuery({

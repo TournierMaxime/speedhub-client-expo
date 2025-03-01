@@ -3,7 +3,6 @@ import { Text, View, useColorScheme } from "react-native"
 import { Upcoming } from "@/types/speedhub"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
-import cardStyle from "@/styles/components/card"
 import moment from "moment"
 
 const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
@@ -53,7 +52,8 @@ const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
             }}
           >
             Starting {moment(data.datetime).fromNow()}{" "}
-            {`(${moment(data.ticker.ticker.next.scheduled).format("h:m a")})`}
+            {data.ticker.ticker.next &&
+              `(${moment(data.ticker.ticker.next.scheduled).format("h:m a")})`}
           </Text>
           <Text
             style={{
@@ -61,7 +61,7 @@ const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
               fontSize: Utils.moderateScale(16),
             }}
           >
-            {data.ticker.ticker.next.data.join(" ")}
+            {data.ticker.ticker.next && data.ticker.ticker.next.data.join(" ")}
           </Text>
         </View>
       )

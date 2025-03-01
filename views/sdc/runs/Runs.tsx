@@ -3,7 +3,6 @@ import { ScrollView } from "react-native"
 import { runService } from "@/services/speedrunDotCom"
 import { Runs } from "@/types/sdc"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useColorScheme } from "react-native"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import mainStyle from "@/styles/base/main"
@@ -14,8 +13,6 @@ interface Props {
 }
 
 const AllRuns: React.FC<Props> = ({ limit }) => {
-  const theme = useColorScheme() ?? "light"
-
   const { data, isLoading, error } = useInfiniteQuery({
     queryKey: ["getRuns", limit],
     queryFn: async () => {
