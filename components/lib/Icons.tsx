@@ -189,7 +189,12 @@ const Avatar = () => {
   return <AntDesign name="picture" size={20} />
 }
 
+const Heart = () => {
+  return <Feather name="heart" size={20} />
+}
+
 export {
+  Heart,
   Email,
   Avatar,
   Logout,

@@ -28,6 +28,19 @@ interface HoraroServiceInterface {
   getUpcoming(horaroId: string | string[]): Promise<any>
 }
 
+interface FavoriteUserServiceInterface {
+  searchFavorites(userId: string): Promise<any>
+  createFavorite(data: {
+    userId: string
+    type: string
+    data: any
+  }): Promise<any>
+  deleteFavorite(
+    userId: string,
+    data: { id: string; type: string }
+  ): Promise<any>
+}
+
 class HoraroService implements HoraroServiceInterface {
   private http = http
 
@@ -170,6 +183,38 @@ class UserService implements UserServiceInterface {
   }
 }
 
+class FavoriteUserService implements FavoriteUserServiceInterface {
+  private http = http
+  private defaultOptions = { withCredentials: true }
+
+  async searchFavorites(userId: string) {
+    const response = await this.http.post(
+      `/favorites/search/${userId}`,
+      {},
+      {
+        ...this.defaultOptions,
+      }
+    )
+    return response.data
+  }
+
+  async createFavorite(data: { userId: string; type: string; data: any }) {
+    const response = await this.http.post("/favorites/", data, {
+      ...this.defaultOptions,
+    })
+
+    return response.data
+  }
+
+  async deleteFavorite(userId: string, data: { id: string; type: string }) {
+    const response = await this.http.post(`/favorites/${userId}`, data, {
+      ...this.defaultOptions,
+    })
+    return response.data
+  }
+}
+
 export const authService = new AuthService()
 export const userService = new UserService()
 export const horaroService = new HoraroService()
+export const favoriteUserService = new FavoriteUserService()

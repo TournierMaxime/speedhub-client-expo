@@ -115,7 +115,20 @@ interface PrivacyPolicyProps {
   content: string[]
 }
 
+// Favorites
+
+interface Favorites {
+  favorites: {
+    data: {
+      games: string[]
+      marathons: string[]
+      runners: string[]
+    }
+  }
+}
+
 export {
+  Favorites,
   PrivacyPolicyProps,
   Schedule,
   Ticker,

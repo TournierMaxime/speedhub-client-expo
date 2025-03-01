@@ -7,6 +7,9 @@ const ROUTES = {
   FORGET_PASSWORD: "/(auth)/forget-password" as RelativePathString,
   CONFIRM_EMAIL: "/(auth)/confirm-email" as RelativePathString,
 
+  // Favorites
+  FAVORITES: "/(tabs)/(main)/(profile)/favorites" as RelativePathString,
+
   // Profile
   SETTINGS: "/(tabs)/(main)/(profile)/settings" as RelativePathString,
   PRIVACY_POLICY:

@@ -7,7 +7,14 @@ import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"
 import mainStyle from "@/styles/base/main"
 import profileStyle from "@/styles/views/profile"
-import { Chevron, Logout, Settings, Shield, User } from "@/components/lib/Icons"
+import {
+  Chevron,
+  Heart,
+  Logout,
+  Settings,
+  Shield,
+  User,
+} from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
 import app from "../../package.json"
 
@@ -37,6 +44,12 @@ const OneUser = () => {
       params: undefined,
       title: "Profile",
       icon: <User size={20} />,
+    },
+    {
+      path: ROUTES.FAVORITES,
+      params: undefined,
+      title: "Favorites",
+      icon: <Heart />,
     },
     {
       path: ROUTES.SETTINGS,

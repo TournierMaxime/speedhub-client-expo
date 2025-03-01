@@ -8,6 +8,7 @@ export default function MainLayout() {
       <Stack.Screen name="profile" options={{ headerShown: false }} />
       <Stack.Screen name="update-username" options={{ headerShown: false }} />
       <Stack.Screen name="update-avatar" options={{ headerShown: false }} />
+      <Stack.Screen name="favorites" options={{ headerShown: false }} />
     </Stack>
   )
 }
