@@ -17,14 +17,7 @@ import {
 } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
 import app from "../../package.json"
-
-interface Item {
-  path: Pathname | undefined
-  params?: any
-  title: string
-  icon?: React.JSX.Element
-  action?: () => Promise<void>
-}
+import { ProfilePath } from "@/types/speedhub"
 
 const OneUser = () => {
   const { userId } = useGlobalSearchParams()
@@ -38,7 +31,7 @@ const OneUser = () => {
     await handleReplace(ROUTES.AUTH)
   }
 
-  const items: Item[] = [
+  const items: ProfilePath[] = [
     {
       path: ROUTES.PROFILE,
       params: undefined,

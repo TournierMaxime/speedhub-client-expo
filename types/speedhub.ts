@@ -1,3 +1,5 @@
+import { Pathname } from "@/hooks/utils/useHandleRouter"
+
 // Horaro Schedule and Ticker
 
 interface Links {
@@ -120,15 +122,34 @@ interface PrivacyPolicyProps {
 interface Favorites {
   favorites: {
     data: {
-      games: string[]
-      marathons: string[]
-      runners: string[]
+      games: Favorite[]
+      marathons: Favorite[]
+      runners: Favorite[]
     }
   }
 }
 
+interface Favorite {
+  id: string
+  name: string
+  image?: string
+  type: "Runner" | "Marathon" | "Game"
+}
+
+// Profile Path
+
+interface ProfilePath {
+  path: Pathname | undefined
+  params?: any
+  title: string
+  icon?: React.JSX.Element
+  action?: () => Promise<void>
+}
+
 export {
+  ProfilePath,
   Favorites,
+  Favorite,
   PrivacyPolicyProps,
   Schedule,
   Ticker,

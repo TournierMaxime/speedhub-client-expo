@@ -7,19 +7,12 @@ import mainStyle from "@/styles/base/main"
 import profileStyle from "@/styles/views/profile"
 import { Avatar, Chevron, Email, User } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
-
-interface Item {
-  path: Pathname | undefined
-  params?: any
-  title: string
-  icon?: React.JSX.Element
-  action?: () => Promise<void>
-}
+import { ProfilePath } from "@/types/speedhub"
 
 const Profile = () => {
   const { handleRedirect } = useHandleRouter()
 
-  const items: Item[] = [
+  const items: ProfilePath[] = [
     {
       path: ROUTES.UPDATE_USERNAME,
       params: undefined,

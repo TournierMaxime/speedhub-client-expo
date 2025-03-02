@@ -9,6 +9,12 @@ const ROUTES = {
 
   // Favorites
   FAVORITES: "/(tabs)/(main)/(profile)/favorites" as RelativePathString,
+  FAVORITES_MARATHONS:
+    "/(tabs)/(main)/(profile)/(favorites)/marathons" as RelativePathString,
+  FAVORITES_GAMES:
+    "/(tabs)/(main)/(profile)/(favorites)/games" as RelativePathString,
+  FAVORITES_RUNNERS:
+    "/(tabs)/(main)/(profile)/(favorites)/runners" as RelativePathString,
 
   // Profile
   SETTINGS: "/(tabs)/(main)/(profile)/settings" as RelativePathString,

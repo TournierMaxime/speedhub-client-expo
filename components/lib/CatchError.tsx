@@ -5,46 +5,46 @@ import { useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 
 interface Props {
-  error: any
+  error?: any
+  message?: string
 }
 
-const CatchError: React.FC<Props> = ({ error }) => {
+const CatchError: React.FC<Props> = ({ error, message }) => {
   const theme = useColorScheme() ?? "light"
 
-  if (error)
-    return (
+  return (
+    <View
+      style={[
+        style.container,
+        theme === "dark"
+          ? { backgroundColor: Colors.dark.background }
+          : { backgroundColor: Colors.light.background },
+      ]}
+    >
+      <View style={style.titleContainer}>
+        <Text style={style.title}>Error</Text>
+      </View>
       <View
         style={[
-          style.container,
+          style.contentContainer,
           theme === "dark"
             ? { backgroundColor: Colors.dark.background }
             : { backgroundColor: Colors.light.background },
         ]}
       >
-        <View style={style.titleContainer}>
-          <Text style={style.title}>Error</Text>
-        </View>
-        <View
+        <Text
           style={[
-            style.contentContainer,
+            style.content,
             theme === "dark"
-              ? { backgroundColor: Colors.dark.background }
-              : { backgroundColor: Colors.light.background },
+              ? { color: Colors.dark.text }
+              : { color: Colors.light.text },
           ]}
         >
-          <Text
-            style={[
-              style.content,
-              theme === "dark"
-                ? { color: Colors.dark.text }
-                : { color: Colors.light.text },
-            ]}
-          >
-            {error.message ?? "Message"}
-          </Text>
-        </View>
+          {error?.message ?? message}
+        </Text>
       </View>
-    )
+    </View>
+  )
 }
 
 const style = StyleSheet.create({
