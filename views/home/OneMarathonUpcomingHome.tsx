@@ -10,6 +10,8 @@ const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
 
   const oneMarathonUpcoming = () => {
     if (data) {
+      const nextEvent = data.ticker?.ticker?.next
+
       return (
         <View
           style={[
@@ -52,8 +54,7 @@ const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
             }}
           >
             Starting {moment(data.datetime).fromNow()}{" "}
-            {data.ticker.ticker.next &&
-              `(${moment(data.ticker.ticker.next.scheduled).format("h:m a")})`}
+            {nextEvent && `(${moment(nextEvent.scheduled).format("h:m a")})`}
           </Text>
           <Text
             style={{
@@ -61,7 +62,7 @@ const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
               fontSize: Utils.moderateScale(16),
             }}
           >
-            {data.ticker.ticker.next && data.ticker.ticker.next.data.join(" ")}
+            {nextEvent && nextEvent.data.join(" ")}
           </Text>
         </View>
       )

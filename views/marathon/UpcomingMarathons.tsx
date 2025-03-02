@@ -39,9 +39,10 @@ const UpcomingMarathons = ({ limit }: { limit: number }) => {
             <Calendar />
           </View>
 
-          {upcomings.map((upcoming, idx) => (
-            <OneMarathonUpcoming key={idx} data={upcoming} />
-          ))}
+          {upcomings.map((upcoming, idx) => {
+            if (!upcoming.ticker) return null
+            return <OneMarathonUpcoming key={idx} data={upcoming} />
+          })}
         </Fragment>
       )
     }

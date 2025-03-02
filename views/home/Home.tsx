@@ -5,8 +5,8 @@ import AllReddits from "../reddit/Reddits"
 import RunsHome from "./RunsHome"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
-import { Calendar, News, Runner } from "@/components/lib/Icons"
-import UpcomingMarathonsHome from "./UpcomingMarathonsHome"
+import { News, Runner } from "@/components/lib/Icons"
+/* import UpcomingMarathonsHome from "./UpcomingMarathonsHome" */
 
 const Home = () => {
   return (
@@ -23,11 +23,11 @@ const Home = () => {
       </View>
       <RunsHome limit={5} />
       <MarathonLivesHome limit={5} />
-      <View style={style.titleAndIcon}>
+      {/*       <View style={style.titleAndIcon}>
         <Text style={style.title}>Upcoming Marathons</Text>
         <Calendar />
-      </View>
-      <UpcomingMarathonsHome limit={5} />
+      </View> */}
+      {/*       <UpcomingMarathonsHome limit={5} /> */}
     </ScrollView>
   )
 }

@@ -29,8 +29,8 @@ const OneMarathonUpcoming = ({ data }: { data: Upcoming }) => {
           >
             {data.name}
           </Text>
-          <OneTicker ticker={data.ticker.ticker} />
-          <OneSchedule schedule={data.schedule} />
+          <OneTicker ticker={data?.ticker?.ticker} />
+          <OneSchedule schedule={data?.schedule} />
         </View>
       )
     }
