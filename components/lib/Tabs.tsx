@@ -25,7 +25,7 @@ const Tabs: React.FC<TabsProps> = ({ screens }) => {
             fontWeight: "bold",
           },
           tabBarStyle: {
-            backgroundColor: "#dedede",
+            backgroundColor: "#fff",
           },
           tabBarIndicatorStyle: { backgroundColor: "blue" },
         }}

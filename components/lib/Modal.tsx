@@ -1,31 +1,29 @@
 import React, { useState, Fragment } from "react"
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import { Filter } from "./Icons"
 import Utils from "./Utils"
 import Chip from "./Chip"
+import { useModalAction } from "@/contexts/ModalContext"
 
 interface Props {
   children: React.ReactNode
-  title: string
-  icon?: boolean
+  title?: string
+  icon?: React.JSX.Element
 }
 
 const BottomModal: React.FC<Props> = ({ children, title, icon }) => {
-  const [isVisible, setIsVisible] = useState(false)
-
-  const openModal = () => {
-    setIsVisible(true)
-  }
-
-  const closeModal = () => {
-    setIsVisible(false)
-  }
+  const { isVisible, openModal, closeModal } = useModalAction()
 
   return (
     <Fragment>
-      <TouchableOpacity style={styles.openButton} onPress={openModal}>
-        {icon === true ? <Filter /> : <Chip title={title} />}
-      </TouchableOpacity>
+      {icon ? (
+        <TouchableOpacity style={styles.openButton} onPress={openModal}>
+          {icon}
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.openButton} onPress={openModal}>
+          <Chip title={title} />
+        </TouchableOpacity>
+      )}
 
       <Modal
         visible={isVisible}
@@ -87,10 +85,11 @@ const styles = StyleSheet.create({
   closeButton: {
     color: "red",
     fontWeight: "bold",
+    fontSize: Utils.moderateScale(18),
   },
   modalContent: {
     display: "flex",
-    alignItems: "center",
+    //alignItems: "center",
   },
 })
 

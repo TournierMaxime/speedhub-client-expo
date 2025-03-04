@@ -193,7 +193,17 @@ const Heart = () => {
   return <Feather name="heart" size={20} />
 }
 
+const Delete = () => {
+  return <MaterialIcons name="delete-outline" size={40} color={"red"} />
+}
+
+const Dots = () => {
+  return <MaterialCommunityIcons name="dots-vertical" size={40} />
+}
+
 export {
+  Dots,
+  Delete,
   Heart,
   Email,
   Avatar,

@@ -7,6 +7,7 @@ import {
   Linking,
   ImageBackground,
   FlatList,
+  ScrollView,
 } from "react-native"
 import { Game } from "@/types/sdc"
 import { useColorScheme } from "react-native"
@@ -16,6 +17,7 @@ import { Discord } from "@/components/lib/Icons"
 import SDCSVG from "@/assets/images/SDCSVG"
 import { oneGameDetailsStyle } from "@/styles/views/oneGame"
 import mainStyle from "@/styles/base/main"
+import { Collapsible } from "@/components/Collapsible"
 
 const GameDetails = ({ data }: { data: Game["data"] }) => {
   const theme = useColorScheme() ?? "light"
@@ -39,7 +41,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
   ].filter(Boolean)
 
   return (
-    <View
+    <ScrollView
       style={[
         oneGameDetailsStyle.contentContainer,
         theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
@@ -71,7 +73,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
         <View style={oneGameDetailsStyle.infoContent}>
           {infoData.map((item, idx) => {
             return (
-              <BottomModal key={idx} title={item?.title ?? ""}>
+              <Collapsible key={idx} title={item?.title ?? ""}>
                 {Array.isArray(item?.content) ? (
                   item.content.map((elem, idx) => (
                     <Text key={idx} style={oneGameDetailsStyle.tags}>
@@ -81,7 +83,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
                 ) : (
                   <Text style={oneGameDetailsStyle.tags}>{item?.content}</Text>
                 )}
-              </BottomModal>
+              </Collapsible>
             )
           })}
         </View>
@@ -114,7 +116,7 @@ const GameDetails = ({ data }: { data: Game["data"] }) => {
           )}
         </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

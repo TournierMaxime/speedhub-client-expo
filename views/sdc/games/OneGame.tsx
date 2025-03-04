@@ -101,7 +101,7 @@ const OneGame = () => {
 const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
-    backgroundColor: "#dedede",
+    backgroundColor: "#fff",
     padding: 10,
     justifyContent: "space-around",
   },

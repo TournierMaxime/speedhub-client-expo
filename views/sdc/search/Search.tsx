@@ -17,6 +17,7 @@ import {
 } from "@/components/lib/FormValidation"
 import searchStyle from "@/styles/components/search"
 import mainStyle from "@/styles/base/main"
+import { Filter } from "@/components/lib/Icons"
 
 const Search = () => {
   const [selectedOptionValue, setSelectedOptionValue] =
@@ -109,7 +110,7 @@ const Search = () => {
             type=""
           />
 
-          <BottomModal icon={true} title="Filters">
+          <BottomModal icon={<Filter />} title="Filters">
             <CheckboxForm setSelectedOptionValue={setSelectedOptionValue} />
           </BottomModal>
         </View>

@@ -118,7 +118,7 @@ const oneGameDetailsStyle = StyleSheet.create({
   },
   infoContent: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
   },
   buttonContainer: {
     backgroundColor: "#199c77",

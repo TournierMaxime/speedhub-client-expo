@@ -3,7 +3,7 @@ import { Text, StyleSheet, TouchableOpacity, View } from "react-native"
 import Utils from "./Utils"
 
 interface Props {
-  title: string
+  title?: string
   isSelected?: boolean
   onPress?: () => void
 }

@@ -16,6 +16,7 @@ import ToastManager from "toastify-react-native"
 import Utils from "@/components/lib/Utils"
 import { ActivityIndicator } from "react-native"
 import { Colors } from "@/constants/Colors"
+import { ModalProvider } from "@/contexts/ModalContext"
 
 SplashScreen.preventAutoHideAsync()
 
@@ -48,7 +49,9 @@ export default function RootLayout() {
         <ThemeProvider
           value={colorScheme === "light" ? DefaultTheme : DarkTheme}
         >
-          <Navigation />
+          <ModalProvider>
+            <Navigation />
+          </ModalProvider>
           <StatusBar style="auto" />
         </ThemeProvider>
       </AuthProvider>

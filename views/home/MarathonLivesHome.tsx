@@ -35,14 +35,24 @@ const MarathonLivesHome = ({ limit }: { limit: number }) => {
 
   const [lives, setLives] = useState<Lives["data"]>([])
 
+  const findFirstLiveMarathon = (live: Live) => {
+    if (live.scheduleId) {
+      return (
+        <View style={style.titleAndIcon}>
+          <Text style={style.title}>Live Marathons</Text>
+          <BroadCast />
+        </View>
+      )
+    }
+    return null
+  }
+
   const marathonsLive = () => {
     if (lives && lives.length > 0) {
       return (
         <Fragment>
-          <View style={style.titleAndIcon}>
-            <Text style={style.title}>Live Marathons</Text>
-            <BroadCast />
-          </View>
+          {findFirstLiveMarathon(lives[0])}
+
           <FlatList horizontal={true} data={lives} renderItem={renderItem} />
         </Fragment>
       )

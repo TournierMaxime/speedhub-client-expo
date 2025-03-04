@@ -1,24 +1,35 @@
 import React, { Fragment } from "react"
-import { View, Text, Image, ScrollView } from "react-native"
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useMutation } from "@tanstack/react-query"
 import { User } from "@/types/sdc"
 import { userService } from "@/services/speedrunDotCom"
 import PersonalBestsUser from "./PersonalBestsUser"
 import moment from "moment"
-import { useColorScheme } from "react-native"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import UserName from "@/components/lib/UserName"
 import { oneUserStyle } from "@/styles/views/oneUser"
 import ROUTES from "@/components/routes"
+import { favoriteUserService } from "@/services/speedhub"
+import { useAuth } from "@/contexts/AuthContext"
+import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 
 const OneUser = () => {
   const { id } = useGlobalSearchParams()
 
-  const theme = useColorScheme() ?? "light"
+  const { user } = useAuth()
+
+  const userId = user?.userId
 
   const { data, isLoading, error } = useQuery<User>({
     queryKey: ["getUser", id],
@@ -27,6 +38,33 @@ const OneUser = () => {
       return await userService.getUser(id)
     },
     enabled: !!id,
+  })
+
+  const { addFavorite, removeFavorite, isFollowing, setIsFollowing } =
+    useHandleFavorite({
+      data: {
+        userId,
+        type: "Runner",
+        data: {
+          id: data?.data.id,
+          image: data?.data.assets.image.uri,
+          name: data?.data.names.international,
+        },
+      },
+    })
+
+  const { data: favorites } = useQuery({
+    queryKey: ["favorites", userId],
+    queryFn: async () => {
+      if (!userId) return null
+      const response = await favoriteUserService.searchFavorites(userId)
+      const runner = response?.favorites?.data?.runners?.find(
+        (r: any) => r.id === id
+      )
+      setIsFollowing(!!runner)
+      return response.favorites.data.runners ?? []
+    },
+    enabled: !!userId,
   })
 
   if (error) {
@@ -94,6 +132,19 @@ const OneUser = () => {
     return null
   }
 
+  const followButton = () => (
+    <TouchableOpacity
+      style={style.followButtonContainer}
+      onPress={() =>
+        isFollowing ? removeFavorite.mutate() : addFavorite.mutate()
+      }
+    >
+      <Text style={style.followText}>
+        {isFollowing ? "Unfollow" : "Follow"}
+      </Text>
+    </TouchableOpacity>
+  )
+
   const oneUser = () => {
     if (data) {
       return (
@@ -102,6 +153,7 @@ const OneUser = () => {
           <View style={oneUserStyle.cardInfo}>
             {getLocation()}
             {getSignUp()}
+            {followButton()}
           </View>
         </View>
       )
@@ -117,5 +169,20 @@ const OneUser = () => {
     </ScrollView>
   )
 }
+
+const style = StyleSheet.create({
+  followButtonContainer: {
+    backgroundColor: "black",
+    padding: Utils.moderateScale(5),
+    borderRadius: Utils.moderateScale(5),
+    marginTop: Utils.moderateScale(10),
+  },
+  followText: {
+    color: "white",
+    fontSize: Utils.moderateScale(16),
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+})
 
 export default OneUser
