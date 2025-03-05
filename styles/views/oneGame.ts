@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native"
 const oneGameStyle = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
 })
 
@@ -74,7 +75,6 @@ const oneGameDetailsStyle = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     width: "100%",
-    borderRadius: Utils.moderateScale(5),
   },
   modalContainer: {
     width: "100%",
@@ -95,10 +95,13 @@ const oneGameDetailsStyle = StyleSheet.create({
     height: "100%",
     resizeMode: "contain",
     backgroundColor: "rgba(0, 0, 0, 0.9)",
-    padding: Utils.moderateScale(10),
+    paddingHorizontal: Utils.moderateScale(10),
+    paddingTop: Utils.moderateScale(10),
+    paddingBottom: Utils.moderateScale(40),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    borderTopLeftRadius: Utils.moderateScale(25),
+    borderTopRightRadius: Utils.moderateScale(25),
   },
   gameTitle: {
     fontSize: Utils.moderateScale(20),
@@ -107,9 +110,8 @@ const oneGameDetailsStyle = StyleSheet.create({
     marginVertical: Utils.moderateScale(10),
   },
   subTitle: {
-    fontSize: Utils.moderateScale(20),
+    fontSize: Utils.moderateScale(18),
     fontWeight: "bold",
-    marginLeft: Utils.moderateScale(10),
     marginTop: Utils.moderateScale(10),
   },
   infoContainer: {
@@ -157,6 +159,23 @@ const oneGameDetailsStyle = StyleSheet.create({
   },
   text: {
     fontSize: Utils.moderateScale(16),
+  },
+  headingContainer: {
+    width: "100%",
+    display: "flex",
+  },
+  heading: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Utils.moderateScale(6),
+    padding: Utils.moderateScale(10),
+  },
+  headingContentContainer: {
+    marginLeft: Utils.moderateScale(5),
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: Utils.moderateScale(8),
   },
 })
 

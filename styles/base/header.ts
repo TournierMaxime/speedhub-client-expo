@@ -27,6 +27,7 @@ const headerStyle = StyleSheet.create({
     width: Utils.moderateScale(40),
     height: Utils.moderateScale(40),
     resizeMode: "contain",
+    borderRadius: Utils.moderateScale(20),
   },
   backButton: {
     marginLeft: Utils.moderateScale(10),

@@ -12,7 +12,12 @@ import {
   Octicons,
 } from "@expo/vector-icons"
 import Utils from "./Utils"
-import { useColorScheme } from "react-native"
+import {
+  OpaqueColorValue,
+  StyleProp,
+  useColorScheme,
+  ViewStyle,
+} from "react-native"
 import { Colors } from "@/constants/Colors"
 
 const Chevron = () => {
@@ -27,14 +32,20 @@ const Chevron = () => {
   )
 }
 
-const LeftArrow = () => {
+const LeftArrow = ({
+  color,
+}: {
+  color?: string | OpaqueColorValue | undefined
+}) => {
   const theme = useColorScheme() ?? "light"
 
   return (
     <Ionicons
       name="arrow-back-outline"
       size={Utils.moderateScale(25)}
-      color={theme === "dark" ? Colors.dark.icon : Colors.light.icon}
+      color={
+        color ? color : theme === "dark" ? Colors.dark.icon : Colors.light.icon
+      }
     />
   )
 }
@@ -189,8 +200,12 @@ const Avatar = () => {
   return <AntDesign name="picture" size={20} />
 }
 
-const Heart = () => {
-  return <Feather name="heart" size={20} />
+const Heart = ({ color }: { color?: string }) => {
+  return <Feather name="heart" size={20} color={color} />
+}
+
+const HeartFill = () => {
+  return <FontAwesome name="heart" size={20} color={"red"} />
 }
 
 const Delete = () => {
@@ -202,6 +217,7 @@ const Dots = () => {
 }
 
 export {
+  HeartFill,
   Dots,
   Delete,
   Heart,
