@@ -19,11 +19,7 @@ const BottomModal: React.FC<Props> = ({ children, title, icon }) => {
         <TouchableOpacity style={styles.openButton} onPress={openModal}>
           {icon}
         </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.openButton} onPress={openModal}>
-          <Chip title={title} />
-        </TouchableOpacity>
-      )}
+      ) : null}
 
       <Modal
         visible={isVisible}

@@ -1,13 +1,12 @@
 import Header from "@/components/lib/Header"
 import mainStyle from "@/styles/base/main"
 import React, { useState } from "react"
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, Text, TouchableOpacity, View } from "react-native"
 import { useAuth } from "@/contexts/AuthContext"
 import { useQuery } from "@tanstack/react-query"
 import { Favorite, Favorites } from "@/types/speedhub"
 import { favoriteUserService } from "@/services/speedhub"
 import CatchError from "@/components/lib/CatchError"
-import Utils from "@/components/lib/Utils"
 import { Chevron, Dots } from "@/components/lib/Icons"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import AlertMessage from "@/components/lib/AlertMessage"
@@ -15,6 +14,7 @@ import BottomModal from "@/components/lib/Modal"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { useModalAction } from "@/contexts/ModalContext"
+import favoriteStyle from "@/styles/views/favorites"
 
 const defaultUserImg = require("../../../assets/images/default.png")
 
@@ -57,13 +57,13 @@ const RunnerItem = ({
   ]
 
   return (
-    <View style={style.listItem}>
+    <View style={favoriteStyle.listItem}>
       {runner.image ? (
-        <Image source={{ uri: runner.image }} style={style.image} />
+        <Image source={{ uri: runner.image }} style={favoriteStyle.image} />
       ) : (
-        <Image source={defaultUserImg} style={style.image} />
+        <Image source={defaultUserImg} style={favoriteStyle.image} />
       )}
-      <Text style={style.text}>{runner.name}</Text>
+      <Text style={favoriteStyle.text}>{runner.name}</Text>
       <TouchableOpacity
         onPress={() => {
           setSelectedRunner(runner), openModal()
@@ -74,7 +74,7 @@ const RunnerItem = ({
       {selectedRunner?.id === runner.id && (
         <BottomModal title={runner.name}>
           <TouchableOpacity
-            style={style.modalContainer}
+            style={favoriteStyle.modalContainer}
             onPress={() => {
               handleRedirect(ROUTES.ONE_USER, { id: selectedRunner.id }).then(
                 () => {
@@ -83,16 +83,18 @@ const RunnerItem = ({
               )
             }}
           >
-            <Text style={style.modalText}>View</Text>
+            <Text style={favoriteStyle.modalText}>View</Text>
             <Chevron />
           </TouchableOpacity>
           <TouchableOpacity
-            style={style.modalContainer}
+            style={favoriteStyle.modalContainer}
             onPress={() => {
               AlertMessage({ title, message, buttons }), closeModal()
             }}
           >
-            <Text style={[style.modalText, { color: "red" }]}>Delete</Text>
+            <Text style={[favoriteStyle.modalText, { color: "red" }]}>
+              Delete
+            </Text>
             <Chevron />
           </TouchableOpacity>
         </BottomModal>
@@ -143,33 +145,3 @@ export default function Runners() {
     </View>
   )
 }
-
-const style = StyleSheet.create({
-  listItem: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "white",
-    padding: Utils.moderateScale(10),
-    borderTopWidth: Utils.moderateScale(1),
-  },
-  text: {
-    fontSize: Utils.moderateScale(18),
-    fontWeight: "bold",
-  },
-  image: {
-    width: Utils.moderateScale(60),
-    height: Utils.moderateScale(60),
-  },
-  modalContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    margin: Utils.moderateScale(20),
-  },
-  modalText: {
-    fontSize: Utils.moderateScale(16),
-  },
-})

@@ -36,8 +36,6 @@ const OneGame = () => {
   const { handleBack } = useHandleRouter()
   const { user } = useAuth()
 
-  if (!id) return null
-
   const userId = user?.userId
 
   const scrollViewRef = useRef<ScrollView>(null)
