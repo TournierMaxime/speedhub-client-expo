@@ -33,9 +33,6 @@ const useHandleAuthSDC = () => {
             password: data.password,
           })
 
-          console.log("sdc", sdc)
-          console.log("data", data)
-
           if (sdc.loggedIn === false && sdc.tokenChallengeSent === true) {
             setStep("TOKEN")
             setIsProcessingSDC(false)
@@ -65,8 +62,6 @@ const useHandleAuthSDC = () => {
             return
           }
 
-          console.log("data", data)
-
           setStep("FINALIZE")
           break
         }
@@ -76,8 +71,6 @@ const useHandleAuthSDC = () => {
             { pseudo: data.name },
             { page: 1, size: 1 }
           )
-
-          console.log("users", users)
 
           if (users.users && users.users.length > 0) {
             const userId = users.users[0].userId
@@ -93,10 +86,6 @@ const useHandleAuthSDC = () => {
             if (data.name) {
               sdcUser = await userSdc.getUser(data.name ?? "")
             }
-
-            console.log("sdcUser", sdcUser)
-
-            console.log("data", data)
 
             const response = await authService.register({
               pseudo: `${data.name ?? ""}`,
