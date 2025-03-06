@@ -19,21 +19,14 @@ const AllFavorites = () => {
 
   const userId = user?.userId
 
-  const { data, isLoading, error, refetch } = useQuery<Favorites>({
+  const { data, isLoading, error } = useQuery<Favorites>({
     queryKey: ["searchFavorites", userId],
     queryFn: async () => {
-      return await favoriteUserService.searchFavorites(userId ?? "")
+      if (!userId) throw new Error("Missing UserId")
+      return await favoriteUserService.searchFavorites(userId)
     },
     enabled: !!userId,
   })
-
-  if (error) {
-    return <CatchError error={error} />
-  }
-
-  if (data === undefined && !isLoading) {
-    refetch()
-  }
 
   const items: ProfilePath[] = []
 
@@ -70,6 +63,9 @@ const AllFavorites = () => {
         backButton={true}
         lastPath={{ pathname: ROUTES.ONE_USER_PROFILE }}
       />
+      {error || data === undefined ? (
+        <CatchError error={error} message="No Favorites founded" />
+      ) : null}
       <ScrollView style={profileStyle.container}>
         {items.map((item, idx) => {
           return (

@@ -1,4 +1,5 @@
 import { speedRunDotComApi as http } from "./axios"
+import { speedRunDotComApiV2 } from "./axios"
 import { splitIOApi } from "./axios"
 
 interface GameInterface {
@@ -146,8 +147,66 @@ class Profile implements ProfileInterface {
   }
 }
 
+class Article {
+  private http = speedRunDotComApiV2
+
+  async getArticleList(limit?: number) {
+    const response = await this.http.get("/GetArticleList", {
+      params: { limit },
+    })
+    return response.data
+  }
+  async getArticle(id: string) {
+    const response = await this.http.get("GetArticle", {
+      params: {
+        id,
+      },
+    })
+    return response.data
+  }
+}
+
+class Auth {
+  private http = speedRunDotComApiV2
+
+  async putAuthLogin(data: {
+    name: string | undefined
+    password: string | undefined
+    token?: string
+    _api?: string
+  }): Promise<{
+    loggedIn: boolean
+    tokenChallengeSent?: boolean
+  }> {
+    try {
+      const response = await this.http.post("/PutAuthLogin", data)
+      return response.data
+    } catch (error: any) {
+      console.log("putAuthLogin", error.response.data.error)
+      return { loggedIn: false, tokenChallengeSent: false }
+    }
+  }
+
+  async putAuthLogout(): Promise<{
+    error?: string
+    loggedIn?: boolean
+  }> {
+    try {
+      const response = await this.http.post("/PutAuthLogout", {
+        _api: "",
+      })
+      return response.data
+    } catch (error: any) {
+      console.log("putAuthLogout", error.response.data.error)
+      return { error: error.message }
+    }
+  }
+}
+
 export const gameService = new Games()
 export const runService = new Runs()
 export const splitIOService = new Split()
 export const userService = new Users()
 export const profileService = new Profile()
+export const articleService = new Article()
+export const authService = new Auth()

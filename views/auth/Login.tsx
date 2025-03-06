@@ -49,12 +49,14 @@ const LoginScreen = () => {
           <View style={style.form}>
             <View style={style.section}>
               <StepAuth />
-              <FormButtonSubmit
-                type="error"
-                label="Forgot your password"
-                fct={async () => await handleRedirect(ROUTES.FORGET_PASSWORD)}
-                disabled={false}
-              />
+              <View style={{ width: "90%" }}>
+                <FormButtonSubmit
+                  type="error"
+                  label="Forgot your password"
+                  fct={async () => await handleRedirect(ROUTES.FORGET_PASSWORD)}
+                  disabled={false}
+                />
+              </View>
             </View>
 
             <View style={style.section}>

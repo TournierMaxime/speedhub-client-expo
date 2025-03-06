@@ -6,7 +6,7 @@ import RunsHome from "./RunsHome"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import { News, Runner } from "@/components/lib/Icons"
-/* import UpcomingMarathonsHome from "./UpcomingMarathonsHome" */
+import GetArticleList from "../sdc/articles/GetArticleList"
 
 const Home = () => {
   return (
@@ -17,17 +17,13 @@ const Home = () => {
         <News />
       </View>
       <AllReddits limit={5} />
+      <GetArticleList limit={5} />
       <View style={style.titleAndIcon}>
         <Text style={style.title}>Latest Runs</Text>
         <Runner />
       </View>
       <RunsHome limit={5} />
       <MarathonLivesHome limit={5} />
-      {/*       <View style={style.titleAndIcon}>
-        <Text style={style.title}>Upcoming Marathons</Text>
-        <Calendar />
-      </View> */}
-      {/*       <UpcomingMarathonsHome limit={5} /> */}
     </ScrollView>
   )
 }

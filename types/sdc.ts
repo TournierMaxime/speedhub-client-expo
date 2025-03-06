@@ -398,7 +398,149 @@ interface LeaderBoard {
   }
 }
 
+interface ArticleGameList {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: any[]
+  regionIds: any[]
+  gameTypeIds: any[]
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface ArticleUserList {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  pronouns: string[]
+  areaId: string
+  color1Id: string
+  color2Id: string
+  avatarDecoration: {
+    enabled: boolean
+  }
+  iconType: number
+  onlineDate: number
+  signupDate: number
+  touchDate: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface ArticleList {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  body: string
+  userId: string
+  createDate: number
+  updateDate: number
+  stickyDate: number
+  publishDate: number
+  publishTarget: string
+  publishTags: string[]
+  coverImagePath: string
+  commentsCount: number
+}
+
+interface Articles {
+  articleList: ArticleList[]
+  pagination: {
+    count: number
+    page: number
+    pages: number
+    per: number
+  }
+  gameList: ArticleGameList[]
+  userList: ArticleUserList[]
+}
+
+interface RelatedArticleList {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  body: string
+  userId: string
+  gameId: string
+  createDate: number
+  updateDate: number
+  publishDate: number
+  publishTarget: string
+  publishTags: string[]
+  coverImagePath: string
+  commentsCount: number
+}
+
+interface ArticleContent {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  body: string
+  userId: string
+  createDate: number
+  updateDate: number
+  stickyDate: number
+  publishDate: number
+  publishTarget: string
+  publishTags: string[]
+  coverImagePath: string
+  commentsCount: number
+}
+
+interface Article {
+  article: ArticleContent
+  relatedArticleList: RelatedArticleList[]
+  gameList: ArticleGameList[]
+  userList: ArticleUserList[]
+}
+
 export {
+  Articles,
+  ArticleGameList,
+  ArticleUserList,
+  ArticleList,
+  Article,
+  RelatedArticleList,
+  ArticleContent,
   Run,
   Runs,
   User,

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState, useCallback } from "react"
 import useHandleAuth from "@/hooks/auth/useHandleAuth"
 import Utils from "@/components/lib/Utils"
 import { userService } from "@/services/speedhub"
-import { Text, ActivityIndicator } from "react-native"
+import { Text, ActivityIndicator, View } from "react-native"
 import {
   FormButtonSubmit,
   FormInputText,
@@ -78,16 +78,18 @@ const StepAuth = () => {
                 readOnly={false}
                 type="password"
               />
-              <FormButtonSubmit
-                type="info"
-                label="SignIn"
-                fct={async () => {
-                  await handleLogin()
-                }}
-                disabled={
-                  !data.password || !Utils.isValidPassword(data.password)
-                }
-              />
+              <View style={{ width: "90%" }}>
+                <FormButtonSubmit
+                  type="info"
+                  label="SignIn"
+                  fct={async () => {
+                    await handleLogin()
+                  }}
+                  disabled={
+                    !data.password || !Utils.isValidPassword(data.password)
+                  }
+                />
+              </View>
             </Fragment>
           )
         } else {
@@ -108,15 +110,16 @@ const StepAuth = () => {
               ) : checkPseudo ? (
                 <Text style={{ color: "red" }}>Pseudo already taken</Text>
               ) : null}
-
-              <FormButtonSubmit
-                type="info"
-                label="Next"
-                fct={async () => {
-                  setStep(3)
-                }}
-                disabled={!data.pseudo || checkPseudo}
-              />
+              <View style={{ width: "90%" }}>
+                <FormButtonSubmit
+                  type="info"
+                  label="Next"
+                  fct={async () => {
+                    setStep(3)
+                  }}
+                  disabled={!data.pseudo || checkPseudo}
+                />
+              </View>
             </Fragment>
           )
         }
@@ -134,16 +137,18 @@ const StepAuth = () => {
                 readOnly={false}
                 type="password"
               />
-              <FormButtonSubmit
-                type="info"
-                label="SignUp"
-                fct={async () => {
-                  await handleRegister()
-                }}
-                disabled={
-                  !data.password || !Utils.isValidPassword(data.password)
-                }
-              />
+              <View style={{ width: "90%" }}>
+                <FormButtonSubmit
+                  type="info"
+                  label="SignUp"
+                  fct={async () => {
+                    await handleRegister()
+                  }}
+                  disabled={
+                    !data.password || !Utils.isValidPassword(data.password)
+                  }
+                />
+              </View>
             </Fragment>
           )
         }
@@ -160,15 +165,17 @@ const StepAuth = () => {
               readOnly={false}
               type="email"
             />
-            <FormButtonSubmit
-              type="info"
-              label="Next"
-              fct={async () => {
-                await searchUser()
-                setStep(2)
-              }}
-              disabled={!data.email || !Utils.isValidEmail(data.email)}
-            />
+            <View style={{ width: "90%" }}>
+              <FormButtonSubmit
+                type="info"
+                label="Next"
+                fct={async () => {
+                  await searchUser()
+                  setStep(2)
+                }}
+                disabled={!data.email || !Utils.isValidEmail(data.email)}
+              />
+            </View>
           </Fragment>
         )
     }

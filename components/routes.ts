@@ -45,6 +45,7 @@ const ROUTES = {
   ONE_MARATHON_UPCOMING:
     "/(tabs)/(main)/(marathon)/oneMarathonUpcoming" as RelativePathString,
   ONE_REDDIT: "/(tabs)/(main)/(reddit)/reddit" as RelativePathString,
+  ONE_ARTICLE: "/(tabs)/(main)/(articles)/article" as RelativePathString,
 } as const
 
 export default ROUTES

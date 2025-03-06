@@ -1,79 +1,139 @@
 import { useState } from "react"
-import { profileService } from "@/services/speedrunDotCom"
+import {
+  authService as authSdc,
+  userService as userSdc,
+} from "@/services/speedrunDotCom"
 import { DataState } from "./interface"
 import { useAuth } from "@/contexts/AuthContext"
 import useHandleRouter from "../utils/useHandleRouter"
 import { userService, authService } from "@/services/speedhub"
 import ROUTES from "@/components/routes"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
+import useHandleToast from "../utils/useHandleToast"
 
 const useHandleAuthSDC = () => {
   const [data, setData] = useState<DataState>({
-    xApiKey: "",
+    name: "",
+    password: "",
+    token: "",
   })
+  const [step, setStep] = useState<"LOGIN" | "TOKEN" | "FINALIZE">("LOGIN")
   const [isProcessingSDC, setIsProcessingSDC] = useState<boolean>(false)
   const { handleRedirect } = useHandleRouter()
   const { login } = useAuth()
+  const { handleSuccess, handleError } = useHandleToast()
 
-  const loginWithSDC = async () => {
+  const handleAuthSDC = async () => {
     setIsProcessingSDC(true)
     try {
-      const sdc = await profileService.getProfile(
-        data.xApiKey ?? "ahr93b9ke5z0i3flcw4x4d40f"
-      )
-      console.log(sdc)
+      switch (step) {
+        case "LOGIN": {
+          const sdc = await authSdc.putAuthLogin({
+            name: data.name,
+            password: data.password,
+          })
 
-      const users = await userService.searchUsers(
-        { email: sdc.data.names.international },
-        {
-          page: 1,
-          size: 1,
-        }
-      )
+          console.log("sdc", sdc)
+          console.log("data", data)
 
-      if (users.users && users.users.length > 0) {
-        const userId = users.users[0].userId
+          if (sdc.loggedIn === false && sdc.tokenChallengeSent === true) {
+            setStep("TOKEN")
+            setIsProcessingSDC(false)
+            return
+          }
 
-        await authService.login({ userId })
-        await login({ userId })
-
-        await handleRedirect(ROUTES.HOME)
-
-        setIsProcessingSDC(false)
-      } else {
-        let token
-
-        if (token) {
-          token = await registerForPushNotificationsAsync()
+          setStep("FINALIZE")
+          break
         }
 
-        const response = await authService.register({
-          pseudo: `${sdc.data.names.international ?? ""}`,
-          email: `change-your-email-${sdc.data.id}`,
-          password: sdc.data.id,
-          provider: "SDC",
-          verified: true,
-          expoPushToken: token ?? "",
-          lang: "en",
-          image: sdc.data.assets.image.uri,
-        })
+        case "TOKEN": {
+          if (!data.token) {
+            handleError("Please enter the verification token.")
+            setIsProcessingSDC(false)
+            return
+          }
 
-        authService.login({ userId: response.user.userId })
-        await login({ userId: response.user.userId })
+          const sdcVerify = await authSdc.putAuthLogin({
+            name: data.name,
+            password: data.password,
+            token: data.token,
+          })
 
-        await handleRedirect(ROUTES.HOME)
+          if (!sdcVerify.loggedIn) {
+            handleError("Incorrect or expired token.")
+            setIsProcessingSDC(false)
+            return
+          }
 
-        setIsProcessingSDC(false)
+          console.log("data", data)
+
+          setStep("FINALIZE")
+          break
+        }
+
+        case "FINALIZE": {
+          const users = await userService.searchUsers(
+            { pseudo: data.name },
+            { page: 1, size: 1 }
+          )
+
+          console.log("users", users)
+
+          if (users.users && users.users.length > 0) {
+            const userId = users.users[0].userId
+            await authService.login({ userId })
+            await login({ userId })
+            await handleRedirect(ROUTES.HOME)
+          } else {
+            let token, sdcUser
+            if (token) {
+              token = await registerForPushNotificationsAsync()
+            }
+
+            if (data.name) {
+              sdcUser = await userSdc.getUser(data.name ?? "")
+            }
+
+            console.log("sdcUser", sdcUser)
+
+            console.log("data", data)
+
+            const response = await authService.register({
+              pseudo: `${data.name ?? ""}`,
+              email: `change-your-email-${data.name}`,
+              password: data.password,
+              provider: "SDC",
+              verified: true,
+              expoPushToken: token ?? "",
+              lang: "en",
+              image: sdcUser?.data?.assets?.image?.uri ?? null,
+            })
+
+            await authService.login({ userId: response.user.userId })
+            await login({ userId: response.user.userId })
+            await handleRedirect(ROUTES.HOME)
+          }
+
+          return
+        }
+
+        default:
+          throw new Error("Unknown step")
       }
     } catch (error: any) {
-      console.log(error.message)
+      console.log(error)
+      handleError(error.message || "An error occurred")
+    } finally {
+      setIsProcessingSDC(false)
     }
   }
+
   return {
-    loginWithSDC,
+    handleAuthSDC,
     data,
     setData,
     isProcessingSDC,
+    step,
   }
 }
 

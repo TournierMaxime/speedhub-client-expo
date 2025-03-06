@@ -1,6 +1,6 @@
 export interface DataState {
   email?: string
-  password?: string
+  password?: string | undefined
   pseudo?: string
   image?: string
   expoPushToken?: string
@@ -11,6 +11,9 @@ export interface DataState {
   lang?: string
   query?: string
   xApiKey?: string
+  name?: string | undefined
+  _api?: string | undefined
+  token?: string
   option?: {
     name?: string
     value?: string
