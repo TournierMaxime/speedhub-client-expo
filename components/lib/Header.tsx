@@ -70,13 +70,10 @@ const Header: React.FC<HeaderProps> = ({ backButton, title, lastPath }) => {
             <View style={headerStyle.backButton}>
               <TouchableOpacity
                 onPress={async () => {
-                  if (lastPath) {
-                    await handleBack(
-                      lastPath?.pathname ?? undefined,
-                      lastPath?.params ?? undefined
-                    )
-                  }
-                  await handleBack()
+                  await handleBack(
+                    lastPath?.pathname ?? undefined,
+                    lastPath?.params ?? undefined
+                  )
                 }}
               >
                 <LeftArrow />

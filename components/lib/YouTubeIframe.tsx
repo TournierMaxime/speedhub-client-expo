@@ -2,6 +2,7 @@ import React from "react"
 import YoutubePlayer from "react-native-youtube-iframe"
 import useResponsive from "@/hooks/utils/useResponsive"
 import { StyleSheet, View } from "react-native"
+import Utils from "./Utils"
 
 interface Props {
   videoId: string | undefined
@@ -28,6 +29,9 @@ const style = StyleSheet.create({
   card: {
     display: "flex",
     alignItems: "center",
+    zIndex: 1,
+    overflow: "hidden",
+    borderRadius: Utils.moderateScale(10),
   },
 })
 

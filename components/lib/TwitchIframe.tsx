@@ -2,6 +2,7 @@ import React from "react"
 import useResponsive from "@/hooks/utils/useResponsive"
 import { StyleSheet, View } from "react-native"
 import WebView from "react-native-webview"
+import Utils from "./Utils"
 
 interface Props {
   id?: string
@@ -36,6 +37,9 @@ const style = StyleSheet.create({
   card: {
     display: "flex",
     alignItems: "center",
+    zIndex: 1,
+    overflow: "hidden",
+    borderRadius: Utils.moderateScale(10),
   },
 })
 
