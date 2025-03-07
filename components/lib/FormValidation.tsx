@@ -72,6 +72,7 @@ const FormInputText = ({
   readOnly = false,
   type,
   css,
+  onSubmitEditing,
 }: {
   data: DataState
   setData: SetFormData
@@ -82,6 +83,7 @@ const FormInputText = ({
   readOnly: boolean
   type?: string
   css?: StyleProp<TextStyle>
+  onSubmitEditing?: () => Promise<void>
 }) => {
   const theme = useColorScheme() ?? "light"
   const { onChange } = useOnChange({ data, setData })
@@ -108,6 +110,7 @@ const FormInputText = ({
           css,
         ]}
         secureTextEntry={secure}
+        onSubmitEditing={onSubmitEditing}
       />
       <Text style={{ color: "red", fontSize: Utils.moderateScale(14) }}>
         {error}
@@ -288,7 +291,7 @@ const style = StyleSheet.create({
   inputContainer: {
     display: "flex",
     marginVertical: Utils.moderateScale(10),
-    width: "90%",
+    width: "100%",
   },
   textLabel: {
     fontSize: Utils.moderateScale(20),

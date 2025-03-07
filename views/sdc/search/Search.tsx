@@ -1,25 +1,25 @@
 import React, { Fragment, useState } from "react"
-import { View, Text, Image, ScrollView } from "react-native"
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native"
 import useHandleSearch from "@/hooks/search/useHandleSearch"
 import Utils from "@/components/lib/Utils"
-import Header from "@/components/lib/Header"
 import { useColorScheme } from "react-native"
 import ROUTES from "@/components/routes"
 import UserName from "@/components/lib/UserName"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import Card from "@/components/lib/Card"
-import {
-  FormButtonSubmit,
-  FormInputText,
-} from "@/components/lib/FormValidation"
+import { FormInputText } from "@/components/lib/FormValidation"
 import searchStyle from "@/styles/components/search"
 import mainStyle from "@/styles/base/main"
 import { Search as SearchSDC } from "@/types/sdc"
+import { LeftArrow } from "@/components/lib/Icons"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
 
 const Search = () => {
   const { data, setData, handleSearch, result, setResult, isLoading, error } =
     useHandleSearch()
+
+  const { handleRedirect } = useHandleRouter()
 
   const [hasSearched, setHasSearched] = useState<boolean>(false)
 
@@ -104,8 +104,7 @@ const Search = () => {
   }
 
   return (
-    <ScrollView>
-      <Header backButton={true} lastPath={{ pathname: ROUTES.HOME }} />
+    <ScrollView style={{ backgroundColor: "white" }}>
       <View
         style={[
           searchStyle.container,
@@ -113,6 +112,13 @@ const Search = () => {
         ]}
       >
         <View style={searchStyle.searchForm}>
+          <TouchableOpacity
+            style={{ marginRight: Utils.moderateScale(20) }}
+            onPress={() => handleRedirect(ROUTES.HOME)}
+          >
+            <LeftArrow />
+          </TouchableOpacity>
+
           <FormInputText
             data={data}
             setData={setData}
@@ -121,26 +127,8 @@ const Search = () => {
             value={data.query ?? ""}
             secure={false}
             readOnly={false}
-            type=""
+            onSubmitEditing={handleSearchWithFlag}
           />
-        </View>
-
-        <View style={searchStyle.submitButton}>
-          {theme === "dark" ? (
-            <FormButtonSubmit
-              type="secondary"
-              label="Search"
-              fct={handleSearchWithFlag}
-              disabled={!data.query}
-            />
-          ) : (
-            <FormButtonSubmit
-              type="primary"
-              label="Search"
-              fct={handleSearchWithFlag}
-              disabled={!data.query}
-            />
-          )}
         </View>
 
         {isLoading ? (

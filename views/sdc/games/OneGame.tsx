@@ -31,6 +31,32 @@ import { favoriteUserService } from "@/services/speedhub"
 
 const { width } = Dimensions.get("window")
 
+export const TabName = ({
+  tabs,
+  activeTab,
+  changeTab,
+}: {
+  tabs: any[]
+  activeTab: number
+  changeTab: (index: number) => void
+}) => {
+  return (
+    <View style={styles.tabContainer}>
+      {tabs.map((tab, index) => (
+        <TouchableOpacity
+          key={index}
+          onPress={() => changeTab(index)}
+          style={[styles.tab, activeTab === index && styles.activeTab]}
+        >
+          <Text style={activeTab === index ? styles.activeText : styles.text}>
+            {tab.name}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  )
+}
+
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
   const { handleBack } = useHandleRouter()
@@ -188,21 +214,8 @@ const OneGame = () => {
               </View>
             </ImageBackground>
           </View>
-          <View style={styles.tabContainer}>
-            {tabs.map((tab, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => changeTab(index)}
-                style={[styles.tab, activeTab === index && styles.activeTab]}
-              >
-                <Text
-                  style={activeTab === index ? styles.activeText : styles.text}
-                >
-                  {tab.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+
+          <TabName tabs={tabs} activeTab={activeTab} changeTab={changeTab} />
 
           <ScrollView
             ref={scrollViewRef}

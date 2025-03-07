@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title, lastPath }) => {
             headerStyle.header,
             theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
             Platform.OS === "ios"
-              ? { marginTop: Utils.moderateScale(20) }
+              ? { paddingTop: Utils.moderateScale(40) }
               : null,
           ]}
         >
@@ -62,19 +62,22 @@ const Header: React.FC<HeaderProps> = ({ backButton, title, lastPath }) => {
             headerStyle.header,
             theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
             Platform.OS === "ios"
-              ? { marginTop: Utils.moderateScale(20) }
+              ? { paddingTop: Utils.moderateScale(40) }
               : null,
           ]}
         >
           {backButton ? (
             <View style={headerStyle.backButton}>
               <TouchableOpacity
-                onPress={async () =>
-                  await handleBack(
-                    lastPath?.pathname ?? undefined,
-                    lastPath?.params ?? undefined
-                  )
-                }
+                onPress={async () => {
+                  if (lastPath) {
+                    await handleBack(
+                      lastPath?.pathname ?? undefined,
+                      lastPath?.params ?? undefined
+                    )
+                  }
+                  await handleBack()
+                }}
               >
                 <LeftArrow />
               </TouchableOpacity>

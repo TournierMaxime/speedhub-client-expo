@@ -8,6 +8,7 @@ export default function MainLayout() {
         name="oneMarathonUpcoming"
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="marathons" options={{ headerShown: false }} />
     </Stack>
   )
 }

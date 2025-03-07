@@ -42,6 +42,7 @@ const ROUTES = {
   ONE_GAME: "/(tabs)/(main)/(games)/game" as RelativePathString,
   ONE_MARATHON_LIVE:
     "/(tabs)/(main)/(marathon)/oneMarathonLive" as RelativePathString,
+  ALL_MARATHONS: "/(tabs)/(main)/(marathon)/marathons" as RelativePathString,
   ONE_MARATHON_UPCOMING:
     "/(tabs)/(main)/(marathon)/oneMarathonUpcoming" as RelativePathString,
   ONE_REDDIT: "/(tabs)/(main)/(reddit)/reddit" as RelativePathString,

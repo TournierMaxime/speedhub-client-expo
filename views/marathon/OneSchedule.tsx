@@ -1,11 +1,10 @@
 import React from "react"
-import { Text, View } from "react-native"
+import { ScrollView, Text, View } from "react-native"
 import Utils from "@/components/lib/Utils"
 import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 import scheduleStyle from "@/styles/views/schedule"
 import { Schedule, Items } from "@/types/speedhub"
-import { Collapsible } from "@/components/Collapsible"
 
 const OneSchedule = ({ schedule }: { schedule: Schedule }) => {
   if (!schedule) {
@@ -31,11 +30,7 @@ const OneSchedule = ({ schedule }: { schedule: Schedule }) => {
 
   return (
     <View style={scheduleStyle.container}>
-      <View style={scheduleStyle.header}>
-        <Collapsible title="Schedule">
-          {renderItems(schedule.items)}
-        </Collapsible>
-      </View>
+      <View style={scheduleStyle.header}>{renderItems(schedule.items)}</View>
     </View>
   )
 }

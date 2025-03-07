@@ -1,6 +1,5 @@
-import OneMarathonLive from "@/views/marathon/OneMarathonLive"
+import Marathon from "@/views/marathon/Marathon"
 
 export default function OneMarathonLiveScreen() {
-    return <OneMarathonLive />
+  return <Marathon />
 }
-

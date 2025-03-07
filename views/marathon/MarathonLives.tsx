@@ -3,9 +3,9 @@ import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
-import { Lives } from "@/types/speedhub"
+import { Live, Lives } from "@/types/speedhub"
 import { useState, useEffect } from "react"
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, FlatList } from "react-native"
 import { useColorScheme } from "react-native"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
@@ -32,6 +32,13 @@ const MarathonLives = ({ limit }: { limit: number }) => {
 
   const [lives, setLives] = useState<Lives["data"]>([])
 
+  const renderItem = ({ item, index }: { item: Live; index: number }) => {
+    if (item.isLive) {
+      return <OneMarathonLive key={index} data={item} />
+    }
+    return null
+  }
+
   const marathonsLive = () => {
     if (lives.length > 0) {
       return (
@@ -40,20 +47,7 @@ const MarathonLives = ({ limit }: { limit: number }) => {
             <Text style={style.title}>Live Marathons</Text>
             <BroadCast />
           </View>
-          <View
-            style={[
-              cardStyle.card,
-              theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
-            ]}
-          >
-            {lives.map((live, idx) => {
-              if (live.isLive) {
-                return <OneMarathonLive key={idx} data={live} />
-              }
-
-              return null
-            })}
-          </View>
+          <FlatList data={lives} horizontal={true} renderItem={renderItem} />
         </Fragment>
       )
     }
