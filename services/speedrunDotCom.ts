@@ -203,6 +203,31 @@ class Auth {
   }
 }
 
+class Search {
+  private http = speedRunDotComApiV2
+
+  async GetSearch(query: string) {
+    try {
+      const response = await this.http.get("/GetSearch", {
+        params: {
+          query,
+          includeGames: true,
+          includeUsers: true,
+          favorExactMatches: false,
+          includeNews: false,
+          includePages: false,
+          includeSeries: false,
+          includeChallenges: false,
+          limit: 50,
+        },
+      })
+      return response.data
+    } catch (error: any) {
+      console.log("GetSearch", error.message)
+    }
+  }
+}
+
 export const gameService = new Games()
 export const runService = new Runs()
 export const splitIOService = new Split()
@@ -210,3 +235,4 @@ export const userService = new Users()
 export const profileService = new Profile()
 export const articleService = new Article()
 export const authService = new Auth()
+export const searchService = new Search()

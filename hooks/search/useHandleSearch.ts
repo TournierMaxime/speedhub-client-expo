@@ -1,44 +1,31 @@
 import { useState } from "react"
 import { DataState } from "../auth/interface"
-import { userService } from "@/services/speedrunDotCom"
-import { gameService } from "@/services/speedrunDotCom"
+import { searchService } from "@/services/speedrunDotCom"
+import { Search } from "@/types/sdc"
 
 const useHandleSearch = () => {
   const [data, setData] = useState<DataState>({
     query: "",
   })
 
-  const [result, setResult] = useState({ data: [] })
+  const [result, setResult] = useState<Search | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState(null)
 
-  const handleSearch = async (name: string) => {
+  const handleSearch = async () => {
+    setIsLoading(true)
     try {
-      setResult({ data: [] })
-      let response
-      setIsLoading(true)
+      if (data.query) {
+        const response = await searchService.GetSearch(data.query)
 
-      if (name === "users") {
-        response = await userService.getUsers({
-          name: data.query ?? "",
-        })
+        setResult(response)
 
         setIsLoading(false)
-      } else if (name === "games") {
-        response = await gameService.getGames({
-          name: data.query ?? "",
-        })
 
-        setIsLoading(false)
+        setData({
+          query: "",
+        })
       }
-
-      setIsLoading(false)
-
-      setResult(response)
-
-      setData({
-        query: "",
-      })
     } catch (error: any) {
       console.log(error)
 

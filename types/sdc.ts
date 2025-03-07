@@ -533,7 +533,84 @@ interface Article {
   userList: ArticleUserList[]
 }
 
+interface SearchGameList {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: any[]
+  regionIds: any[]
+  gameTypeIds: any[]
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: {
+    assetType: "cover"
+    path: string
+  }[]
+}
+
+interface SearchUserList {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  pronouns: string[]
+  areaId: string
+  color1Id: string
+  color2Id: string
+  avatarDecoration: {
+    enabled: boolean
+  }
+  iconType: number
+  onlineDate: number
+  signupDate: number
+  touchDate: number
+  staticAssets: {
+    assetType: "image" | "icon"
+    path: string
+  }[]
+}
+
+interface Search {
+  newsList: []
+  pageList: []
+  seriesList: []
+  challengeList: []
+  gameList: SearchGameList[]
+  userList: SearchUserList[]
+}
+
 export {
+  Search,
+  SearchGameList,
+  SearchUserList,
   Articles,
   ArticleGameList,
   ArticleUserList,

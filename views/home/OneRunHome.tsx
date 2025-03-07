@@ -28,7 +28,7 @@ const OneRunHome = ({ id }: { id: string }) => {
   const getPlayers = (data: Run["data"]["players"]["data"]) => {
     if (data) {
       const players = data?.map((player: any, idx: number) => {
-        return <UserName data={player} key={idx} />
+        return <UserName data={player.names.international} key={idx} />
       })
       return players
     }
