@@ -1,74 +1,86 @@
 import React from "react"
 import { View, Text } from "react-native"
-import { useQuery } from "@tanstack/react-query"
-import { runService } from "@/services/speedrunDotCom"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import Runtime from "@/components/lib/RunTime"
 import { useColorScheme } from "react-native"
-import CatchError from "@/components/lib/CatchError"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import UserName from "@/components/lib/UserName"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
-import { Run } from "@/types/sdc"
+import {
+  GetLatestLeaderboardCategories,
+  GetLatestLeaderboardGames,
+  GetLatestLeaderboardPlayers,
+  GetLatestLeaderboardRuns,
+} from "@/types/speedhub"
 
-const OneRunHome = ({ id }: { id: string }) => {
+const OneRunHome = ({
+  run,
+  categories,
+  games,
+  players,
+}: {
+  run: GetLatestLeaderboardRuns
+  categories: GetLatestLeaderboardCategories[]
+  games: GetLatestLeaderboardGames[]
+  players: GetLatestLeaderboardPlayers[]
+}) => {
   const theme = useColorScheme() ?? "light"
 
-  const { data, isLoading, error, refetch } = useQuery<Run>({
-    queryKey: ["getRun", id],
-    queryFn: async () => {
-      if (!id) throw new Error("Missing ID")
-      return await runService.getRun(id)
-    },
-    enabled: !!id,
-  })
-
-  const getPlayers = (data: Run["data"]["players"]["data"]) => {
-    if (data) {
-      const players = data?.map((player: any, idx: number) => {
-        return <UserName data={player.names.international} key={idx} />
-      })
-      return players
-    }
-    return null
+  const getPlayers = (players: GetLatestLeaderboardPlayers[]) => {
+    const playersIds = run.playerIds.find((p) => p)
+    const player = players.find((player) => player.id === playersIds)
+    return player ? getPlayer(player) : null
   }
 
-  const getCategoryAndTime = (
-    data: Pick<Run["data"], "category" | "times">
-  ) => {
-    if (data) {
-      return (
-        <Text style={cardStyle.text}>
-          {data?.category?.data?.name} in{" "}
-          <Runtime time={data?.times?.primary_t} />
-        </Text>
-      )
-    }
-    return null
+  const getPlayer = (player: GetLatestLeaderboardPlayers) => {
+    return <UserName data={player.name} />
   }
 
-  const getContent = (data: Run["data"]) => {
-    if (data) {
-      return (
-        <View style={oneRunStyle.playerContainer}>
-          <View>
-            {getPlayers(data?.players?.data)}
-            <Text style={cardStyle.text}>
-              {data.game.data.names.international}
-            </Text>
-            {getCategoryAndTime(data)}
-          </View>
+  const getTime = () => {
+    return <Runtime time={run.time} />
+  }
+
+  const getGames = (games: GetLatestLeaderboardGames[]) => {
+    const game = games.find((game) => game.id === run.gameId)
+    return game ? getGame(game) : null
+  }
+
+  const getGame = (game: GetLatestLeaderboardGames) => {
+    return <Text style={cardStyle.text}>{game.name}</Text>
+  }
+
+  const getCategories = (categories: GetLatestLeaderboardCategories[]) => {
+    const category = categories.find(
+      (category) => category.id === run.categoryId
+    )
+    return category ? getCategory(category) : null
+  }
+
+  const getCategory = (category: GetLatestLeaderboardCategories) => {
+    return (
+      <Text style={cardStyle.text}>
+        {category.name} in {getTime()}
+      </Text>
+    )
+  }
+
+  const getContent = () => {
+    return (
+      <View style={oneRunStyle.playerContainer}>
+        <View>
+          {getPlayers(players)}
+          {getGames(games)}
+          {getCategories(categories)}
         </View>
-      )
-    }
-    return null
+      </View>
+    )
   }
 
   const oneRun = () => {
-    if (data) {
-      const videoUri = data.data.videos?.links[0].uri
+    if (run) {
+      const videoUri = run.video
       let platform
 
       if (videoUri) {
@@ -117,10 +129,10 @@ const OneRunHome = ({ id }: { id: string }) => {
           ]}
         >
           <View style={oneRunStyle.cardInfo}>
-            {data?.data ? (
+            {run ? (
               <View style={oneRunStyle.cardInfoItems}>
                 {videoComponent}
-                {getContent(data?.data)}
+                {getContent()}
               </View>
             ) : null}
           </View>
@@ -130,15 +142,7 @@ const OneRunHome = ({ id }: { id: string }) => {
     return null
   }
 
-  if (error) {
-    return <CatchError error={error} />
-  }
-
-  if (data === undefined && !isLoading) {
-    refetch()
-  }
-
-  return <View style={mainStyle.container}>{isLoading ? null : oneRun()}</View>
+  return <View style={mainStyle.container}>{!run ? null : oneRun()}</View>
 }
 
 export default OneRunHome

@@ -6,9 +6,13 @@ import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
+import Button from "@/components/lib/Button"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
 
 const OneMarathonLiveHome = ({ data }: { data: Live }) => {
   const theme = useColorScheme() ?? "light"
+  const { handleRedirect } = useHandleRouter()
 
   const oneMarathonLive = () => {
     if (data.scheduleId && data?.schedule?.twitch) {
@@ -32,11 +36,19 @@ const OneMarathonLiveHome = ({ data }: { data: Live }) => {
                 style={{
                   fontSize: Utils.moderateScale(18),
                   fontWeight: "bold",
-                  marginTop: Utils.moderateScale(20),
+                  marginVertical: Utils.moderateScale(20),
                 }}
               >
                 {data.name}
               </Text>
+              <Button
+                name="Schedule"
+                redirect={() =>
+                  handleRedirect(ROUTES.ONE_MARATHON_LIVE, {
+                    horaroId: data.horaroId,
+                  })
+                }
+              />
             </View>
           </View>
         </View>

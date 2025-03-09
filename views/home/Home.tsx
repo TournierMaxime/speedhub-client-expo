@@ -22,7 +22,7 @@ const Home = () => {
         <Text style={style.title}>Latest Runs</Text>
         <Runner />
       </View>
-      <RunsHome limit={5} />
+      <RunsHome limit={20} />
       <MarathonLivesHome limit={5} />
     </ScrollView>
   )

@@ -1,52 +1,57 @@
-import { useState, useEffect } from "react"
-import { View, FlatList } from "react-native"
+import { FlatList, View } from "react-native"
 import { runService } from "@/services/speedrunDotCom"
-import { Runs } from "@/types/sdc"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useColorScheme } from "react-native"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import mainStyle from "@/styles/base/main"
 import OneRunHome from "./OneRunHome"
+import {
+  GetLatestLeaderboard,
+  GetLatestLeaderboardRuns,
+} from "@/types/speedhub"
 
-interface Props {
-  limit?: number
-}
-
-const RunsHome: React.FC<Props> = ({ limit }) => {
+const RunsHome = ({ limit }: { limit?: number }) => {
   const theme = useColorScheme() ?? "light"
 
-  const { data, isLoading, error } = useInfiniteQuery({
-    queryKey: ["getRuns", limit],
+  const { data, isLoading, error } = useQuery<GetLatestLeaderboard>({
+    queryKey: ["getLatestLeaderboard", limit],
     queryFn: async () => {
-      return await runService.getRuns(limit ?? 20)
-    },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      return lastPage.nextPage || undefined
+      return await runService.getLatestLeaderboard(limit ?? undefined)
     },
     staleTime: 1000 * 60 * 30,
   })
 
-  const [runs, setRuns] = useState<Runs["data"]>([])
-
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
-    return <OneRunHome key={index} id={item.id} />
-  }
-
-  const allRuns = () => {
-    if (runs && runs.length > 0) {
-      return <FlatList horizontal={true} data={runs} renderItem={renderItem} />
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: GetLatestLeaderboardRuns
+    index: number
+  }) => {
+    if (data) {
+      return (
+        <OneRunHome
+          key={index}
+          run={item}
+          categories={data.categories}
+          games={data.games}
+          players={data.players}
+        />
+      )
     }
+
     return null
   }
 
-  useEffect(() => {
-    if (data?.pages) {
-      const mergedData = data.pages.flatMap((page) => page.data)
-      setRuns(mergedData)
+  const allRuns = () => {
+    if (data) {
+      return (
+        <FlatList data={data.runs} horizontal={true} renderItem={renderItem} />
+      )
     }
-  }, [data])
+    return null
+  }
 
   if (error) {
     return <CatchError error={error} />

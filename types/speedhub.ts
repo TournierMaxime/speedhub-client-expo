@@ -149,7 +149,172 @@ interface ProfilePath {
   action?: () => Promise<void>
 }
 
+// SDC V2
+
+interface GetLatestLeaderboardCategories {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  isMisc: boolean
+  isPerLevel: boolean
+  numPlayers: number
+  exactPlayers: boolean
+  playerMatchMode: number
+  timeDirection: number
+  enforceMs: boolean
+  archived: boolean
+  rules: string
+}
+
+interface GetLatestLeaderboardGames {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: any[]
+  regionIds: any[]
+  gameTypeIds: any[]
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetLatestLeaderboardLevels {
+  id: string
+  gameId: string
+  name: string
+  url: string
+  pos: number
+  rules: string
+  archived: boolean
+}
+
+interface GetLatestLeaderboardPlatforms {
+  id: string
+  name: string
+  url: string
+  year: number
+}
+
+interface GetLatestLeaderboardPlayers {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  color1Id: string
+  color2Id: string
+  colorAnimate: number
+  areaId: string
+}
+
+interface GetLatestLeaderboardRegions {}
+
+interface GetLatestLeaderboardRuns {
+  id: string
+  gameId: string
+  categoryId: string
+  time: number
+  platformId: string
+  emulator: boolean
+  video: string
+  submittedById: string
+  verified: number
+  verifiedById: string
+  date: number
+  dateSubmitted: number
+  dateVerified: number
+  hasSplits: boolean
+  videoState: number
+  obsolete: boolean
+  place: number
+  issues: any
+  playerIds: string[]
+  valueIds: string[]
+}
+
+interface GetLatestLeaderboardValues {
+  id: string
+  name: string
+  url: string
+  pos: number
+  variableId: string
+  isMisc: boolean
+  archived: boolean
+}
+
+interface GetLatestLeaderboardVariables {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  categoryScope: number
+  categoryId: string
+  levelScope: number
+  isMandatory: boolean
+  isSubcategory: boolean
+  isUserDefined: boolean
+  isObsoleting: boolean
+  defaultValue: string
+  archived: boolean
+  displayMode: number
+}
+
+interface GetLatestLeaderboard {
+  categories: GetLatestLeaderboardCategories[]
+  games: GetLatestLeaderboardGames[]
+  levels: GetLatestLeaderboardLevels[]
+  platforms: GetLatestLeaderboardPlatforms[]
+  players: GetLatestLeaderboardPlayers[]
+  regions: GetLatestLeaderboardRegions[]
+  runs: GetLatestLeaderboardRuns[]
+  values: GetLatestLeaderboardValues[]
+  variables: GetLatestLeaderboardVariables[]
+}
+
 export {
+  GetLatestLeaderboard,
+  GetLatestLeaderboardCategories,
+  GetLatestLeaderboardGames,
+  GetLatestLeaderboardLevels,
+  GetLatestLeaderboardPlatforms,
+  GetLatestLeaderboardPlayers,
+  GetLatestLeaderboardRegions,
+  GetLatestLeaderboardRuns,
+  GetLatestLeaderboardValues,
+  GetLatestLeaderboardVariables,
   ProfilePath,
   Favorites,
   Favorite,
