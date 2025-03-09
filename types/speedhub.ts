@@ -76,6 +76,7 @@ interface Upcoming {
   name: string
   link: string
   slug: string
+  twitchChannel: string
   datetime: string
   schedules: {
     link: string
@@ -101,6 +102,7 @@ interface Live {
   link: string
   slug: string
   isLive: boolean
+  twitchChannel: string
   createdAt: string
   schedule: Schedule
   ticker: {
@@ -134,6 +136,7 @@ interface Favorite {
   name: string
   image?: string
   type: "Runner" | "Marathon" | "Game"
+  twitchChannel?: string
 }
 
 // Profile Path

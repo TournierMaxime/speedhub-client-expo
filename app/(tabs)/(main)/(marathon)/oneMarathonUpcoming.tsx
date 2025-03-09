@@ -1,6 +1,5 @@
-import OneMarathonUpcoming from "@/views/marathon/OneMarathonUpcoming"
+import Upcoming from "@/views/marathon/Upcoming"
 
 export default function OneMarathonUpcomingScreen() {
-    return <OneMarathonUpcoming />
+  return <Upcoming />
 }
-

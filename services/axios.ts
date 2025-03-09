@@ -21,10 +21,15 @@ const redditApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_REDDIT_API,
 })
 
+const twitchApi = axios.create({
+  baseURL: process.env.EXPO_PUBLIC_TWITCH_API,
+})
+
 export {
   speedHubApi,
   speedRunDotComApi,
   splitIOApi,
   redditApi,
   speedRunDotComApiV2,
+  twitchApi,
 }

@@ -54,6 +54,8 @@ export default {
       GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
       GOOGLE_AUTH_CLIENT_ID_IOS: process.env.GOOGLE_AUTH_CLIENT_ID_IOS,
       GOOGLE_REDIRECT_URI_IOS: process.env.GOOGLE_REDIRECT_URI_IOS,
+      TWITCH_TOKEN: process.env.TWITCH_TOKEN,
+      TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
       appAuthRedirectScheme: "com.hoggy.speedhubclientexpo",
       router: {
         origin: false,

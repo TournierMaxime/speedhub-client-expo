@@ -1,14 +1,18 @@
 import React from "react"
 import { Text, View, useColorScheme } from "react-native"
 import { Upcoming } from "@/types/speedhub"
-import OneSchedule from "./OneSchedule"
-import OneTicker from "./OneTicker"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import cardStyle from "@/styles/components/card"
+import Button from "@/components/lib/Button"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
+import oneRunStyle from "@/styles/views/oneRun"
+import moment from "moment"
 
 const OneMarathonUpcoming = ({ data }: { data: Upcoming }) => {
   const theme = useColorScheme() ?? "light"
+  const { handleRedirect } = useHandleRouter()
 
   const oneMarathonUpcoming = () => {
     if (data) {
@@ -19,18 +23,38 @@ const OneMarathonUpcoming = ({ data }: { data: Upcoming }) => {
             theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
-          <Text
-            style={{
-              fontSize: Utils.moderateScale(18),
-              fontWeight: "bold",
-              marginLeft: Utils.moderateScale(10),
-              marginVertical: Utils.moderateScale(10),
-            }}
-          >
-            {data.name}
-          </Text>
-          <OneTicker ticker={data?.ticker?.ticker} />
-          <OneSchedule schedule={data?.schedule} />
+          <View style={oneRunStyle.cardInfo}>
+            <View style={oneRunStyle.cardInfoItems}>
+              <Text
+                style={{
+                  fontSize: Utils.moderateScale(18),
+                  fontWeight: "bold",
+                  marginLeft: Utils.moderateScale(10),
+                  marginVertical: Utils.moderateScale(10),
+                }}
+              >
+                {data.name}
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: Utils.moderateScale(18),
+                  marginLeft: Utils.moderateScale(10),
+                  marginVertical: Utils.moderateScale(10),
+                }}
+              >
+                {moment(data.datetime).format("YYYY-MM-DD h:mm a")}
+              </Text>
+              <Button
+                name="Schedule"
+                redirect={() =>
+                  handleRedirect(ROUTES.ONE_MARATHON_UPCOMING, {
+                    horaroId: data.horaroId,
+                  })
+                }
+              />
+            </View>
+          </View>
         </View>
       )
     }

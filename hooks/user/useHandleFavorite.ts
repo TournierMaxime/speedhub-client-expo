@@ -14,6 +14,7 @@ const useHandleFavorite = ({
       id: string | undefined
       image: string | undefined
       name: string | undefined
+      twitchChannel?: string | undefined
     }
   }
 }) => {
@@ -36,6 +37,7 @@ const useHandleFavorite = ({
               id: data.data.id,
               image: data.data.image,
               name: data.data.name,
+              twitchChannel: data.data.twitchChannel,
             },
           })
           .then(() => {

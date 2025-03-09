@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native"
-import { Live } from "@/types/speedhub"
+import { Upcoming } from "@/types/speedhub"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import Utils from "@/components/lib/Utils"
 import { useLocalSearchParams } from "expo-router"
@@ -28,7 +28,7 @@ import { favoriteUserService } from "@/services/speedhub"
 
 const { width } = Dimensions.get("window")
 
-const Marathon = () => {
+const UpcomingMarathon = () => {
   const { horaroId } = useLocalSearchParams()
   const { handleBack } = useHandleRouter()
   const { user } = useAuth()
@@ -41,11 +41,11 @@ const Marathon = () => {
 
   const [activeTab, setActiveTab] = useState(0)
 
-  const { data, isLoading, error, refetch } = useQuery<Live>({
-    queryKey: ["getMarathonLive", horaroId],
+  const { data, isLoading, error, refetch } = useQuery<Upcoming>({
+    queryKey: ["getMarathonUpcoming", horaroId],
     queryFn: async () => {
       if (!horaroId) throw new Error("Missing ID")
-      return await horaroService.getLive(horaroId)
+      return await horaroService.getUpcoming(horaroId)
     },
     enabled: !!horaroId,
   })
@@ -78,7 +78,7 @@ const Marathon = () => {
     enabled: !!userId,
   })
 
-  const oneMarathonLive = () => {
+  const oneMarathonUpcoming = () => {
     if (data && data.scheduleId && data?.schedule?.twitch) {
       return (
         <Fragment>
@@ -189,11 +189,11 @@ const Marathon = () => {
     ? [
         {
           name: "Ticker",
-          component: <OneTicker ticker={data?.ticker?.ticker} />,
+          component: <OneTicker ticker={data.ticker.ticker} />,
         },
         {
           name: "Schedule",
-          component: <OneSchedule schedule={data?.schedule} />,
+          component: <OneSchedule schedule={data.schedule} />,
         },
       ]
     : []
@@ -205,9 +205,9 @@ const Marathon = () => {
 
   return (
     <ScrollView style={oneGameStyle.container}>
-      {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonLive()}
+      {isLoading ? <IsLoading isLoading={isLoading} /> : oneMarathonUpcoming()}
     </ScrollView>
   )
 }
 
-export default Marathon
+export default UpcomingMarathon
