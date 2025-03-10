@@ -14,6 +14,10 @@ import {
   GetLatestLeaderboardPlayers,
   GetLatestLeaderboardRuns,
 } from "@/types/speedhub"
+import Button from "@/components/lib/Button"
+import Utils from "@/components/lib/Utils"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
 
 const OneRunHome = ({
   run,
@@ -27,6 +31,7 @@ const OneRunHome = ({
   players: GetLatestLeaderboardPlayers[]
 }) => {
   const theme = useColorScheme() ?? "light"
+  const { handleRedirect } = useHandleRouter()
 
   const getPlayers = (players: GetLatestLeaderboardPlayers[]) => {
     const playersIds = run.playerIds.find((p) => p)
@@ -133,6 +138,13 @@ const OneRunHome = ({
               <View style={oneRunStyle.cardInfoItems}>
                 {videoComponent}
                 {getContent()}
+                <Button
+                  name="More"
+                  redirect={() =>
+                    handleRedirect(ROUTES.ONE_RUN, { id: run.id })
+                  }
+                  style={{ marginTop: Utils.moderateScale(10) }}
+                />
               </View>
             ) : null}
           </View>

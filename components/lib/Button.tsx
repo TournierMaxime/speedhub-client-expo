@@ -1,21 +1,30 @@
-import { TouchableOpacity, Text, StyleSheet } from "react-native"
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from "react-native"
 import Utils from "./Utils"
 
 const Button = ({
   name,
   redirect,
+  style,
 }: {
   name: string
   redirect?: () => Promise<void>
+  style?: StyleProp<ViewStyle>
 }) => {
   return (
-    <TouchableOpacity onPress={redirect} style={style.container}>
-      <Text style={style.text}>{name}</Text>
+    <TouchableOpacity onPress={redirect} style={[styles.container, style]}>
+      <Text style={styles.text}>{name}</Text>
     </TouchableOpacity>
   )
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     display: "flex",
     alignItems: "center",
