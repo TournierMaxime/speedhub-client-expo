@@ -1,12 +1,9 @@
-import React, { useState, useRef, Fragment } from "react"
+import React, { Fragment } from "react"
 import {
   View,
   Text,
   TouchableOpacity,
   Linking,
-  ScrollView,
-  Dimensions,
-  StyleSheet,
   Image,
   ImageBackground,
 } from "react-native"
@@ -28,45 +25,17 @@ import SDCSVG from "@/assets/images/SDCSVG"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { useAuth } from "@/contexts/AuthContext"
 import { favoriteUserService } from "@/services/speedhub"
-
-const { width } = Dimensions.get("window")
-
-export const TabName = ({
-  tabs,
-  activeTab,
-  changeTab,
-}: {
-  tabs: any[]
-  activeTab: number
-  changeTab: (index: number) => void
-}) => {
-  return (
-    <View style={styles.tabContainer}>
-      {tabs.map((tab, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => changeTab(index)}
-          style={[styles.tab, activeTab === index && styles.activeTab]}
-        >
-          <Text style={activeTab === index ? styles.activeText : styles.text}>
-            {tab.name}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </View>
-  )
-}
+import useHandleTab from "@/hooks/utils/useHandleTab"
+import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
   const { handleBack } = useHandleRouter()
   const { user } = useAuth()
 
+  const { activeTab, changeTab, scrollViewRef } = useHandleTab()
+
   const userId = user?.userId
-
-  const scrollViewRef = useRef<ScrollView>(null)
-
-  const [activeTab, setActiveTab] = useState(0)
 
   const { data, isLoading, error, refetch } = useQuery<Game>({
     queryKey: ["getGame", id],
@@ -113,11 +82,6 @@ const OneGame = () => {
         { name: "Categories", component: <CategoriesTab data={data.data} /> },
       ]
     : []
-
-  const changeTab = (index: number) => {
-    setActiveTab(index)
-    scrollViewRef.current?.scrollTo({ x: index * width, animated: true })
-  }
 
   return (
     <View style={oneGameStyle.container}>
@@ -217,58 +181,16 @@ const OneGame = () => {
 
           <TabName tabs={tabs} activeTab={activeTab} changeTab={changeTab} />
 
-          <ScrollView
-            ref={scrollViewRef}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onMomentumScrollEnd={(event) => {
-              const newIndex = Math.round(
-                event.nativeEvent.contentOffset.x / width
-              )
-              setActiveTab(newIndex)
-            }}
-            style={{ flex: 1 }}
-          >
-            {tabs.map((tab, index) => (
-              <View key={index} style={{ width, flex: 1 }}>
-                {tab.component}
-              </View>
-            ))}
-          </ScrollView>
+          <ScrollViewAndTabs
+            tabs={tabs}
+            activeTab={activeTab}
+            changeTab={changeTab}
+            scrollViewRef={scrollViewRef}
+          />
         </Fragment>
       )}
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  tabContainer: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    padding: Utils.moderateScale(5),
-    justifyContent: "space-around",
-    borderTopLeftRadius: Utils.moderateScale(25),
-    borderTopRightRadius: Utils.moderateScale(25),
-    marginTop: Utils.moderateScale(-22),
-  },
-  tab: {
-    padding: 10,
-    borderBottomWidth: 2,
-    borderBottomColor: "transparent",
-  },
-  activeTab: {
-    borderBottomColor: "blue",
-  },
-  text: {
-    color: "black",
-    fontSize: 16,
-  },
-  activeText: {
-    color: "blue",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-})
 
 export default OneGame

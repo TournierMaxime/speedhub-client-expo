@@ -85,7 +85,7 @@ const SplitsSheet: React.FC<Props> = ({ splits }) => {
       </Fragment>
     )
   }
-  return null
+  return <CatchError message="No splits founded" />
 }
 
 export default SplitsSheet

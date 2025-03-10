@@ -10,7 +10,7 @@ import {
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useGlobalSearchParams } from "expo-router"
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { User } from "@/types/sdc"
 import { userService } from "@/services/speedrunDotCom"
 import PersonalBestsUser from "./PersonalBestsUser"
@@ -113,7 +113,9 @@ const OneUser = () => {
           ) : (
             <Image source={defaultImg} style={oneUserStyle.image} />
           )}
-          <Text style={oneUserStyle.textCard}>{getUsername(data.data)}</Text>
+          <Text style={oneUserStyle.textCard}>
+            {getUsername(data.data.names.international)}
+          </Text>
         </View>
       )
     }

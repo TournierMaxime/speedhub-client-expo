@@ -16,10 +16,15 @@ import { Run } from "@/types/sdc"
 import Utils from "@/components/lib/Utils"
 import { Collapsible } from "@/components/Collapsible"
 import { useLocalSearchParams } from "expo-router"
+import Button from "@/components/lib/Button"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
 
 const OneRun = ({ id }: { id?: string }) => {
   const theme = useColorScheme() ?? "light"
   const { id: pbRunId } = useLocalSearchParams()
+
+  const { handleRedirect } = useHandleRouter()
 
   const { data, isLoading, error, refetch } = useQuery<Run>({
     queryKey: ["getRun", pbRunId ?? id],
@@ -92,8 +97,6 @@ const OneRun = ({ id }: { id?: string }) => {
             </Text>
             {getPlayers(data?.players?.data)}
             {getCategoryAndTime(data)}
-            {data?.comment ? getComment(data?.comment) : null}
-            {data?.splits ? getSplits(data.splits) : null}
           </View>
         </View>
       )
@@ -156,6 +159,13 @@ const OneRun = ({ id }: { id?: string }) => {
               <View style={oneRunStyle.cardInfoItems}>
                 {videoComponent}
                 {getContent(data?.data)}
+                <Button
+                  name="More"
+                  redirect={() =>
+                    handleRedirect(ROUTES.ONE_RUN, { id: data?.data.id })
+                  }
+                  style={{ marginTop: Utils.moderateScale(10) }}
+                />
               </View>
             ) : null}
           </View>

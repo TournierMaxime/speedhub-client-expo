@@ -18,13 +18,14 @@ import IsLoading from "@/components/lib/IsLoading"
 import OneTicker from "./OneTicker"
 import OneSchedule from "./OneSchedule"
 import { oneGameDetailsStyle, oneGameStyle } from "@/styles/views/oneGame"
-import { TabName } from "../sdc/games/OneGame"
 import ROUTES from "@/components/routes"
 import { Heart, HeartFill, LeftArrow } from "@/components/lib/Icons"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { useAuth } from "@/contexts/AuthContext"
 import { favoriteUserService } from "@/services/speedhub"
+import useHandleTab from "@/hooks/utils/useHandleTab"
+import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 
 const { width } = Dimensions.get("window")
 
@@ -33,13 +34,9 @@ const Marathon = () => {
   const { handleBack } = useHandleRouter()
   const { user } = useAuth()
 
+  const { activeTab, changeTab, scrollViewRef } = useHandleTab()
+
   const userId = user?.userId
-
-  const theme = useColorScheme() ?? "light"
-
-  const scrollViewRef = useRef<ScrollView>(null)
-
-  const [activeTab, setActiveTab] = useState(0)
 
   const { data, isLoading, error, refetch } = useQuery<Live>({
     queryKey: ["getMarathonLive", horaroId],
@@ -149,28 +146,14 @@ const Marathon = () => {
               </View>
             </View>
           </View>
-
           <TabName tabs={tabs} activeTab={activeTab} changeTab={changeTab} />
 
-          <ScrollView
-            ref={scrollViewRef}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onMomentumScrollEnd={(event) => {
-              const newIndex = Math.round(
-                event.nativeEvent.contentOffset.x / width
-              )
-              setActiveTab(newIndex)
-            }}
-            style={{ flex: 1 }}
-          >
-            {tabs.map((tab, index) => (
-              <View key={index} style={{ width, flex: 1 }}>
-                {tab.component}
-              </View>
-            ))}
-          </ScrollView>
+          <ScrollViewAndTabs
+            tabs={tabs}
+            activeTab={activeTab}
+            changeTab={changeTab}
+            scrollViewRef={scrollViewRef}
+          />
         </Fragment>
       )
     }
@@ -197,11 +180,6 @@ const Marathon = () => {
         },
       ]
     : []
-
-  const changeTab = (index: number) => {
-    setActiveTab(index)
-    scrollViewRef.current?.scrollTo({ x: index * width, animated: true })
-  }
 
   return (
     <ScrollView style={oneGameStyle.container}>

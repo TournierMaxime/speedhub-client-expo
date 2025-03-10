@@ -73,7 +73,12 @@ const OneRunHome = ({
 
   const getContent = () => {
     return (
-      <View style={oneRunStyle.playerContainer}>
+      <View
+        style={[
+          oneRunStyle.playerContainer,
+          { width: Utils.moderateScale(220) },
+        ]}
+      >
         <View>
           {getPlayers(players)}
           {getGames(games)}

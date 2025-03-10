@@ -1,6 +1,5 @@
-import OneRun from "@/views/sdc/runs/OneRun"
+import Run from "@/views/sdc/runs/Run"
 
 export default function RunScreen() {
-    return <OneRun />
+  return <Run />
 }
-

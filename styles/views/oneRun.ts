@@ -14,7 +14,6 @@ const oneRunStyle = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
     marginTop: Utils.moderateScale(10),
-    width: Utils.moderateScale(220),
   },
   commentContainer: {
     display: "flex",
