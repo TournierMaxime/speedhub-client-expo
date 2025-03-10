@@ -1,7 +1,7 @@
 import { speedRunDotComApi as http } from "./axios"
 import { speedRunDotComApiV2 } from "./axios"
 import { splitIOApi } from "./axios"
-import { GetRun, GetLatestLeaderboard } from "@/types/sdc"
+import { GetRun, GetLatestLeaderboard, GetGuideList } from "@/types/sdc"
 
 interface GameInterface {
   getGames(params: { name: string | string[] }): Promise<any>
@@ -11,6 +11,7 @@ interface GameInterface {
     categoryId: string | string[],
     queryParams?: Record<string, string>
   ): Promise<any>
+  getGuides(id: string | string[]): Promise<GetGuideList>
 }
 
 interface RunInterface {
@@ -120,6 +121,7 @@ class Runs implements RunInterface {
 
 class Games implements GameInterface {
   private http = http
+  private speedRunDotComApiV2 = speedRunDotComApiV2
 
   async getGames(params: { name: string | string[] }) {
     const response = await this.http.get("/games", {
@@ -155,6 +157,15 @@ class Games implements GameInterface {
         },
       }
     )
+    return response.data
+  }
+
+  async getGuides(gameId: string | string[]) {
+    const response = await this.speedRunDotComApiV2.get("/GetGuideList", {
+      params: {
+        gameId,
+      },
+    })
     return response.data
   }
 }

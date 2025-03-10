@@ -20,8 +20,11 @@ import { oneGameStyle } from "@/styles/views/oneGame"
 import IsLoading from "@/components/lib/IsLoading"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { LeftArrow } from "@/components/lib/Icons"
+import ROUTES from "@/components/routes"
 
 const Details = ({ data }: { data: GetRun }) => {
+  const { handleReplace } = useHandleRouter()
+
   const getPlayers = (players: GetRunPlayers[]) => {
     const player = players.find((player) => player)
     return player ? getPlayer(player) : null
@@ -36,7 +39,13 @@ const Details = ({ data }: { data: GetRun }) => {
   }
 
   const getGame = (game: GetRunGame) => {
-    return <Text style={cardStyle.text}>{game.name}</Text>
+    return (
+      <TouchableOpacity
+        onPress={() => handleReplace(ROUTES.ONE_GAME, { id: data.game.id })}
+      >
+        <Text style={cardStyle.text}>{game.name}</Text>
+      </TouchableOpacity>
+    )
   }
 
   const getComment = (comment: GetRun["run"]["comment"]) => {

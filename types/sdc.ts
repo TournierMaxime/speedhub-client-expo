@@ -936,7 +936,47 @@ interface GetRun {
   variables: GetRunVariables[]
 }
 
+interface GuideList {
+  id: string
+  name: string
+  text: string
+  date: number
+  userId: string
+  gameId: string
+}
+
+interface GuideUsers {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  pronouns: string[]
+  areaId: string
+  color1Id: string
+  color2Id: string
+  avatarDecoration: {
+    enabled: boolean
+  }
+  iconType: number
+  onlineDate: number
+  signupDate: number
+  touchDate: number
+  titleId: string
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetGuideList {
+  guideList: GuideList[]
+  users: GuideUsers[]
+}
+
 export {
+  GetGuideList,
+  GuideList,
+  GuideUsers,
   GetRun,
   GetRunGame,
   GetRunCategory,

@@ -27,6 +27,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { favoriteUserService } from "@/services/speedhub"
 import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
+import Guides from "./Guides"
 
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
@@ -80,6 +81,7 @@ const OneGame = () => {
     ? [
         { name: "Details", component: <GameDetails data={data.data} /> },
         { name: "Categories", component: <CategoriesTab data={data.data} /> },
+        { name: "Guides", component: <Guides id={data.data.id} /> },
       ]
     : []
 

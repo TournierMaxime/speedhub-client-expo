@@ -9,7 +9,7 @@ import { Colors } from "@/constants/Colors"
 interface CardProps {
   header?: string
   children: React.ReactNode
-  route: Pathname
+  route?: Pathname
   routeParams?: any
   currentPath?: (pathname: Pathname, params?: any) => void
 }
@@ -30,13 +30,14 @@ const Card: React.FC<CardProps> = ({
       {header && <Text style={style.title}>{header}</Text>}
       <TouchableOpacity
         onPress={() => {
-          if (currentPath) {
+          if (currentPath && route) {
             currentPath(route, routeParams)
           }
-
-          handleRedirect(route, {
-            ...routeParams,
-          })
+          if (route) {
+            handleRedirect(route, {
+              ...routeParams,
+            })
+          }
         }}
         style={[
           style.cardItem,
