@@ -1,13 +1,13 @@
 import AllReddits from "@/views/reddit/Reddits"
-import { StyleSheet, ScrollView } from "react-native"
+import { StyleSheet, View } from "react-native"
 import Header from "@/components/lib/Header"
 
 const Tab = () => {
   return (
-    <ScrollView style={style.container}>
+    <View style={style.container}>
       <Header backButton={true} />
       <AllReddits />
-    </ScrollView>
+    </View>
   )
 }
 

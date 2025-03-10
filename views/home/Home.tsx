@@ -1,11 +1,9 @@
-import { FlatList, Text, StyleSheet, View } from "react-native"
+import { FlatList } from "react-native"
 import Header from "@/components/lib/Header"
 import MarathonLivesHome from "./MarathonLivesHome"
-import AllReddits from "../reddit/Reddits"
+import RedditsHome from "./RedditsHome"
 import RunsHome from "./RunsHome"
 import mainStyle from "@/styles/base/main"
-import Utils from "@/components/lib/Utils"
-import { News, Runner } from "@/components/lib/Icons"
 import GetArticleList from "../sdc/articles/GetArticleList"
 
 const Home = () => {
@@ -22,7 +20,7 @@ const Home = () => {
       case "header":
         return <Header backButton={false} />
       case "news":
-        return <AllReddits limit={5} />
+        return <RedditsHome limit={5} />
       case "articles":
         return <GetArticleList limit={5} />
       case "runs":

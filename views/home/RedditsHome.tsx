@@ -3,19 +3,20 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { useState, useEffect } from "react"
-import { FlatList, View, StyleSheet } from "react-native"
+import { FlatList, View, Text, StyleSheet } from "react-native"
 import { useColorScheme } from "react-native"
 import { redditService } from "@/services/reddit"
 import mainStyle from "@/styles/base/main"
 import { Reddits } from "@/types/reddit"
-import OneReddit from "./OneReddit"
+import OneReddit from "../reddit/OneReddit"
+import { News } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
 
 interface Props {
   limit?: number
 }
 
-const AllReddits: React.FC<Props> = ({ limit }) => {
+const RedditsHome: React.FC<Props> = ({ limit }) => {
   const theme = useColorScheme() ?? "light"
 
   const { data, isLoading, error } = useInfiniteQuery({
@@ -40,6 +41,12 @@ const AllReddits: React.FC<Props> = ({ limit }) => {
     if (reddits.length > 0) {
       return (
         <FlatList
+          ListHeaderComponent={
+            <View style={style.titleAndIcon}>
+              <Text style={style.title}>Latest News</Text>
+              <News />
+            </View>
+          }
           data={reddits ?? []}
           horizontal={false}
           renderItem={renderItem}
@@ -88,4 +95,4 @@ const style = StyleSheet.create({
   },
 })
 
-export default AllReddits
+export default RedditsHome
