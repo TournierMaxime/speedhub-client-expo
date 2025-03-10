@@ -17,7 +17,7 @@ interface RunInterface {
   getRuns(limit?: number): Promise<any>
   getRun(id: string | string[]): Promise<any>
   getLatestLeaderboard(limit?: number): Promise<GetLatestLeaderboard>
-  getRunV2(runId: string): Promise<GetRun>
+  getRunV2(runId: string | string[]): Promise<GetRun>
 }
 
 interface SplitInterface {
@@ -96,8 +96,8 @@ class Runs implements RunInterface {
     return response.data
   }
 
-  async getRunV2(runId: string) {
-    const response = await this.http.get("/GetRun", {
+  async getRunV2(runId: string | string[]) {
+    const response = await this.speedRunDotComApiV2.get("/GetRun", {
       params: {
         runId,
       },

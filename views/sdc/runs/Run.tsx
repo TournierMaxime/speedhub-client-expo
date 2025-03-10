@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query"
 import { runService } from "@/services/speedrunDotCom"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import Runtime from "@/components/lib/RunTime"
-import Splits from "./Splits"
 import { useColorScheme } from "react-native"
 import CatchError from "@/components/lib/CatchError"
 import TwitchIframe from "@/components/lib/TwitchIframe"
@@ -12,7 +11,7 @@ import UserName from "@/components/lib/UserName"
 import { oneGameDetailsStyle } from "@/styles/views/oneGame"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
-import { Run as OneRun } from "@/types/sdc"
+import { GetRun, GetRunGame, GetRunPlayers, Run as OneRun } from "@/types/sdc"
 import Utils from "@/components/lib/Utils"
 import { useLocalSearchParams } from "expo-router"
 import useHandleTab from "@/hooks/utils/useHandleTab"
@@ -22,34 +21,26 @@ import IsLoading from "@/components/lib/IsLoading"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { LeftArrow } from "@/components/lib/Icons"
 
-const Details = ({ data }: { data: any }) => {
-  const getPlayers = (data: OneRun["data"]["players"]["data"]) => {
-    if (data) {
-      const players = data?.map((player: any, idx: number) => {
-        return <UserName data={player.names.international} key={idx} />
-      })
-      return players
-    }
-    return null
+const Details = ({ data }: { data: GetRun }) => {
+  const getPlayers = (players: GetRunPlayers[]) => {
+    const player = players.find((player) => player)
+    return player ? getPlayer(player) : null
   }
 
-  const getCategoryAndTime = (
-    data: Pick<OneRun["data"], "category" | "times">
-  ) => {
-    if (data) {
-      return (
-        <Text style={cardStyle.text}>
-          {data?.category?.data?.name} in{" "}
-          <Runtime time={data?.times?.primary_t} />
-        </Text>
-      )
-    }
-    return null
+  const getPlayer = (player: GetRunPlayers) => {
+    return <UserName data={player.name} />
   }
 
-  const getComment = (data: any) => {
-    if (data) {
-      const comment = data
+  const getTime = () => {
+    return <Runtime time={data.run.time} />
+  }
+
+  const getGame = (game: GetRunGame) => {
+    return <Text style={cardStyle.text}>{game.name}</Text>
+  }
+
+  const getComment = (comment: GetRun["run"]["comment"]) => {
+    if (comment) {
       return (
         <Text style={[cardStyle.text, { marginTop: Utils.moderateScale(10) }]}>
           {comment}
@@ -60,7 +51,7 @@ const Details = ({ data }: { data: any }) => {
     return null
   }
 
-  const getContent = (data: OneRun["data"]) => {
+  const getContent = (data: GetRun) => {
     if (data) {
       return (
         <View
@@ -70,12 +61,10 @@ const Details = ({ data }: { data: any }) => {
           ]}
         >
           <View>
-            <Text style={cardStyle.text}>
-              {data.game.data.names.international}
-            </Text>
-            {getPlayers(data?.players?.data)}
-            {getCategoryAndTime(data)}
-            {data?.comment ? getComment(data?.comment) : null}
+            {getGame(data.game)}
+            {getPlayers(data.players)}
+            {getTime()}
+            {data?.run?.comment ? getComment(data.run.comment) : null}
           </View>
         </View>
       )
@@ -86,25 +75,26 @@ const Details = ({ data }: { data: any }) => {
   return getContent(data)
 }
 
-const Run = ({ id }: { id?: string }) => {
+const Run = () => {
   const theme = useColorScheme() ?? "light"
-  const { id: pbRunId } = useLocalSearchParams()
+  const { id } = useLocalSearchParams()
 
   const { activeTab, changeTab, scrollViewRef } = useHandleTab()
 
   const { handleBack } = useHandleRouter()
 
-  const { data, isLoading, error, refetch } = useQuery<OneRun>({
-    queryKey: ["getRun", pbRunId ?? id],
+  const { data, isLoading, error, refetch } = useQuery<GetRun>({
+    queryKey: ["getRun", id],
     queryFn: async () => {
-      return await runService.getRun(pbRunId ?? id)
+      if (!id) throw new Error("Missing ID")
+      return await runService.getRunV2(id)
     },
-    enabled: pbRunId ? !!pbRunId : !!id,
+    enabled: !!id,
   })
 
   const oneRun = () => {
     if (data) {
-      const videoUri = data.data.videos?.links[0].uri
+      const videoUri = data.run.video
       let platform
 
       if (videoUri) {
@@ -167,7 +157,7 @@ const Run = ({ id }: { id?: string }) => {
                   flex: 1,
                 }}
               >
-                {data?.data ? videoComponent : null}
+                {data?.run.video ? videoComponent : null}
               </View>
             </View>
           </View>
@@ -197,11 +187,7 @@ const Run = ({ id }: { id?: string }) => {
     ? [
         {
           name: "Details",
-          component: <Details data={data?.data} />,
-        },
-        {
-          name: "Splits",
-          component: <Splits splits={data?.data?.splits?.uri} />,
+          component: <Details data={data} />,
         },
       ]
     : []

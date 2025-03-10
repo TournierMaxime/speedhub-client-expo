@@ -43,6 +43,7 @@ const OneRun = ({
   const getPlayer = (player: GetLatestLeaderboardPlayers) => {
     return <UserName data={player.name} />
   }
+
   const getTime = () => {
     return <Runtime time={data.time} />
   }
