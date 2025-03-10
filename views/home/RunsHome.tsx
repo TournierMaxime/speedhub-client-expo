@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native"
+import { FlatList, View, Text, StyleSheet } from "react-native"
 import { runService } from "@/services/speedrunDotCom"
 import { useQuery } from "@tanstack/react-query"
 import { useColorScheme } from "react-native"
@@ -10,6 +10,8 @@ import {
   GetLatestLeaderboard,
   GetLatestLeaderboardRuns,
 } from "@/types/speedhub"
+import { Runner } from "@/components/lib/Icons"
+import Utils from "@/components/lib/Utils"
 
 const RunsHome = ({ limit }: { limit?: number }) => {
   const theme = useColorScheme() ?? "light"
@@ -47,7 +49,23 @@ const RunsHome = ({ limit }: { limit?: number }) => {
   const allRuns = () => {
     if (data) {
       return (
-        <FlatList data={data.runs} horizontal={true} renderItem={renderItem} />
+        <FlatList
+          ListHeaderComponent={
+            <View style={style.titleAndIcon}>
+              <Text style={style.title}>Latest Runs</Text>
+              <Runner />
+            </View>
+          }
+          data={data.runs ?? []}
+          horizontal={false}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          nestedScrollEnabled={true}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          removeClippedSubviews={true}
+          windowSize={5}
+        />
       )
     }
     return null
@@ -63,5 +81,19 @@ const RunsHome = ({ limit }: { limit?: number }) => {
     </View>
   )
 }
+
+const style = StyleSheet.create({
+  title: {
+    fontSize: Utils.moderateScale(20),
+    fontWeight: "bold",
+  },
+  titleAndIcon: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: Utils.moderateScale(10),
+  },
+})
 
 export default RunsHome
