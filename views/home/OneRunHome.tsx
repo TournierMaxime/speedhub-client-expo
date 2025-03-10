@@ -13,7 +13,7 @@ import {
   GetLatestLeaderboardGames,
   GetLatestLeaderboardPlayers,
   GetLatestLeaderboardRuns,
-} from "@/types/speedhub"
+} from "@/types/sdc"
 import Button from "@/components/lib/Button"
 import Utils from "@/components/lib/Utils"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"

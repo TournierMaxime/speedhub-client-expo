@@ -1,102 +1,85 @@
 import React from "react"
-import { View, Text, ScrollView } from "react-native"
-import { useQuery } from "@tanstack/react-query"
-import { runService } from "@/services/speedrunDotCom"
+import { View, Text } from "react-native"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import Runtime from "@/components/lib/RunTime"
-import Splits from "./Splits"
 import { useColorScheme } from "react-native"
-import CatchError from "@/components/lib/CatchError"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import UserName from "@/components/lib/UserName"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRunStyle from "@/styles/views/oneRun"
-import { Run } from "@/types/sdc"
 import Utils from "@/components/lib/Utils"
-import { Collapsible } from "@/components/Collapsible"
-import { useLocalSearchParams } from "expo-router"
 import Button from "@/components/lib/Button"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
+import {
+  GetLatestLeaderboardRuns,
+  GetLatestLeaderboardPlayers,
+  GetLatestLeaderboardGames,
+  GetLatestLeaderboardCategories,
+} from "@/types/sdc"
 
-const OneRun = ({ id }: { id?: string }) => {
+const OneRun = ({
+  data,
+  categories,
+  games,
+  players,
+}: {
+  data: GetLatestLeaderboardRuns
+  categories: GetLatestLeaderboardCategories[]
+  games: GetLatestLeaderboardGames[]
+  players: GetLatestLeaderboardPlayers[]
+}) => {
   const theme = useColorScheme() ?? "light"
-  const { id: pbRunId } = useLocalSearchParams()
 
   const { handleRedirect } = useHandleRouter()
 
-  const { data, isLoading, error, refetch } = useQuery<Run>({
-    queryKey: ["getRun", pbRunId ?? id],
-    queryFn: async () => {
-      return await runService.getRun(pbRunId ?? id)
-    },
-    enabled: pbRunId ? !!pbRunId : !!id,
-  })
-
-  const getPlayers = (data: Run["data"]["players"]["data"]) => {
-    if (data) {
-      const players = data?.map((player: any, idx: number) => {
-        return <UserName data={player.names.international} key={idx} />
-      })
-      return players
-    }
-    return null
+  const getPlayers = (players: GetLatestLeaderboardPlayers[]) => {
+    const playersIds = data.playerIds.find((p) => p)
+    const player = players.find((player) => player.id === playersIds)
+    return player ? getPlayer(player) : null
   }
 
-  const getCategoryAndTime = (
-    data: Pick<Run["data"], "category" | "times">
-  ) => {
-    if (data) {
-      return (
-        <Text style={cardStyle.text}>
-          {data?.category?.data?.name} in{" "}
-          <Runtime time={data?.times?.primary_t} />
-        </Text>
-      )
-    }
-    return null
+  const getPlayer = (player: GetLatestLeaderboardPlayers) => {
+    return <UserName data={player.name} />
+  }
+  const getTime = () => {
+    return <Runtime time={data.time} />
   }
 
-  const getComment = (data: any) => {
-    if (data) {
-      const comment = data
-      return (
-        <Collapsible title="Comment">
-          <Text
-            style={[cardStyle.text, { marginTop: Utils.moderateScale(10) }]}
-          >
-            {comment}
-          </Text>
-        </Collapsible>
-      )
-    }
-
-    return null
+  const getGames = (games: GetLatestLeaderboardGames[]) => {
+    const game = games.find((game) => game.id === data.gameId)
+    return game ? getGame(game) : null
   }
 
-  const getSplits = (data: Run["data"]["splits"]) => {
-    if (data) {
-      const splits = data
-      return (
-        <Collapsible title="Splits">
-          <Splits splits={splits.uri} />
-        </Collapsible>
-      )
-    }
-    return null
+  const getGame = (game: GetLatestLeaderboardGames) => {
+    return <Text style={cardStyle.text}>{game.name}</Text>
   }
 
-  const getContent = (data: Run["data"]) => {
+  const getCategories = (categories: GetLatestLeaderboardCategories[]) => {
+    const category = categories.find(
+      (category) => category.id === data.categoryId
+    )
+    return category ? getCategory(category) : null
+  }
+
+  const getCategory = (category: GetLatestLeaderboardCategories) => {
+    return (
+      <Text style={cardStyle.text}>
+        {category.name} in {getTime()}
+      </Text>
+    )
+  }
+
+  const getContent = () => {
     if (data) {
       return (
         <View style={oneRunStyle.playerContainer}>
           <View>
-            <Text style={cardStyle.text}>
-              {data.game.data.names.international}
-            </Text>
-            {getPlayers(data?.players?.data)}
-            {getCategoryAndTime(data)}
+            {getGames(games)}
+            {getPlayers(players)}
+            {getCategories(categories)}
+            {getTime()}
           </View>
         </View>
       )
@@ -104,9 +87,9 @@ const OneRun = ({ id }: { id?: string }) => {
     return null
   }
 
-  const oneRun = () => {
+  const getOneRun = () => {
     if (data) {
-      const videoUri = data.data.videos?.links[0].uri
+      const videoUri = data.video
       let platform
 
       if (videoUri) {
@@ -155,14 +138,14 @@ const OneRun = ({ id }: { id?: string }) => {
           ]}
         >
           <View style={oneRunStyle.cardInfo}>
-            {data?.data ? (
+            {data ? (
               <View style={oneRunStyle.cardInfoItems}>
                 {videoComponent}
-                {getContent(data?.data)}
+                {getContent()}
                 <Button
                   name="More"
                   redirect={() =>
-                    handleRedirect(ROUTES.ONE_RUN, { id: data?.data.id })
+                    handleRedirect(ROUTES.ONE_RUN, { id: data.id })
                   }
                   style={{ marginTop: Utils.moderateScale(10) }}
                 />
@@ -175,19 +158,7 @@ const OneRun = ({ id }: { id?: string }) => {
     return null
   }
 
-  if (error) {
-    return <CatchError error={error} />
-  }
-
-  if (data === undefined && !isLoading) {
-    refetch()
-  }
-
-  return (
-    <ScrollView style={mainStyle.container}>
-      {isLoading ? null : oneRun()}
-    </ScrollView>
-  )
+  return <View style={mainStyle.container}>{!data ? null : getOneRun()}</View>
 }
 
 export default OneRun

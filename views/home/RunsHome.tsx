@@ -6,10 +6,7 @@ import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import mainStyle from "@/styles/base/main"
 import OneRunHome from "./OneRunHome"
-import {
-  GetLatestLeaderboard,
-  GetLatestLeaderboardRuns,
-} from "@/types/speedhub"
+import { GetLatestLeaderboard, GetLatestLeaderboardRuns } from "@/types/sdc"
 import { Runner } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
 

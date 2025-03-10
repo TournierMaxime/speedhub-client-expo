@@ -1,7 +1,7 @@
-import { GetLatestLeaderboard } from "@/types/speedhub"
 import { speedRunDotComApi as http } from "./axios"
 import { speedRunDotComApiV2 } from "./axios"
 import { splitIOApi } from "./axios"
+import { GetRun, GetLatestLeaderboard } from "@/types/sdc"
 
 interface GameInterface {
   getGames(params: { name: string | string[] }): Promise<any>
@@ -17,6 +17,7 @@ interface RunInterface {
   getRuns(limit?: number): Promise<any>
   getRun(id: string | string[]): Promise<any>
   getLatestLeaderboard(limit?: number): Promise<GetLatestLeaderboard>
+  getRunV2(runId: string): Promise<GetRun>
 }
 
 interface SplitInterface {
@@ -90,6 +91,15 @@ class Runs implements RunInterface {
     const response = await this.http.get(`/runs/${id}`, {
       params: {
         embed: "players,game,category,platform",
+      },
+    })
+    return response.data
+  }
+
+  async getRunV2(runId: string) {
+    const response = await this.http.get("/GetRun", {
+      params: {
+        runId,
       },
     })
     return response.data

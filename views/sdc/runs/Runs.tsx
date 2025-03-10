@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react"
-import { ScrollView } from "react-native"
+import { View, FlatList } from "react-native"
 import { runService } from "@/services/speedrunDotCom"
-import { Runs } from "@/types/sdc"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { GetLatestLeaderboard, GetLatestLeaderboardRuns } from "@/types/sdc"
+import { useQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import mainStyle from "@/styles/base/main"
@@ -13,42 +12,63 @@ interface Props {
 }
 
 const AllRuns: React.FC<Props> = ({ limit }) => {
-  const { data, isLoading, error } = useInfiniteQuery({
+  const { data, isLoading, error } = useQuery<GetLatestLeaderboard>({
     queryKey: ["getRuns", limit],
     queryFn: async () => {
-      return await runService.getRuns(limit ?? 20)
-    },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      return lastPage.nextPage || undefined
+      return await runService.getLatestLeaderboard(limit ?? 20)
     },
     staleTime: 1000 * 60 * 30,
   })
 
-  const [runs, setRuns] = useState<Runs["data"]>([])
-
-  const allRuns = () => {
-    if (runs && runs.length > 0) {
-      return runs.map((run, idx) => <OneRun key={idx} id={run.id} />)
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: GetLatestLeaderboardRuns
+    index: number
+  }) => {
+    if (data) {
+      return (
+        <OneRun
+          key={index}
+          data={item}
+          games={data.games}
+          categories={data.categories}
+          players={data.players}
+        />
+      )
     }
+
     return null
   }
 
-  useEffect(() => {
-    if (data?.pages) {
-      const mergedData = data.pages.flatMap((page) => page.data)
-      setRuns(mergedData)
+  const allRuns = () => {
+    if (data) {
+      return (
+        <FlatList
+          data={data.runs ?? []}
+          horizontal={false}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          nestedScrollEnabled={true}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          removeClippedSubviews={true}
+          windowSize={5}
+        />
+      )
     }
-  }, [data])
+    return null
+  }
 
   if (error) {
     return <CatchError error={error} />
   }
 
   return (
-    <ScrollView style={mainStyle.container}>
+    <View style={mainStyle.container}>
       {isLoading ? <IsLoading isLoading={isLoading} /> : allRuns()}
-    </ScrollView>
+    </View>
   )
 }
 

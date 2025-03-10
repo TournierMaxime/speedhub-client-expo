@@ -398,6 +398,161 @@ interface LeaderBoard {
   }
 }
 
+// SDC V2
+
+interface GetLatestLeaderboardCategories {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  isMisc: boolean
+  isPerLevel: boolean
+  numPlayers: number
+  exactPlayers: boolean
+  playerMatchMode: number
+  timeDirection: number
+  enforceMs: boolean
+  archived: boolean
+  rules: string
+}
+
+interface GetLatestLeaderboardGames {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: any[]
+  regionIds: any[]
+  gameTypeIds: any[]
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetLatestLeaderboardLevels {
+  id: string
+  gameId: string
+  name: string
+  url: string
+  pos: number
+  rules: string
+  archived: boolean
+}
+
+interface GetLatestLeaderboardPlatforms {
+  id: string
+  name: string
+  url: string
+  year: number
+}
+
+interface GetLatestLeaderboardPlayers {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  color1Id: string
+  color2Id: string
+  colorAnimate: number
+  areaId: string
+}
+
+interface GetLatestLeaderboardRegions {}
+
+interface GetLatestLeaderboardRuns {
+  id: string
+  gameId: string
+  categoryId: string
+  time: number
+  platformId: string
+  emulator: boolean
+  video: string
+  submittedById: string
+  verified: number
+  verifiedById: string
+  date: number
+  dateSubmitted: number
+  dateVerified: number
+  hasSplits: boolean
+  videoState: number
+  obsolete: boolean
+  place: number
+  issues: any
+  playerIds: string[]
+  valueIds: string[]
+}
+
+interface GetLatestLeaderboardValues {
+  id: string
+  name: string
+  url: string
+  pos: number
+  variableId: string
+  isMisc: boolean
+  archived: boolean
+}
+
+interface GetLatestLeaderboardVariables {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  categoryScope: number
+  categoryId: string
+  levelScope: number
+  isMandatory: boolean
+  isSubcategory: boolean
+  isUserDefined: boolean
+  isObsoleting: boolean
+  defaultValue: string
+  archived: boolean
+  displayMode: number
+}
+
+interface GetLatestLeaderboard {
+  categories: GetLatestLeaderboardCategories[]
+  games: GetLatestLeaderboardGames[]
+  levels: GetLatestLeaderboardLevels[]
+  platforms: GetLatestLeaderboardPlatforms[]
+  players: GetLatestLeaderboardPlayers[]
+  regions: GetLatestLeaderboardRegions[]
+  runs: GetLatestLeaderboardRuns[]
+  values: GetLatestLeaderboardValues[]
+  variables: GetLatestLeaderboardVariables[]
+}
+
 interface ArticleGameList {
   id: string
   name: string
@@ -607,7 +762,201 @@ interface Search {
   userList: SearchUserList[]
 }
 
+interface GetRunGame {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: any[]
+  regionIds: any[]
+  gameTypeIds: any[]
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetRunCategory {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  isMisc: boolean
+  isPerLevel: boolean
+  numPlayers: number
+  exactPlayers: boolean
+  playerMatchMode: number
+  timeDirection: number
+  enforceMs: boolean
+  archived: boolean
+  rules: string
+}
+
+interface GetRunPlatform {
+  id: string
+  name: string
+  url: string
+  year: number
+}
+
+interface GetRunPlayers {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  color1Id: string
+  color2Id: string
+  colorAnimate: number
+  areaId: string
+}
+
+interface GetRunRegion {
+  id: string
+  name: string
+  url: string
+  flag: string
+}
+
+interface GetOneRun {
+  id: string
+  gameId: string
+  categoryId: string
+  time: number
+  platformId: string
+  emulator: boolean
+  regionId: string
+  video: string
+  comment: string
+  submittedById: string
+  verified: number
+  verifiedById: string
+  reason: string
+  date: number
+  dateSubmitted: number
+  dateVerified: number
+  hasSplits: boolean
+  videoState: number
+  obsolete: boolean
+  place: number
+  issues: any
+  playerIds: string[]
+  valueIds: string[]
+}
+
+interface GetRunUsers {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  pronouns: string[]
+  areaId: string
+  color1Id: string
+  color2Id: string
+  avatarDecoration: {
+    enabled: boolean
+  }
+  iconType: number
+  onlineDate: number
+  signupDate: number
+  touchDate: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetRunValues {
+  id: string
+  name: string
+  url: string
+  pos: number
+  variableId: string
+  isMisc: boolean
+  rules: string
+  archived: boolean
+}
+
+interface GetRunVariables {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  categoryScope: number
+  levelScope: number
+  isMandatory: boolean
+  isSubcategory: boolean
+  isUserDefined: boolean
+  isObsoleting: boolean
+  defaultValue: string
+  archived: boolean
+  description: string
+  displayMode: number
+}
+
+interface GetRun {
+  game: GetRunGame
+  category: GetRunCategory
+  platform: GetRunPlatform
+  players: GetRunPlayers[]
+  region: GetRunRegion
+  run: GetOneRun
+  users: GetRunUsers[]
+  values: GetRunValues[]
+  variables: GetRunVariables[]
+}
+
 export {
+  GetRun,
+  GetRunGame,
+  GetRunCategory,
+  GetRunPlatform,
+  GetRunPlayers,
+  GetRunRegion,
+  GetOneRun,
+  GetRunUsers,
+  GetRunValues,
+  GetRunVariables,
+  GetLatestLeaderboard,
+  GetLatestLeaderboardCategories,
+  GetLatestLeaderboardGames,
+  GetLatestLeaderboardLevels,
+  GetLatestLeaderboardPlatforms,
+  GetLatestLeaderboardPlayers,
+  GetLatestLeaderboardRegions,
+  GetLatestLeaderboardRuns,
+  GetLatestLeaderboardValues,
+  GetLatestLeaderboardVariables,
   Search,
   SearchGameList,
   SearchUserList,
