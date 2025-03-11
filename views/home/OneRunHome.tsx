@@ -18,6 +18,7 @@ import Button from "@/components/lib/Button"
 import Utils from "@/components/lib/Utils"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
+import { getPlatformFromUrl } from "@/components/lib/VideoPlatform"
 
 const OneRunHome = ({
   run,
@@ -91,39 +92,41 @@ const OneRunHome = ({
   const oneRun = () => {
     if (run) {
       const videoUri = run.video
-      let platform
-
-      if (videoUri) {
-        platform = videoUri?.includes("youtube")
-          ? "youtube"
-          : videoUri.includes("twitch")
-          ? "twitch"
-          : videoUri.includes("youtu.be")
-          ? "youtu.be"
-          : null
-      }
 
       let videoComponent
+      let platform = getPlatformFromUrl(videoUri)
 
       switch (platform) {
         case "youtube":
-          const youtubeId = videoUri.substring(32, 43)
           videoComponent = (
-            <YoutubeIframe videoId={youtubeId} width={340} height={180} />
+            <YoutubeIframe
+              videoUri={videoUri}
+              platform={platform}
+              width={340}
+              height={180}
+            />
           )
           break
 
         case "twitch":
-          const twitchId = videoUri.substring(29)
           videoComponent = (
-            <TwitchIframe id={twitchId} width={340} height={180} />
+            <TwitchIframe
+              videoUri={videoUri}
+              platform={platform}
+              width={340}
+              height={180}
+            />
           )
           break
 
         case "youtu.be":
-          const youtuBeId = videoUri.substring(17)
           videoComponent = (
-            <YoutubeIframe videoId={youtuBeId} width={340} height={180} />
+            <YoutubeIframe
+              videoUri={videoUri}
+              platform={platform}
+              width={340}
+              height={180}
+            />
           )
           break
 

@@ -21,6 +21,8 @@ import IsLoading from "@/components/lib/IsLoading"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { LeftArrow } from "@/components/lib/Icons"
 import ROUTES from "@/components/routes"
+import { VideoPlatform } from "@/types/speedhub"
+import { getPlatformFromUrl } from "@/components/lib/VideoPlatform"
 
 const Details = ({ data }: { data: GetRun }) => {
   const { handleReplace } = useHandleRouter()
@@ -70,10 +72,11 @@ const Details = ({ data }: { data: GetRun }) => {
           ]}
         >
           <View>
-            {getGame(data.game)}
             {getPlayers(data.players)}
+            {getGame(data.game)}
             {getTime()}
             {data?.run?.comment ? getComment(data.run.comment) : null}
+            <Text>{data.run.id}</Text>
           </View>
         </View>
       )
@@ -104,39 +107,41 @@ const Run = () => {
   const oneRun = () => {
     if (data) {
       const videoUri = data.run.video
-      let platform
-
-      if (videoUri) {
-        platform = videoUri?.includes("youtube")
-          ? "youtube"
-          : videoUri.includes("twitch")
-          ? "twitch"
-          : videoUri.includes("youtu.be")
-          ? "youtu.be"
-          : null
-      }
 
       let videoComponent
+      let platform = getPlatformFromUrl(videoUri)
 
       switch (platform) {
         case "youtube":
-          const youtubeId = videoUri.substring(32, 43)
           videoComponent = (
-            <YoutubeIframe videoId={youtubeId} width={380} height={220} />
+            <YoutubeIframe
+              platform={platform}
+              videoUri={videoUri}
+              width={380}
+              height={220}
+            />
           )
           break
 
         case "twitch":
-          const twitchId = videoUri.substring(29)
           videoComponent = (
-            <TwitchIframe id={twitchId} width={380} height={220} />
+            <TwitchIframe
+              videoUri={videoUri}
+              platform={platform}
+              width={380}
+              height={220}
+            />
           )
           break
 
         case "youtu.be":
-          const youtuBeId = videoUri.substring(17)
           videoComponent = (
-            <YoutubeIframe videoId={youtuBeId} width={380} height={220} />
+            <YoutubeIframe
+              platform={platform}
+              videoUri={videoUri}
+              width={380}
+              height={220}
+            />
           )
           break
 

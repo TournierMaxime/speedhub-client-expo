@@ -16,6 +16,7 @@ import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"
 import oneRedditStyle from "@/styles/views/oneReddit"
 import { Reddit } from "@/types/reddit"
+import { getPlatformFromUrl } from "@/components/lib/VideoPlatform"
 
 const OneReddit = ({ data }: { data: Reddit }) => {
   const theme = useColorScheme() ?? "light"
@@ -38,34 +39,42 @@ const OneReddit = ({ data }: { data: Reddit }) => {
         url,
       } = post
 
-      let platform
-      if (url_overridden_by_dest) {
-        platform = url_overridden_by_dest.includes("youtube")
-          ? "youtube"
-          : url_overridden_by_dest.includes("twitch")
-          ? "twitch"
-          : url_overridden_by_dest.includes("youtu.be")
-          ? "youtu.be"
-          : null
-      }
-
       let videoComponent
+
+      let platform = getPlatformFromUrl(url_overridden_by_dest)
+
       switch (platform) {
         case "youtube":
-          const youtubeId = url_overridden_by_dest
-            ?.split("v=")[1]
-            ?.split("&")[0]
-          videoComponent = <YoutubeIframe videoId={youtubeId} width={360} />
+          videoComponent = (
+            <YoutubeIframe
+              videoUri={url_overridden_by_dest}
+              platform={platform}
+              width={360}
+              isReddit={true}
+            />
+          )
           break
 
         case "twitch":
-          const twitchId = url_overridden_by_dest?.split("/").pop()
-          videoComponent = <TwitchIframe id={twitchId} width={360} />
+          videoComponent = (
+            <TwitchIframe
+              videoUri={url_overridden_by_dest}
+              platform={platform}
+              width={360}
+              isReddit={true}
+            />
+          )
           break
 
         case "youtu.be":
-          const youtuBeId = url_overridden_by_dest?.split("/").pop()
-          videoComponent = <YoutubeIframe videoId={youtuBeId} width={360} />
+          videoComponent = (
+            <YoutubeIframe
+              videoUri={url_overridden_by_dest}
+              platform={platform}
+              width={360}
+              isReddit={true}
+            />
+          )
           break
 
         default:

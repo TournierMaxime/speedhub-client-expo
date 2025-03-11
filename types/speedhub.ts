@@ -149,7 +149,22 @@ interface ProfilePath {
   action?: () => Promise<void>
 }
 
+// Video
+
+type VideoPlatform = "youtube" | "youtu.be" | "twitch"
+
+interface Video {
+  videoUri?: string
+  platform: VideoPlatform
+  channel?: string
+  width?: number
+  height?: number
+  isReddit?: boolean
+}
+
 export {
+  VideoPlatform,
+  Video,
   ProfilePath,
   Favorites,
   Favorite,

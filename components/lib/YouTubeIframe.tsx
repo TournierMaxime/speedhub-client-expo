@@ -3,15 +3,30 @@ import YoutubePlayer from "react-native-youtube-iframe"
 import useResponsive from "@/hooks/utils/useResponsive"
 import { StyleSheet, View } from "react-native"
 import Utils from "./Utils"
+import { Video } from "@/types/speedhub"
 
-interface Props {
-  videoId: string | undefined
-  width?: number
-  height?: number
-}
-
-const YoutubeIframe: React.FC<Props> = ({ videoId, width, height }) => {
+const YoutubeIframe: React.FC<Video> = ({
+  videoUri,
+  platform,
+  width,
+  height,
+  isReddit,
+}) => {
   const { video } = useResponsive()
+
+  let videoId
+
+  if (videoUri && platform === "youtube") {
+    videoId = videoUri.substring(32, 43)
+    if (isReddit) {
+      videoUri?.split("v=")[1]?.split("&")[0]
+    }
+  } else if (videoUri && platform === "youtu.be") {
+    videoId = videoUri.substring(17)
+    if (isReddit) {
+      videoUri?.split("/").pop()
+    }
+  }
   return (
     <View style={style.card}>
       <YoutubePlayer

@@ -127,6 +127,7 @@ const UpcomingMarathon = () => {
                 {data?.schedule?.twitch ? (
                   <TwitchIframe
                     channel={data.schedule.twitch}
+                    platform="twitch"
                     width={380}
                     height={220}
                   />

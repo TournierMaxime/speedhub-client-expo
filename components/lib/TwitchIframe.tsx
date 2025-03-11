@@ -3,18 +3,27 @@ import useResponsive from "@/hooks/utils/useResponsive"
 import { StyleSheet, View } from "react-native"
 import WebView from "react-native-webview"
 import Utils from "./Utils"
+import { Video } from "@/types/speedhub"
 
-interface Props {
-  id?: string
-  channel?: string
-  width?: number
-  height?: number
-}
-
-const TwitchIframe: React.FC<Props> = ({ id, channel, width, height }) => {
+const TwitchIframe: React.FC<Video> = ({
+  videoUri,
+  platform,
+  channel,
+  width,
+  height,
+  isReddit,
+}) => {
   const { video } = useResponsive()
-  const twitchEmbedUrl = id
-    ? `https://player.twitch.tv/?video=${id}&parent=${process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`
+
+  if (videoUri && platform === "twitch") {
+    videoUri = videoUri.substring(29)
+    if (isReddit) {
+      videoUri?.split("/").pop()
+    }
+  }
+
+  const twitchEmbedUrl = videoUri
+    ? `https://player.twitch.tv/?video=${videoUri}&parent=${process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`
     : channel
     ? `https://player.twitch.tv/?channel=${channel}&parent=${process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`
     : ""

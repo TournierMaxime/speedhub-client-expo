@@ -18,6 +18,7 @@ import {
   GetLatestLeaderboardGames,
   GetLatestLeaderboardCategories,
 } from "@/types/sdc"
+import { getPlatformFromUrl } from "@/components/lib/VideoPlatform"
 
 const OneRun = ({
   data,
@@ -77,8 +78,8 @@ const OneRun = ({
       return (
         <View style={oneRunStyle.playerContainer}>
           <View>
-            {getGames(games)}
             {getPlayers(players)}
+            {getGames(games)}
             {getCategories(categories)}
             {getTime()}
           </View>
@@ -91,39 +92,42 @@ const OneRun = ({
   const getOneRun = () => {
     if (data) {
       const videoUri = data.video
-      let platform
-
-      if (videoUri) {
-        platform = videoUri?.includes("youtube")
-          ? "youtube"
-          : videoUri.includes("twitch")
-          ? "twitch"
-          : videoUri.includes("youtu.be")
-          ? "youtu.be"
-          : null
-      }
 
       let videoComponent
 
+      let platform = getPlatformFromUrl(videoUri)
+
       switch (platform) {
         case "youtube":
-          const youtubeId = videoUri.substring(32, 43)
           videoComponent = (
-            <YoutubeIframe videoId={youtubeId} width={380} height={220} />
+            <YoutubeIframe
+              videoUri={videoUri}
+              platform={platform}
+              width={380}
+              height={220}
+            />
           )
           break
 
         case "twitch":
-          const twitchId = videoUri.substring(29)
           videoComponent = (
-            <TwitchIframe id={twitchId} width={380} height={220} />
+            <TwitchIframe
+              videoUri={videoUri}
+              platform={platform}
+              width={380}
+              height={220}
+            />
           )
           break
 
         case "youtu.be":
-          const youtuBeId = videoUri.substring(17)
           videoComponent = (
-            <YoutubeIframe videoId={youtuBeId} width={380} height={220} />
+            <YoutubeIframe
+              videoUri={videoUri}
+              platform={platform}
+              width={380}
+              height={220}
+            />
           )
           break
 
