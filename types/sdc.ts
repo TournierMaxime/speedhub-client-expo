@@ -973,7 +973,266 @@ interface GetGuideList {
   users: GuideUsers[]
 }
 
+interface GetGameSummaryGame {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: string[]
+  regionIds: any[]
+  gameTypeIds: any[]
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetGameSummaryGameBoosts {
+  id: string
+  createdAt: number
+  updatedAt: number
+  gameId: string
+  donorUserId: string
+  anonymous: boolean
+  recipientUserIds: any[]
+}
+
+interface GetGameSummaryGameModerators {
+  gameId: string
+  userId: string
+  level: number
+}
+
+interface GetGameSummaryForum {
+  id: string
+  name: string
+  url: string
+  description: string
+  type: number
+  threadCount: number
+  postCount: number
+  lastPostId: string
+  lastPostDate: number
+  lastPostUserId: string
+  touchDate: number
+}
+
+interface GetGameSummaryNewsList {
+  id: string
+  gameId: string
+  userId: string
+  title: string
+  body: string
+  dateSubmitted: number
+  dateEdited: number
+}
+
+interface GetGameSummaryGameStats {
+  gameId: string
+  totalRuns: number
+  totalRunsFG: number
+  totalRunsIL: number
+  totalRunTime: number
+  recentRuns: number
+  recentRunsFG: number
+  recentRunsIL: number
+  totalPlayers: number
+  activePlayers: number
+  followers: number
+  guides: number
+  resources: number
+}
+
+interface GetGameSummaryStats {
+  gameId: string
+  totalRuns: number
+  totalRunsFG: number
+  totalRunsIL: number
+  totalRunTime: number
+  recentRuns: number
+  recentRunsFG: number
+  recentRunsIL: number
+  totalPlayers: number
+  activePlayers: number
+  followers: number
+  guides: number
+  resources: number
+}
+
+interface GetGameSummaryRelatedGames {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: string[]
+  regionIds: any[]
+  gameTypeIds: number[]
+  baseGameId: string
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetGameSummarySeriesList {
+  id: string
+  name: string
+  url: string
+  addedDate: number
+  touchDate: number
+  discordUrl: string
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  officialGameCount: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetGameSummaryTheme {
+  id: string
+  url: string
+  primaryColor: string
+  panelColor: string
+  panelOpacity: number
+  navbarColor: number
+  backgroundColor: string
+  backgroundFit: number
+  backgroundPosition: number
+  backgroundRepeat: number
+  backgroundScrolling: number
+  foregroundFit: number
+  foregroundPosition: number
+  foregroundRepeat: number
+  foregroundScrolling: number
+  touchDate: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetGameSummaryThreadList {
+  id: string
+  name: string
+  gameId: string
+  forumId: string
+  userId: string
+  replies: number
+  created: number
+  lastCommentId: string
+  lastCommentUserId: string
+  lastCommentDate: number
+  sticky: boolean
+  locked: boolean
+}
+
+interface GetGameSummaryUsers {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  pronouns: any[]
+  areaId: string
+  color1Id: string
+  color2Id: string
+  avatarDecoration: {
+    enabled: boolean
+  }
+  iconType: number
+  onlineDate: number
+  signupDate: number
+  touchDate: number
+  staticAssets: any[]
+}
+
+interface GetGameSummary {
+  game: GetGameSummaryGame
+  gameBoosts: GetGameSummaryGameBoosts[]
+  gameModerators: GetGameSummaryGameModerators[]
+  forum: GetGameSummaryForum
+  newsList: GetGameSummaryNewsList[]
+  gameStats: GetGameSummaryGameStats[]
+  stats: GetGameSummaryStats
+  relatedGames: GetGameSummaryRelatedGames[]
+  seriesList: GetGameSummarySeriesList[]
+  theme: GetGameSummaryTheme
+  threadList: GetGameSummaryThreadList[]
+  users: GetGameSummaryUsers[]
+  challengeList: any[]
+  challengeCount: number
+  guideCount: number
+  levelCount: number
+  newsCount: number
+  relatedCount: number
+  resourceCount: number
+  streamCount: number
+  threadCount: number
+}
+
 export {
+  GetGameSummary,
+  GetGameSummaryGame,
   GetGuideList,
   GuideList,
   GuideUsers,

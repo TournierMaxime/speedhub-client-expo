@@ -9,7 +9,7 @@ import {
 } from "react-native"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { Game } from "@/types/sdc"
+import { Game, GetGameSummary } from "@/types/sdc"
 import { gameService } from "@/services/speedrunDotCom"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
@@ -43,6 +43,20 @@ const OneGame = () => {
     queryFn: async () => {
       if (!id) throw new Error("Missing ID")
       return await gameService.getGame(id)
+    },
+    enabled: !!id,
+  })
+
+  const {
+    data: GetGameSummary,
+    isLoading: GetGameSummaryLoading,
+    error: GetGameSummaryError,
+    refetch: GetGameSummaryRefetch,
+  } = useQuery<GetGameSummary>({
+    queryKey: ["getGameSummary", id],
+    queryFn: async () => {
+      if (!id) throw new Error("Missing ID")
+      return await gameService.getGameSummary(id)
     },
     enabled: !!id,
   })
@@ -81,7 +95,12 @@ const OneGame = () => {
     ? [
         { name: "Details", component: <GameDetails data={data.data} /> },
         { name: "Categories", component: <CategoriesTab data={data.data} /> },
-        { name: "Guides", component: <Guides id={data.data.id} /> },
+        {
+          name: "Guides",
+          component: (
+            <Guides url={GetGameSummary?.game?.url} id={data.data.id} />
+          ),
+        },
       ]
     : []
 

@@ -148,7 +148,6 @@ const OneReddit = ({ data }: { data: Reddit }) => {
                       },
                     ]
                   )
-                } else {
                 }
               }}
             >
