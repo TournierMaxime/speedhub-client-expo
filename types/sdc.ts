@@ -1230,7 +1230,175 @@ interface GetGameSummary {
   threadCount: number
 }
 
+interface GetGameData {
+  game: GetGameDataGame
+  categories: GetGameDataCategory[]
+  levels: GetGameDataLevel[]
+  moderators: GetGameDataModerator[]
+  platforms: GetGameDataPlatform[]
+  regions: any[]
+  theme: GetGameDataTheme
+  users: GetGameDataUser[]
+  values: GetGameDataValue[]
+  variables: GetGameDataVariable[]
+}
+
+interface GetGameDataGame {
+  id: string
+  name: string
+  url: string
+  type: string
+  loadtimes: boolean
+  milliseconds: boolean
+  igt: boolean
+  verification: boolean
+  autoVerify: boolean
+  requireVideo: boolean
+  emulator: number
+  defaultTimer: number
+  validTimers: number[]
+  releaseDate: number
+  addedDate: number
+  touchDate: number
+  coverPath: string
+  trophy1stPath: string
+  trophy2ndPath: string
+  trophy3rdPath: string
+  runCommentsMode: number
+  runCount: number
+  activePlayerCount: number
+  totalPlayerCount: number
+  boostReceivedCount: number
+  boostDistinctDonorsCount: number
+  rules: string
+  viewPowerLevel: number
+  platformIds: string[]
+  regionIds: string[]
+  gameTypeIds: string[]
+  websiteUrl: string
+  discordUrl: string
+  defaultView: number
+  guidePermissionType: number
+  resourcePermissionType: number
+  staticAssets: GetGameDataStaticAsset[]
+}
+
+interface GetGameDataStaticAsset {
+  assetType: string
+  path: string
+}
+
+interface GetGameDataCategory {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  isMisc: boolean
+  isPerLevel: boolean
+  numPlayers: number
+  exactPlayers: boolean
+  playerMatchMode: number
+  timeDirection: number
+  enforceMs: boolean
+  archived: boolean
+  rules: string
+}
+
+interface GetGameDataLevel {
+  id: string
+  gameId: string
+  name: string
+  url: string
+  pos: number
+  archived: boolean
+}
+
+interface GetGameDataModerator {
+  gameId: string
+  userId: string
+  level: number
+}
+
+interface GetGameDataPlatform {
+  id: string
+  name: string
+  url: string
+  year: number
+}
+
+interface GetGameDataTheme {
+  id: string
+  url: string
+  primaryColor: string
+  panelColor: string
+  panelOpacity: number
+  navbarColor: number
+  backgroundColor: string
+  backgroundFit: number
+  backgroundPosition: number
+  backgroundRepeat: number
+  backgroundScrolling: number
+  foregroundFit: number
+  foregroundPosition: number
+  foregroundRepeat: number
+  foregroundScrolling: number
+  touchDate: number
+  staticAssets: GetGameDataStaticAsset[]
+}
+
+interface GetGameDataUser {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  pronouns: string[]
+  areaId: string
+  color1Id: string
+  color2Id: string
+  avatarDecoration: {
+    enabled: boolean
+  }
+  iconType: number
+  onlineDate: number
+  signupDate: number
+  touchDate: number
+  staticAssets: GetGameDataStaticAsset[]
+}
+
+interface GetGameDataValue {
+  id: string
+  name: string
+  url: string
+  pos: number
+  variableId: string
+  archived: boolean
+}
+
+interface GetGameDataVariable {
+  id: string
+  name: string
+  url: string
+  pos: number
+  gameId: string
+  categoryScope: number
+  categoryId: string
+  levelScope: number
+  isMandatory: boolean
+  isSubcategory: boolean
+  isUserDefined: boolean
+  isObsoleting: boolean
+  defaultValue: string
+  archived: boolean
+  description: string
+  displayMode: number
+}
+
 export {
+  GetGameData,
+  GetGameDataCategory,
+  GetGameDataValue,
+  GetGameDataVariable,
   GetGameSummary,
   GetGameSummaryGame,
   GetGuideList,

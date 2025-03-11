@@ -9,7 +9,7 @@ import {
 } from "react-native"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { Game, GetGameSummary } from "@/types/sdc"
+import { GetGameData } from "@/types/sdc"
 import { gameService } from "@/services/speedrunDotCom"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
@@ -38,27 +38,30 @@ const OneGame = () => {
 
   const userId = user?.userId
 
-  const { data, isLoading, error, refetch } = useQuery<Game>({
-    queryKey: ["getGame", id],
+  const {
+    data: GetGameData,
+    isLoading: GetGameDataLoading,
+    error: GetGameDataError,
+    refetch: GetGameDataRefetch,
+  } = useQuery<GetGameData>({
+    queryKey: ["getGameData", id],
     queryFn: async () => {
       if (!id) throw new Error("Missing ID")
-      return await gameService.getGame(id)
+      return await gameService.getGameData(id)
     },
     enabled: !!id,
   })
 
-  const {
-    data: GetGameSummary,
-    isLoading: GetGameSummaryLoading,
-    error: GetGameSummaryError,
-    refetch: GetGameSummaryRefetch,
-  } = useQuery<GetGameSummary>({
-    queryKey: ["getGameSummary", id],
-    queryFn: async () => {
-      if (!id) throw new Error("Missing ID")
-      return await gameService.getGameSummary(id)
-    },
-    enabled: !!id,
+  const cover = GetGameData?.game.staticAssets.find((asset) => {
+    if (asset.assetType === "cover") {
+      return asset
+    }
+  })
+
+  const background = GetGameData?.game.staticAssets.find((asset) => {
+    if (asset.assetType === "background") {
+      return asset
+    }
   })
 
   const { addFavorite, removeFavorite, isFollowing, setIsFollowing } =
@@ -67,9 +70,9 @@ const OneGame = () => {
         userId,
         type: "Game",
         data: {
-          id: data?.data?.id,
-          image: data?.data?.assets["cover-large"]?.uri,
-          name: data?.data?.names?.international,
+          id: GetGameData?.game.id,
+          image: `https://www.speedrun.com${cover?.path}`,
+          name: GetGameData?.game.name,
         },
       },
     })
@@ -88,17 +91,17 @@ const OneGame = () => {
     enabled: !!userId,
   })
 
-  if (error) return <CatchError error={error} />
-  if (!data) refetch()
+  if (GetGameDataError) return <CatchError error={GetGameDataError} />
+  if (!GetGameData) GetGameDataRefetch()
 
-  const tabs = data
+  const tabs = GetGameData
     ? [
-        { name: "Details", component: <GameDetails data={data.data} /> },
-        { name: "Categories", component: <CategoriesTab data={data.data} /> },
+        { name: "Details", component: <GameDetails data={GetGameData} /> },
+        { name: "Categories", component: <CategoriesTab data={GetGameData} /> },
         {
           name: "Guides",
           component: (
-            <Guides url={GetGameSummary?.game?.url} id={data.data.id} />
+            <Guides url={GetGameData?.game?.url} id={GetGameData.game.id} />
           ),
         },
       ]
@@ -106,14 +109,16 @@ const OneGame = () => {
 
   return (
     <View style={oneGameStyle.container}>
-      {isLoading ? (
-        <IsLoading isLoading={isLoading} />
+      {GetGameDataLoading ? (
+        <IsLoading isLoading={GetGameDataLoading} />
       ) : (
         <Fragment>
           <View style={oneGameDetailsStyle.gameContainer}>
             <ImageBackground
               source={{
-                uri: data?.data?.assets?.background?.uri,
+                uri: background
+                  ? `https://www.speedrun.com${background?.path}`
+                  : undefined,
               }}
               style={oneGameDetailsStyle.backgroungImg}
               resizeMode="cover"
@@ -156,22 +161,28 @@ const OneGame = () => {
                     </TouchableOpacity>
                   )}
 
-                  {data?.data?.weblink && (
+                  {GetGameData?.game.url && (
                     <TouchableOpacity
                       style={{
                         padding: Utils.moderateScale(10),
                       }}
-                      onPress={() => Linking.openURL(data?.data?.weblink)}
+                      onPress={() =>
+                        Linking.openURL(
+                          `https://www.speedrun.com/${GetGameData?.game.url}`
+                        )
+                      }
                     >
                       <SDCSVG />
                     </TouchableOpacity>
                   )}
-                  {data?.data?.discord && (
+                  {GetGameData?.game.discordUrl && (
                     <TouchableOpacity
                       style={{
                         padding: Utils.moderateScale(10),
                       }}
-                      onPress={() => Linking.openURL(data?.data?.discord)}
+                      onPress={() =>
+                        Linking.openURL(GetGameData?.game.discordUrl)
+                      }
                     >
                       <Discord />
                     </TouchableOpacity>
@@ -188,13 +199,15 @@ const OneGame = () => {
               >
                 <Image
                   source={{
-                    uri: data?.data?.assets["cover-large"]?.uri,
+                    uri: cover
+                      ? `https://www.speedrun.com${cover?.path}`
+                      : undefined,
                   }}
                   style={oneGameDetailsStyle.img}
                 />
 
                 <Text style={oneGameDetailsStyle.gameTitle}>
-                  {data?.data?.names?.international}
+                  {GetGameData?.game.name}
                 </Text>
               </View>
             </ImageBackground>

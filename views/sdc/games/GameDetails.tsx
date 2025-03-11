@@ -1,28 +1,29 @@
 import React, { Fragment } from "react"
 import { View, Text, ScrollView } from "react-native"
-import { Game } from "@/types/sdc"
+import { GetGameData } from "@/types/sdc"
 import { useColorScheme } from "react-native"
 import { oneGameDetailsStyle } from "@/styles/views/oneGame"
 import mainStyle from "@/styles/base/main"
+import moment from "moment"
+import Markdown from "react-native-markdown-display"
 
-const GameDetails = ({ data }: { data: Game["data"] }) => {
+const GameDetails = ({ data }: { data: GetGameData | undefined }) => {
   const theme = useColorScheme() ?? "light"
 
+  if (!data) return
+
   const infoData = [
-    data?.["release-date"]
-      ? { title: "Release Date", content: data?.["release-date"] }
+    data.game.rules
+      ? { title: "Rules", content: <Markdown>{data.game.rules}</Markdown> }
       : null,
-    data?.genres?.data?.length
-      ? { title: "Genres", content: data.genres.data }
+    data.game.releaseDate
+      ? {
+          title: "Release Date",
+          content: moment.unix(data.game.releaseDate).format("YYYY-MM-DD"),
+        }
       : null,
-    data?.platforms?.data?.length
-      ? { title: "Platforms", content: data.platforms.data }
-      : null,
-    data?.publishers?.data?.length
-      ? { title: "Publishers", content: data.publishers.data }
-      : null,
-    data?.developers?.data?.length
-      ? { title: "Developers", content: data.developers.data }
+    data.platforms.length
+      ? { title: "Platforms", content: data.platforms }
       : null,
   ].filter(Boolean)
 

@@ -6,6 +6,7 @@ import {
   GetLatestLeaderboard,
   GetGuideList,
   GetGameSummary,
+  GetGameData,
 } from "@/types/sdc"
 
 interface GameInterface {
@@ -18,6 +19,7 @@ interface GameInterface {
   ): Promise<any>
   getGuides(id: string | string[]): Promise<GetGuideList>
   getGameSummary(id: string | string[]): Promise<GetGameSummary>
+  getGameData(id: string | string[]): Promise<GetGameData>
 }
 
 interface RunInterface {
@@ -177,6 +179,15 @@ class Games implements GameInterface {
 
   async getGameSummary(gameId: string | string[]) {
     const response = await this.speedRunDotComApiV2.get("/GetGameSummary", {
+      params: {
+        gameId,
+      },
+    })
+    return response.data
+  }
+
+  async getGameData(gameId: string | string[]) {
+    const response = await this.speedRunDotComApiV2.get("/GetGameData", {
       params: {
         gameId,
       },
