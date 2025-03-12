@@ -7,6 +7,7 @@ import {
   GetGuideList,
   GetGameSummary,
   GetGameData,
+  GetResourceList,
 } from "@/types/sdc"
 
 interface GameInterface {
@@ -20,6 +21,7 @@ interface GameInterface {
   getGuides(id: string | string[]): Promise<GetGuideList>
   getGameSummary(id: string | string[]): Promise<GetGameSummary>
   getGameData(id: string | string[]): Promise<GetGameData>
+  getResourceList(id: string | string[]): Promise<GetResourceList>
 }
 
 interface RunInterface {
@@ -188,6 +190,15 @@ class Games implements GameInterface {
 
   async getGameData(gameId: string | string[]) {
     const response = await this.speedRunDotComApiV2.get("/GetGameData", {
+      params: {
+        gameId,
+      },
+    })
+    return response.data
+  }
+
+  async getResourceList(gameId: string | string[]) {
+    const response = await this.speedRunDotComApiV2.get("/GetResourceList", {
       params: {
         gameId,
       },

@@ -1,12 +1,5 @@
 import React from "react"
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-  Linking,
-  Alert,
-} from "react-native"
+import { FlatList, Text, TouchableOpacity, View } from "react-native"
 import {
   GetGameData,
   GetGameDataCategory,
@@ -94,24 +87,27 @@ const CategoriesTab = ({ data }: { data: GetGameData }) => {
     item: GetGameDataCategory
     index: number
   }) => {
-    return (
-      <Card key={index}>
-        <TouchableOpacity>
-          <Text
-            style={{ fontSize: Utils.moderateScale(16), fontWeight: "bold" }}
-          >
-            {item.name} {item.isMisc ? " - (Miscellaneous)" : null}
-          </Text>
+    if (!item.isMisc) {
+      return (
+        <Card key={index}>
+          <TouchableOpacity>
+            <Text
+              style={{ fontSize: Utils.moderateScale(16), fontWeight: "bold" }}
+            >
+              {item.name}
+            </Text>
 
-          <Variables
-            variables={data.variables}
-            categoryId={item.id}
-            values={data.values}
-            url={url}
-          />
-        </TouchableOpacity>
-      </Card>
-    )
+            <Variables
+              variables={data.variables}
+              categoryId={item.id}
+              values={data.values}
+              url={url}
+            />
+          </TouchableOpacity>
+        </Card>
+      )
+    }
+    return null
   }
 
   return (

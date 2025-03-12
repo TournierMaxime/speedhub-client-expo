@@ -1394,7 +1394,48 @@ interface GetGameDataVariable {
   displayMode: number
 }
 
+interface ResourceList {
+  id: string
+  type: number
+  name: string
+  description: string
+  date: number
+  userId: string
+  gameId: string
+  link: string
+  authorNames: string
+}
+
+interface ResourceListUser {
+  id: string
+  name: string
+  url: string
+  powerLevel: number
+  pronouns: any[]
+  areaId: string
+  color1Id: string
+  avatarDecoration: {
+    enabled: boolean
+  }
+  iconType: number
+  onlineDate: number
+  signupDate: number
+  touchDate: number
+  staticAssets: {
+    assetType: string
+    path: string
+  }[]
+}
+
+interface GetResourceList {
+  resourceList: ResourceList[]
+  users: ResourceListUser[]
+}
+
 export {
+  ResourceList,
+  ResourceListUser,
+  GetResourceList,
   GetGameData,
   GetGameDataCategory,
   GetGameDataValue,

@@ -28,6 +28,7 @@ import { favoriteUserService } from "@/services/speedhub"
 import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 import Guides from "./Guides"
+import Ressources from "./Ressources"
 
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
@@ -102,6 +103,12 @@ const OneGame = () => {
           name: "Guides",
           component: (
             <Guides url={GetGameData?.game?.url} id={GetGameData.game.id} />
+          ),
+        },
+        {
+          name: "Tools",
+          component: (
+            <Ressources url={GetGameData?.game?.url} id={GetGameData.game.id} />
           ),
         },
       ]

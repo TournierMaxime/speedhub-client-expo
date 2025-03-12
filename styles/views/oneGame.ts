@@ -109,6 +109,12 @@ const oneGameDetailsStyle = StyleSheet.create({
     color: "#fff",
     marginVertical: Utils.moderateScale(10),
   },
+  gameSubTitle: {
+    fontSize: Utils.moderateScale(16),
+    fontWeight: "bold",
+    color: "#fff",
+    marginVertical: Utils.moderateScale(10),
+  },
   subTitle: {
     fontSize: Utils.moderateScale(18),
     fontWeight: "bold",
