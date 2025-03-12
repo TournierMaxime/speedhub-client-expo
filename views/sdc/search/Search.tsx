@@ -67,12 +67,12 @@ const Search = () => {
 
         {userList &&
           userList.map((user, idx) => {
-            const { staticAssets, name, id } = user
+            const { staticAssets, name, url } = user
             return (
               <Card
                 key={`user-${idx}`}
                 route={ROUTES.ONE_USER}
-                routeParams={{ id }}
+                routeParams={{ url }}
               >
                 <View style={searchStyle.cardContent}>
                   {staticAssets[1]?.assetType === "image" ? (

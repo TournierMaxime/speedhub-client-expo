@@ -11,7 +11,8 @@ const useHandleFavorite = ({
     userId: string | undefined
     type: "Runner" | "Game" | "Marathon"
     data: {
-      id: string | undefined
+      id?: string | undefined
+      url?: string | undefined
       image: string | undefined
       name: string | undefined
       twitchChannel?: string | undefined
@@ -37,6 +38,7 @@ const useHandleFavorite = ({
               id: data.data.id,
               image: data.data.image,
               name: data.data.name,
+              url: data.data.url,
               twitchChannel: data.data.twitchChannel,
             },
           })

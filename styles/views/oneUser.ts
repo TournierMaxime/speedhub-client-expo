@@ -69,12 +69,12 @@ const pbStyle = StyleSheet.create({
   cardImage: {
     display: "flex",
     flexDirection: "column",
-    width: "20%",
+    width: "30%",
   },
   cardInfo: {
     display: "flex",
     flexDirection: "column",
-    width: "80%",
+    width: "70%",
     flexWrap: "wrap",
   },
   image: {
@@ -90,8 +90,6 @@ const pbStyle = StyleSheet.create({
   },
   textCard: {
     fontSize: Utils.moderateScale(16),
-    marginLeft: Utils.moderateScale(10),
-    width: "95%",
   },
 })
 

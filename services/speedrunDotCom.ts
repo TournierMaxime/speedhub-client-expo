@@ -8,6 +8,8 @@ import {
   GetGameSummary,
   GetGameData,
   GetResourceList,
+  GetUserSummary,
+  GetUserLeaderboard,
 } from "@/types/sdc"
 
 interface GameInterface {
@@ -39,6 +41,8 @@ interface UserInterface {
   getUsers(params: { name: string | string[] }): Promise<any>
   getUser(id: string | string[]): Promise<any>
   getPersonalBests(id: string | string[]): Promise<any>
+  getUserSummary(url: string | string[]): Promise<GetUserSummary>
+  getUserLeaderboard(userId: string | string[]): Promise<GetUserLeaderboard>
 }
 
 interface ProfileInterface {
@@ -47,6 +51,7 @@ interface ProfileInterface {
 
 class Users implements UserInterface {
   private http = http
+  private speedRunDotComApiV2 = speedRunDotComApiV2
 
   async getUsers(params: { name: string | string[] }) {
     const response = await this.http.get("/users", {
@@ -66,6 +71,24 @@ class Users implements UserInterface {
     const response = await this.http.get(`/users/${id}/personal-bests`, {
       params: {
         embed: "game,category,platform",
+      },
+    })
+    return response.data
+  }
+
+  async getUserSummary(url: string | string[]) {
+    const response = await this.speedRunDotComApiV2.get("/GetUserSummary", {
+      params: {
+        url,
+      },
+    })
+    return response.data
+  }
+
+  async getUserLeaderboard(userId: string | string[]) {
+    const response = await this.speedRunDotComApiV2.get("/GetUserLeaderboard", {
+      params: {
+        userId,
       },
     })
     return response.data

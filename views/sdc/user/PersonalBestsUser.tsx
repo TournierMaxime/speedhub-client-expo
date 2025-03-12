@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { View, Text, TouchableOpacity, Image } from "react-native"
 import Utils from "@/components/lib/Utils"
-import { useGlobalSearchParams } from "expo-router"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { PersonalBests } from "@/types/sdc"
+import { useQuery } from "@tanstack/react-query"
+import {
+  GetUserLeaderboard,
+  GetUserLeaderboardCategories,
+  GetUserLeaderboardGames,
+} from "@/types/sdc"
 import { userService } from "@/services/speedrunDotCom"
 import Runtime from "@/components/lib/RunTime"
 import { useColorScheme } from "react-native"
@@ -13,21 +16,86 @@ import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import { pbStyle } from "@/styles/views/oneUser"
 
-const PersonalBestsUser = () => {
-  const { id } = useGlobalSearchParams()
+const CoverGame = ({
+  games,
+  gameId,
+}: {
+  games: GetUserLeaderboardGames[]
+  gameId: string
+}) => {
+  if (games) {
+    return games.map((game, idx) => {
+      if (gameId === game.id) {
+        const cover = game.staticAssets.find(
+          (asset) => asset.assetType === "cover"
+        )
+        return (
+          <Image
+            key={idx}
+            source={{
+              uri: cover ? `https://www.speedrun.com${cover?.path}` : undefined,
+            }}
+            style={pbStyle.image}
+          />
+        )
+      }
+    })
+  }
+  return null
+}
 
+const Games = ({
+  games,
+  gameId,
+}: {
+  games: GetUserLeaderboardGames[]
+  gameId: string
+}) => {
+  if (games) {
+    return games.map((game, idx) => {
+      if (gameId === game.id) {
+        return (
+          <Text key={idx} style={pbStyle.textCard}>
+            {game.name}
+          </Text>
+        )
+      }
+    })
+  }
+  return null
+}
+
+const Categories = ({
+  categories,
+  categoryId,
+}: {
+  categories: GetUserLeaderboardCategories[]
+  categoryId: string
+}) => {
+  if (categories) {
+    return categories.map((category, idx) => {
+      if (categoryId === category.id) {
+        return (
+          <Text key={idx} style={pbStyle.textCard}>
+            {category.name}
+          </Text>
+        )
+      }
+    })
+  }
+  return null
+}
+
+const PersonalBestsUser = ({ id }: { id: string }) => {
   const theme = useColorScheme() ?? "light"
 
   const { handleRedirect } = useHandleRouter()
 
-  const { data, isLoading, error } = useInfiniteQuery({
-    queryKey: ["getPersonalBests"],
+  const { data, isLoading, error } = useQuery<GetUserLeaderboard>({
+    queryKey: ["getUserLeaderboard"],
     queryFn: async () => {
-      return await userService.getPersonalBests(id)
-    },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      return lastPage.nextPage || undefined
+      if (!id) throw new Error("Missing ID")
+      return await userService.getUserLeaderboard(id)
     },
   })
 
@@ -35,87 +103,36 @@ const PersonalBestsUser = () => {
     return <CatchError error={error} />
   }
 
-  const [personalBest, setPersonalBest] = useState<PersonalBests["data"]>([])
-
-  const getPlace = (place: number, assets: any) => {
-    switch (place) {
-      case 1:
-        return (
-          <Text style={pbStyle.textCard}>
-            <Image
-              source={{ uri: assets["trophy-1st"]?.uri }}
-              style={pbStyle.trophy}
-            />
-            {place}st place
-          </Text>
-        )
-      case 2:
-        return (
-          <Text style={pbStyle.textCard}>
-            <Image
-              source={{ uri: assets["trophy-2nd"]?.uri }}
-              style={pbStyle.trophy}
-            />
-            {place}nd place
-          </Text>
-        )
-      case 3:
-        return (
-          <Text style={pbStyle.textCard}>
-            <Image
-              source={{ uri: assets["trophy-3rd"]?.uri }}
-              style={pbStyle.trophy}
-            />
-            {place}rd place
-          </Text>
-        )
-      default:
-        return <Text style={pbStyle.textCard}>{place}th place</Text>
-    }
-  }
-
   const personalBests = () => {
-    if (personalBest.length > 0) {
-      const getPersonalBests = personalBest.map((pb, idx) => {
-        return (
-          <TouchableOpacity
-            key={idx}
-            style={pbStyle.card}
-            onPress={async () =>
-              await handleRedirect(ROUTES.ONE_RUN, { id: pb.run.id })
-            }
-          >
-            <View style={pbStyle.cardImage}>
-              <Image
-                style={pbStyle.image}
-                source={{ uri: pb.game.data.assets["cover-large"].uri }}
-              />
-            </View>
-            <View style={pbStyle.cardInfo}>
-              <Text style={pbStyle.textCard}>
-                {pb.game.data.names.international}
-              </Text>
-              <Text style={pbStyle.textCard}>{pb.category.data.name}</Text>
-              <Runtime
-                time={pb.run.times.primary_t}
-                css={{ marginLeft: Utils.moderateScale(10) }}
-              />
-              {getPlace(pb.place, pb.game.data.assets)}
-            </View>
-          </TouchableOpacity>
-        )
+    if (data && data.runs && data?.runs.length > 0) {
+      const getPersonalBests = data.runs.map((pb, idx) => {
+        if (!pb.obsolete)
+          return (
+            <TouchableOpacity
+              key={idx}
+              style={pbStyle.card}
+              onPress={async () =>
+                await handleRedirect(ROUTES.ONE_RUN, { id: pb.id })
+              }
+            >
+              <View style={pbStyle.cardImage}>
+                <CoverGame games={data.games} gameId={pb.gameId} />
+              </View>
+              <View style={pbStyle.cardInfo}>
+                <Games games={data.games} gameId={pb.gameId} />
+                <Categories
+                  categories={data.categories}
+                  categoryId={pb.categoryId}
+                />
+                <Runtime time={pb.time} />
+              </View>
+            </TouchableOpacity>
+          )
       })
       return getPersonalBests
     }
     return null
   }
-
-  useEffect(() => {
-    if (data?.pages) {
-      const mergedData = data.pages.flatMap((page) => page.data)
-      setPersonalBest(mergedData)
-    }
-  }, [data])
 
   return (
     <View style={pbStyle.container}>

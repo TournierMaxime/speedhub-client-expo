@@ -1,5 +1,5 @@
 import React from "react"
-import { FlatList, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, Text, StyleSheet, View } from "react-native"
 import {
   GetGameData,
   GetGameDataCategory,
@@ -7,7 +7,6 @@ import {
   GetGameDataVariable,
 } from "@/types/sdc"
 import Chip from "@/components/lib/Chip"
-import Card from "@/components/lib/Card"
 import Utils from "@/components/lib/Utils"
 import { redirectAlertMessage } from "@/components/lib/AlertMessage"
 
@@ -87,24 +86,18 @@ const CategoriesTab = ({ data }: { data: GetGameData }) => {
     item: GetGameDataCategory
     index: number
   }) => {
-    if (!item.isMisc) {
+    if (!item.isMisc && !item.isPerLevel && !item.archived) {
       return (
-        <Card key={index}>
-          <TouchableOpacity>
-            <Text
-              style={{ fontSize: Utils.moderateScale(16), fontWeight: "bold" }}
-            >
-              {item.name}
-            </Text>
+        <View key={index} style={style.cardItem}>
+          <Text style={style.title}>{item.name}</Text>
 
-            <Variables
-              variables={data.variables}
-              categoryId={item.id}
-              values={data.values}
-              url={url}
-            />
-          </TouchableOpacity>
-        </Card>
+          <Variables
+            variables={data.variables}
+            categoryId={item.id}
+            values={data.values}
+            url={url}
+          />
+        </View>
       )
     }
     return null
@@ -118,5 +111,28 @@ const CategoriesTab = ({ data }: { data: GetGameData }) => {
     />
   )
 }
+
+const style = StyleSheet.create({
+  cardItem: {
+    display: "flex",
+    flexDirection: "column",
+    padding: Utils.moderateScale(10),
+    margin: Utils.moderateScale(10),
+    borderRadius: Utils.moderateScale(5),
+    borderColor: "grey",
+    shadowOffset: {
+      width: Utils.moderateScale(0),
+      height: Utils.moderateScale(2),
+    },
+    shadowOpacity: Utils.moderateScale(0.25),
+    shadowRadius: Utils.moderateScale(3.5),
+    elevation: Utils.moderateScale(5),
+    backgroundColor: "white",
+  },
+  title: {
+    fontSize: Utils.moderateScale(16),
+    fontWeight: "bold",
+  },
+})
 
 export { CategoriesTab }

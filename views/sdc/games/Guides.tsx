@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { FlatList, Text, TouchableOpacity } from "react-native"
 import { GetGuideList, GuideList, GuideUsers } from "@/types/sdc"
@@ -6,6 +6,8 @@ import { gameService } from "@/services/speedrunDotCom"
 import UserName from "@/components/lib/UserName"
 import Card from "@/components/lib/Card"
 import { redirectAlertMessage } from "@/components/lib/AlertMessage"
+import IsLoading from "@/components/lib/IsLoading"
+import CatchError from "@/components/lib/CatchError"
 
 const GetGuide = ({
   data,
@@ -63,17 +65,27 @@ const Guides = ({ id, url }: { id: string; url: string | undefined }) => {
     )
   }
 
+  if (error) {
+    return <CatchError error={error} />
+  }
+
   return (
-    <FlatList
-      data={getGuides?.guideList}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      nestedScrollEnabled={true}
-      initialNumToRender={10}
-      maxToRenderPerBatch={10}
-      removeClippedSubviews={true}
-      windowSize={5}
-    />
+    <Fragment>
+      {isLoading ? (
+        <IsLoading isLoading={isLoading} />
+      ) : (
+        <FlatList
+          data={getGuides?.guideList}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          nestedScrollEnabled={true}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          removeClippedSubviews={true}
+          windowSize={5}
+        />
+      )}
+    </Fragment>
   )
 }
 
