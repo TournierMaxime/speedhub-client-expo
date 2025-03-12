@@ -17,6 +17,7 @@ import cardStyle from "@/styles/components/card"
 import oneRedditStyle from "@/styles/views/oneReddit"
 import { Reddit } from "@/types/reddit"
 import { getPlatformFromUrl } from "@/components/lib/VideoPlatform"
+import { redirectAlertMessage } from "@/components/lib/AlertMessage"
 
 const OneReddit = ({ data }: { data: Reddit }) => {
   const theme = useColorScheme() ?? "light"
@@ -130,25 +131,7 @@ const OneReddit = ({ data }: { data: Reddit }) => {
             <TouchableOpacity
               style={oneRedditStyle.btnContainer}
               onPress={async () => {
-                const canOpenUrl = await Linking.canOpenURL(url)
-                let message
-                if (canOpenUrl === true) {
-                  message = Alert.alert(
-                    "Redirection link",
-                    "You will be redirect to " +
-                      url +
-                      " are you sure to continue ?",
-                    [
-                      {
-                        text: "Yes",
-                        onPress: () => Linking.openURL(url),
-                      },
-                      {
-                        text: "No",
-                      },
-                    ]
-                  )
-                }
+                await redirectAlertMessage(url)
               }}
             >
               <Text style={oneRedditStyle.btnLabel}>More</Text>

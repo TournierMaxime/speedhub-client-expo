@@ -16,6 +16,7 @@ import {
 import Chip from "@/components/lib/Chip"
 import Card from "@/components/lib/Card"
 import Utils from "@/components/lib/Utils"
+import { redirectAlertMessage } from "@/components/lib/AlertMessage"
 
 const Values = ({
   values,
@@ -36,25 +37,7 @@ const Values = ({
           title={value.name}
           onPress={async () => {
             const fullUrl = `https://www.speedrun.com/${url}?x=${categoryId}-${variableId}.${value.id}`
-            const canOpenUrl = await Linking.canOpenURL(fullUrl)
-            let message
-            if (canOpenUrl === true) {
-              message = Alert.alert(
-                "Redirection link",
-                "You will be redirect to " +
-                  fullUrl +
-                  " are you sure to continue ?",
-                [
-                  {
-                    text: "Yes",
-                    onPress: () => Linking.openURL(fullUrl),
-                  },
-                  {
-                    text: "No",
-                  },
-                ]
-              )
-            }
+            await redirectAlertMessage(fullUrl)
           }}
         />
       )

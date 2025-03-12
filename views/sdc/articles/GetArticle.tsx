@@ -16,6 +16,7 @@ import moment from "moment"
 import Utils from "@/components/lib/Utils"
 import { userService } from "@/services/speedrunDotCom"
 import { useQuery } from "@tanstack/react-query"
+import { redirectAlertMessage } from "@/components/lib/AlertMessage"
 
 const GetArticle = ({ data }: { data: ArticleList }) => {
   const theme = useColorScheme() ?? "light"
@@ -92,25 +93,7 @@ const GetArticle = ({ data }: { data: ArticleList }) => {
             <TouchableOpacity
               style={oneRedditStyle.btnContainer}
               onPress={async () => {
-                const canOpenUrl = await Linking.canOpenURL(url)
-                let message
-                if (canOpenUrl === true) {
-                  message = Alert.alert(
-                    "Redirection link",
-                    "You will be redirect to " +
-                      url +
-                      " are you sure to continue ?",
-                    [
-                      {
-                        text: "Yes",
-                        onPress: () => Linking.openURL(url),
-                      },
-                      {
-                        text: "No",
-                      },
-                    ]
-                  )
-                }
+                await redirectAlertMessage(url)
               }}
             >
               <Text style={oneRedditStyle.btnLabel}>More</Text>
