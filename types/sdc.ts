@@ -1766,7 +1766,28 @@ interface GetUserSummary {
   titleList: any[]
 }
 
+interface SocialNetworkList {
+  id: number
+  name: string
+  major: boolean
+  pos: number
+  pattern: string
+}
+
+interface GetStaticData {
+  areas: []
+  colors: []
+  gameTypeList: []
+  notificationSettings: []
+  platformList: []
+  regionList: []
+  socialNetworkList: SocialNetworkList[]
+  supporterPlanList: any
+}
+
 export {
+  GetStaticData,
+  SocialNetworkList,
   GetUserLeaderboardVariables,
   GetUserLeaderboardValues,
   GetUserLeaderboardUserProfile,

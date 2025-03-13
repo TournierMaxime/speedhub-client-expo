@@ -10,6 +10,7 @@ import {
   GetResourceList,
   GetUserSummary,
   GetUserLeaderboard,
+  GetStaticData,
 } from "@/types/sdc"
 
 interface GameInterface {
@@ -47,6 +48,10 @@ interface UserInterface {
 
 interface ProfileInterface {
   getProfile(xApiKey: string): Promise<any>
+}
+
+interface GeneralInterface {
+  getStaticData(): Promise<GetStaticData>
 }
 
 class Users implements UserInterface {
@@ -324,6 +329,19 @@ class Search {
   }
 }
 
+class General implements GeneralInterface {
+  private http = speedRunDotComApiV2
+
+  async getStaticData() {
+    try {
+      const response = await this.http.get("/GetStaticData")
+      return response.data
+    } catch (error: any) {
+      console.log("GetSearch", error.message)
+    }
+  }
+}
+
 export const gameService = new Games()
 export const runService = new Runs()
 export const splitIOService = new Split()
@@ -332,3 +350,4 @@ export const profileService = new Profile()
 export const articleService = new Article()
 export const authService = new Auth()
 export const searchService = new Search()
+export const generalService = new General()
