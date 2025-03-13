@@ -94,7 +94,13 @@ const OneUser = () => {
         },
         {
           name: "Stats",
-          component: <Stats stats={data.userStats} />,
+          component: (
+            <Stats
+              userStats={data.userStats}
+              userGameRunnerStats={data.userGameRunnerStats}
+              games={data.games}
+            />
+          ),
         },
         {
           name: "Social",

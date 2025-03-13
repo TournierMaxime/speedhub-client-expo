@@ -1,10 +1,7 @@
-import Card from "@/components/lib/Card"
-import {
-  GetUserSummary,
-  GetUserSummaryUserSocialConnectionList,
-} from "@/types/sdc"
+import cardItemStyle from "@/styles/components/cardItem"
+import { GetUserSummaryUserSocialConnectionList } from "@/types/sdc"
 import React from "react"
-import { FlatList, Text } from "react-native"
+import { FlatList, Text, View } from "react-native"
 
 const Social = ({
   social,
@@ -19,9 +16,9 @@ const Social = ({
     index: number
   }) => {
     return (
-      <Card key={index}>
-        <Text>{item.value}</Text>
-      </Card>
+      <View key={index} style={cardItemStyle.cardItem}>
+        <Text style={cardItemStyle.title}>{item.value}</Text>
+      </View>
     )
   }
   return <FlatList data={social} renderItem={renderItem} />
