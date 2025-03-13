@@ -206,7 +206,10 @@ class FavoriteUserService implements FavoriteUserServiceInterface {
     return response.data
   }
 
-  async deleteFavorite(userId: string, data: { id: string; type: string }) {
+  async deleteFavorite(
+    userId: string,
+    data: { id?: string; type: string; url?: string }
+  ) {
     const response = await this.http.post(`/favorites/${userId}`, data, {
       ...this.defaultOptions,
     })

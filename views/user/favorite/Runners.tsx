@@ -37,7 +37,7 @@ const RunnerItem = ({
       userId,
       type: "Runner",
       data: {
-        id: runner.id,
+        url: runner.url,
         image: runner.image,
         name: runner.name,
       },
@@ -71,16 +71,16 @@ const RunnerItem = ({
       >
         <Dots />
       </TouchableOpacity>
-      {selectedRunner?.id === runner.id && (
+      {selectedRunner?.url === runner.url && (
         <BottomModal title={runner.name}>
           <TouchableOpacity
             style={favoriteStyle.modalContainer}
             onPress={() => {
-              handleRedirect(ROUTES.ONE_USER, { id: selectedRunner.id }).then(
-                () => {
-                  closeModal()
-                }
-              )
+              handleRedirect(ROUTES.ONE_USER, {
+                url: selectedRunner?.url,
+              }).then(() => {
+                closeModal()
+              })
             }}
           >
             <Text style={favoriteStyle.modalText}>View</Text>

@@ -56,16 +56,29 @@ const useHandleFavorite = ({
 
   const removeFavorite = useMutation({
     mutationFn: async () => {
-      if (userId && data?.data.id)
-        return await favoriteUserService
-          .deleteFavorite(userId, {
-            id: data.data.id,
-            type: data.type,
-          })
-          .then(() => {
-            setIsFollowing(false),
-              handleSuccess("You have unfollow " + data.data.name)
-          })
+      if (userId) {
+        if (data?.data.url) {
+          return await favoriteUserService
+            .deleteFavorite(userId, {
+              url: data.data.url,
+              type: data.type,
+            })
+            .then(() => {
+              setIsFollowing(false),
+                handleSuccess("You have unfollow " + data.data.name)
+            })
+        } else {
+          return await favoriteUserService
+            .deleteFavorite(userId, {
+              id: data.data.id,
+              type: data.type,
+            })
+            .then(() => {
+              setIsFollowing(false),
+                handleSuccess("You have unfollow " + data.data.name)
+            })
+        }
+      }
     },
     onSuccess: () => {
       if (userId) {

@@ -61,7 +61,7 @@ const OneUser = () => {
         userId,
         type: "Runner",
         data: {
-          id: data?.user.id,
+          url: data?.user.url,
           image: image ? `https://www.speedrun.com${image.path}` : undefined,
           name: data?.user.name,
         },
@@ -74,7 +74,7 @@ const OneUser = () => {
       if (!userId) return null
       const response = await favoriteUserService.searchFavorites(userId)
       const runner = response?.favorites?.data?.runners?.find(
-        (r: any) => r.id === data?.user.id
+        (r: any) => r.url === data?.user.url
       )
       setIsFollowing(!!runner)
       return response.favorites.data.runners ?? []
@@ -169,11 +169,8 @@ const OneUser = () => {
                   alignItems: "center",
                 }}
               >
-                {defaultUserImg ? (
-                  <Image
-                    source={defaultUserImg}
-                    style={oneGameDetailsStyle.img}
-                  />
+                {!defaultUserImg ? (
+                  <Image source={defaultUserImg} style={oneUserStyle.image} />
                 ) : (
                   <Image
                     source={{
@@ -181,7 +178,7 @@ const OneUser = () => {
                         ? `https://www.speedrun.com${image.path}`
                         : undefined,
                     }}
-                    style={oneGameDetailsStyle.img}
+                    style={oneUserStyle.image}
                   />
                 )}
 

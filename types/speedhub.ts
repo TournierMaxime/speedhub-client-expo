@@ -132,7 +132,8 @@ interface Favorites {
 }
 
 interface Favorite {
-  id: string
+  id?: string
+  url?: string
   name: string
   image?: string
   type: "Runner" | "Marathon" | "Game"
