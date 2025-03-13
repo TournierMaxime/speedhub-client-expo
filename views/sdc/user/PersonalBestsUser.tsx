@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, TouchableOpacity, Image } from "react-native"
+import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native"
 import { useQuery } from "@tanstack/react-query"
 import {
   GetUserLeaderboard,
@@ -134,9 +134,9 @@ const PersonalBestsUser = ({ id }: { id: string }) => {
   }
 
   return (
-    <View style={pbStyle.container}>
+    <ScrollView style={pbStyle.container}>
       {isLoading ? <IsLoading isLoading={isLoading} /> : personalBests()}
-    </View>
+    </ScrollView>
   )
 }
 

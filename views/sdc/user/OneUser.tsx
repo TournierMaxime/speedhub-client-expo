@@ -113,7 +113,7 @@ const OneUser = () => {
   )
 
   return (
-    <ScrollView style={oneGameStyle.container}>
+    <View style={oneGameStyle.container}>
       {isLoading ? (
         <IsLoading isLoading={isLoading} />
       ) : (
@@ -204,7 +204,7 @@ const OneUser = () => {
           />
         </Fragment>
       )}
-    </ScrollView>
+    </View>
   )
 }
 

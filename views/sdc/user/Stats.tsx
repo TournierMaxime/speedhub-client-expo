@@ -4,7 +4,7 @@ import {
   GetUserSummaryUserStats,
 } from "@/types/sdc"
 import React, { Fragment } from "react"
-import { Text, View } from "react-native"
+import { ScrollView, Text, View } from "react-native"
 import cardItemStyle from "@/styles/components/cardItem"
 import moment from "moment"
 
@@ -27,7 +27,7 @@ const Stats = ({
 
   const renderItem = () => {
     return (
-      <Fragment>
+      <ScrollView>
         <View style={cardItemStyle.cardItem}>
           <Text style={cardItemStyle.title}>Total Runs {userStats.runs}</Text>
         </View>
@@ -46,7 +46,7 @@ const Stats = ({
             )
           }
         })}
-      </Fragment>
+      </ScrollView>
     )
   }
   return renderItem()
