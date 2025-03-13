@@ -90,19 +90,20 @@ const MarathonItem = ({
           <TouchableOpacity
             style={favoriteStyle.modalContainer}
             onPress={() => {
-              if (data?.data.length === 0) {
-                handleRedirect(ROUTES.ONE_MARATHON_UPCOMING, {
-                  horaroId: selectedMarathon.id,
-                }).then(() => {
-                  closeModal()
-                })
-              } else {
-                handleRedirect(ROUTES.ONE_MARATHON_LIVE, {
-                  horaroId: selectedMarathon.id,
-                }).then(() => {
-                  closeModal()
-                })
-              }
+              if (selectedMarathon)
+                if (data?.data.length === 0) {
+                  handleRedirect(ROUTES.ONE_MARATHON_UPCOMING, {
+                    horaroId: selectedMarathon.id,
+                  }).then(() => {
+                    closeModal()
+                  })
+                } else {
+                  handleRedirect(ROUTES.ONE_MARATHON_LIVE, {
+                    horaroId: selectedMarathon.id,
+                  }).then(() => {
+                    closeModal()
+                  })
+                }
             }}
           >
             <Text style={favoriteStyle.modalText}>View</Text>

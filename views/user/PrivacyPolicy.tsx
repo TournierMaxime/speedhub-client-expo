@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React from "react"
 import { ScrollView, Text, View } from "react-native"
 import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"

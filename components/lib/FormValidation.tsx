@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Switch,
-  Image,
   StyleSheet,
   StyleProp,
   TextStyle,

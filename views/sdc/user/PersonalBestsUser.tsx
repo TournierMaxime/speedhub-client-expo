@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { View, Text, TouchableOpacity, Image } from "react-native"
-import Utils from "@/components/lib/Utils"
 import { useQuery } from "@tanstack/react-query"
 import {
   GetUserLeaderboard,

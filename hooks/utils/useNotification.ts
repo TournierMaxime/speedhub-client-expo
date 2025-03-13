@@ -3,7 +3,6 @@ import * as Notifications from "expo-notifications"
 import registerForPushNotificationsAsync from "../../components/lib/Notifications"
 import useHandleRouter from "./useHandleRouter"
 import { useAuth } from "@/contexts/AuthContext"
-import ROUTES from "@/components/routes"
 
 const useNotification = () => {
   const { handleRedirect } = useHandleRouter()

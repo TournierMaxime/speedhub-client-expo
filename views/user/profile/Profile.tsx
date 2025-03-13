@@ -1,11 +1,11 @@
 import React from "react"
 import { View, Text, TouchableOpacity, ScrollView } from "react-native"
-import useHandleRouter, { Pathname } from "@/hooks/utils/useHandleRouter"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"
 import mainStyle from "@/styles/base/main"
 import profileStyle from "@/styles/views/profile"
-import { Avatar, Chevron, Email, User } from "@/components/lib/Icons"
+import { Avatar, Chevron, User } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
 import { ProfilePath } from "@/types/speedhub"
 

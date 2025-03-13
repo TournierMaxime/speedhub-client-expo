@@ -1,7 +1,6 @@
 import React, { Fragment } from "react"
 import { View, StyleSheet } from "react-native"
 import useHandleForgetPassword from "@/hooks/auth/useHandleForgetPassword"
-import Form from "@/components/lib/Form"
 import Utils from "@/components/lib/Utils"
 import Header from "@/components/lib/Header"
 import { useColorScheme } from "react-native"

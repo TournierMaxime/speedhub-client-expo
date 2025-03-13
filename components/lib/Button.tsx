@@ -3,7 +3,6 @@ import {
   Text,
   StyleSheet,
   StyleProp,
-  TextStyle,
   ViewStyle,
 } from "react-native"
 import Utils from "./Utils"

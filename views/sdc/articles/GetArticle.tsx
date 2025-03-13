@@ -6,8 +6,6 @@ import {
   Image,
   useColorScheme,
   TouchableOpacity,
-  Linking,
-  Alert,
 } from "react-native"
 import mainStyle from "@/styles/base/main"
 import cardStyle from "@/styles/components/card"

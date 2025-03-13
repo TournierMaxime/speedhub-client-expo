@@ -11,13 +11,11 @@ import {
 import Utils from "@/components/lib/Utils"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { GetUserSummary, User } from "@/types/sdc"
+import { GetUserSummary } from "@/types/sdc"
 import { userService } from "@/services/speedrunDotCom"
 import PersonalBestsUser from "./PersonalBestsUser"
-import moment from "moment"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
-import UserName from "@/components/lib/UserName"
 import { oneUserStyle } from "@/styles/views/oneUser"
 import { favoriteUserService } from "@/services/speedhub"
 import { useAuth } from "@/contexts/AuthContext"
@@ -30,6 +28,7 @@ import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 import Social from "./Social"
 import Stats from "./Stats"
+import { Favorite } from "@/types/speedhub"
 
 const OneUser = () => {
   const { url } = useGlobalSearchParams()
@@ -74,7 +73,7 @@ const OneUser = () => {
       if (!userId) return null
       const response = await favoriteUserService.searchFavorites(userId)
       const runner = response?.favorites?.data?.runners?.find(
-        (r: any) => r.url === data?.user.url
+        (r: Favorite) => r.url === data?.user.url
       )
       setIsFollowing(!!runner)
       return response.favorites.data.runners ?? []

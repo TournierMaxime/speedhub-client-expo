@@ -1,7 +1,7 @@
 import { useGlobalSearchParams } from "expo-router"
 import React from "react"
 import { View, Text, TouchableOpacity, ScrollView } from "react-native"
-import useHandleRouter, { Pathname } from "@/hooks/utils/useHandleRouter"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import { useAuth } from "@/contexts/AuthContext"
 import Header from "@/components/lib/Header"
 import ROUTES from "@/components/routes"

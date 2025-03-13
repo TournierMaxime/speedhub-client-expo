@@ -1,7 +1,6 @@
-import React, { useState, Fragment } from "react"
+import React, { Fragment } from "react"
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import Utils from "./Utils"
-import Chip from "./Chip"
 import { useModalAction } from "@/contexts/ModalContext"
 
 interface Props {

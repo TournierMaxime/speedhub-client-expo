@@ -1,12 +1,5 @@
-import React, { useState, useRef, Fragment } from "react"
-import {
-  ScrollView,
-  Text,
-  View,
-  useColorScheme,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native"
+import React, { Fragment } from "react"
+import { ScrollView, Text, View, TouchableOpacity } from "react-native"
 import { Live } from "@/types/speedhub"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import Utils from "@/components/lib/Utils"
@@ -26,8 +19,6 @@ import { useAuth } from "@/contexts/AuthContext"
 import { favoriteUserService } from "@/services/speedhub"
 import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
-
-const { width } = Dimensions.get("window")
 
 const Marathon = () => {
   const { horaroId } = useLocalSearchParams()

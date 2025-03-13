@@ -18,7 +18,6 @@ import { Colors } from "@/constants/Colors"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { FormButtonSubmit } from "@/components/lib/FormValidation"
-import useHandleAuthSDC from "@/hooks/auth/useHandleAuthSDC"
 
 const LoginScreen = () => {
   const { handleRedirect } = useHandleRouter()
@@ -26,8 +25,6 @@ const LoginScreen = () => {
   const theme = useColorScheme() ?? "light"
 
   const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()
-
-  const { loginWithSDC } = useHandleAuthSDC()
 
   return (
     <View

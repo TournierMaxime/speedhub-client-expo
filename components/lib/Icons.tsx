@@ -12,12 +12,7 @@ import {
   Octicons,
 } from "@expo/vector-icons"
 import Utils from "./Utils"
-import {
-  OpaqueColorValue,
-  StyleProp,
-  useColorScheme,
-  ViewStyle,
-} from "react-native"
+import { OpaqueColorValue, useColorScheme } from "react-native"
 import { Colors } from "@/constants/Colors"
 
 const Chevron = () => {

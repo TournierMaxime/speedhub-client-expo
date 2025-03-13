@@ -5,7 +5,7 @@ import {
   SocialNetworkList,
 } from "@/types/sdc"
 import React from "react"
-import { FlatList, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, Text, TouchableOpacity } from "react-native"
 import { generalService } from "@/services/speedrunDotCom"
 import { useQuery } from "@tanstack/react-query"
 import { redirectAlertMessage } from "@/components/lib/AlertMessage"
@@ -24,8 +24,6 @@ const Social = ({
 
   const networks: SocialNetworkList[] | undefined = data?.socialNetworkList
 
-  console.log(networks)
-
   const renderItem = ({
     item,
     index,
@@ -39,7 +37,6 @@ const Social = ({
     const pattern = getNetwork?.pattern
     const searchTerm = pattern?.split("[id]")
     const link = searchTerm && searchTerm[0].concat(item.value)
-    console.log(link)
 
     return (
       <TouchableOpacity

@@ -76,11 +76,12 @@ const GameItem = ({
           <TouchableOpacity
             style={favoriteStyle.modalContainer}
             onPress={() => {
-              handleRedirect(ROUTES.ONE_GAME, { id: selectedGame.id }).then(
-                () => {
-                  closeModal()
-                }
-              )
+              if (selectedGame)
+                handleRedirect(ROUTES.ONE_GAME, { id: selectedGame.id }).then(
+                  () => {
+                    closeModal()
+                  }
+                )
             }}
           >
             <Text style={favoriteStyle.modalText}>View</Text>

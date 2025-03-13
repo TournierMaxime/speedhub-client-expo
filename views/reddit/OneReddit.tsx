@@ -1,12 +1,5 @@
 import React from "react"
-import {
-  View,
-  Text,
-  Image,
-  Linking,
-  TouchableOpacity,
-  Alert,
-} from "react-native"
+import { View, Text, Image, TouchableOpacity } from "react-native"
 import Utils from "@/components/lib/Utils"
 import YoutubeIframe from "@/components/lib/YouTubeIframe"
 import { useColorScheme } from "react-native"
