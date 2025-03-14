@@ -1,29 +1,19 @@
 import cardItemStyle from "@/styles/components/cardItem"
 import {
-  GetStaticData,
   GetUserSummaryUserSocialConnectionList,
   SocialNetworkList,
 } from "@/types/sdc"
 import React from "react"
 import { FlatList, Text, TouchableOpacity } from "react-native"
-import { generalService } from "@/services/speedrunDotCom"
-import { useQuery } from "@tanstack/react-query"
 import { redirectAlertMessage } from "@/components/lib/AlertMessage"
 
 const Social = ({
   social,
+  networks,
 }: {
   social: GetUserSummaryUserSocialConnectionList[]
+  networks: SocialNetworkList[]
 }) => {
-  const { data, isLoading, error, refetch } = useQuery<GetStaticData>({
-    queryKey: ["getStaticData"],
-    queryFn: async () => {
-      return await generalService.getStaticData()
-    },
-  })
-
-  const networks: SocialNetworkList[] | undefined = data?.socialNetworkList
-
   const renderItem = ({
     item,
     index,

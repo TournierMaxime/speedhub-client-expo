@@ -1,18 +1,14 @@
 import React from "react"
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native"
-import { useQuery } from "@tanstack/react-query"
 import {
   GetUserLeaderboard,
   GetUserLeaderboardCategories,
   GetUserLeaderboardGames,
 } from "@/types/sdc"
-import { userService } from "@/services/speedrunDotCom"
 import Runtime from "@/components/lib/RunTime"
 import { useColorScheme } from "react-native"
 import ROUTES from "@/components/routes"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
-import CatchError from "@/components/lib/CatchError"
-import IsLoading from "@/components/lib/IsLoading"
 import { pbStyle } from "@/styles/views/oneUser"
 
 const CoverGame = ({
@@ -85,22 +81,16 @@ const Categories = ({
   return null
 }
 
-const PersonalBestsUser = ({ id }: { id: string }) => {
+const PersonalBestsUser = ({
+  id,
+  data,
+}: {
+  id: string
+  data: GetUserLeaderboard
+}) => {
   const theme = useColorScheme() ?? "light"
 
   const { handleRedirect } = useHandleRouter()
-
-  const { data, isLoading, error } = useQuery<GetUserLeaderboard>({
-    queryKey: ["getUserLeaderboard"],
-    queryFn: async () => {
-      if (!id) throw new Error("Missing ID")
-      return await userService.getUserLeaderboard(id)
-    },
-  })
-
-  if (error) {
-    return <CatchError error={error} />
-  }
 
   const personalBests = () => {
     if (data && data.runs && data?.runs.length > 0) {
@@ -135,7 +125,7 @@ const PersonalBestsUser = ({ id }: { id: string }) => {
 
   return (
     <ScrollView style={pbStyle.container}>
-      {isLoading ? <IsLoading isLoading={isLoading} /> : personalBests()}
+      {!data ? null : personalBests()}
     </ScrollView>
   )
 }

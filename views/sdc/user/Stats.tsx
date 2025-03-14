@@ -3,7 +3,7 @@ import {
   GetUserSummaryUserGameRunnerStats,
   GetUserSummaryUserStats,
 } from "@/types/sdc"
-import React, { Fragment } from "react"
+import React from "react"
 import { ScrollView, Text, View } from "react-native"
 import cardItemStyle from "@/styles/components/cardItem"
 import moment from "moment"

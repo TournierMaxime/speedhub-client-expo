@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
@@ -11,13 +10,11 @@ import {
 import Utils from "@/components/lib/Utils"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { GetUserSummary } from "@/types/sdc"
-import { userService } from "@/services/speedrunDotCom"
 import PersonalBestsUser from "./PersonalBestsUser"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import { oneUserStyle } from "@/styles/views/oneUser"
-import { favoriteUserService } from "@/services/speedhub"
+import { favoriteUserService, sdcService } from "@/services/speedhub"
 import { useAuth } from "@/contexts/AuthContext"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { oneGameStyle, oneGameDetailsStyle } from "@/styles/views/oneGame"
@@ -28,10 +25,10 @@ import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 import Social from "./Social"
 import Stats from "./Stats"
-import { Favorite } from "@/types/speedhub"
+import { Favorite, GetUser } from "@/types/speedhub"
 
 const OneUser = () => {
-  const { url } = useGlobalSearchParams()
+  const { url, id } = useGlobalSearchParams()
   const { handleBack } = useHandleRouter()
   const { user } = useAuth()
 
@@ -41,16 +38,16 @@ const OneUser = () => {
 
   const userId = user?.userId
 
-  const { data, isLoading, error } = useQuery<GetUserSummary>({
+  const { data, isLoading, error } = useQuery<GetUser>({
     queryKey: ["getUserSummary", url],
     queryFn: async () => {
       if (!url) throw new Error("Missing url")
-      return await userService.getUserSummary(url)
+      return await sdcService.getUser(url, id)
     },
     enabled: !!url,
   })
 
-  const image = data?.user.staticAssets.find(
+  const image = data?.getUserSummary.user.staticAssets.find(
     (asset) => asset.assetType === "image"
   )
 
@@ -60,9 +57,9 @@ const OneUser = () => {
         userId,
         type: "Runner",
         data: {
-          url: data?.user.url,
+          url: data?.getUserSummary.user.url,
           image: image ? `https://www.speedrun.com${image.path}` : undefined,
-          name: data?.user.name,
+          name: data?.getUserSummary.user.name,
         },
       },
     })
@@ -73,7 +70,7 @@ const OneUser = () => {
       if (!userId) return null
       const response = await favoriteUserService.searchFavorites(userId)
       const runner = response?.favorites?.data?.runners?.find(
-        (r: Favorite) => r.url === data?.user.url
+        (r: Favorite) => r.url === data?.getUserSummary.user.url
       )
       setIsFollowing(!!runner)
       return response.favorites.data.runners ?? []
@@ -89,26 +86,36 @@ const OneUser = () => {
     ? [
         {
           name: "Personal Bests",
-          component: <PersonalBestsUser id={data.user.id} />,
+          component: (
+            <PersonalBestsUser
+              id={data.getUserSummary.user.id}
+              data={data.getUserLeaderboard}
+            />
+          ),
         },
         {
           name: "Stats",
           component: (
             <Stats
-              userStats={data.userStats}
-              userGameRunnerStats={data.userGameRunnerStats}
-              games={data.games}
+              userStats={data.getUserSummary.userStats}
+              userGameRunnerStats={data.getUserSummary.userGameRunnerStats}
+              games={data.getUserSummary.games}
             />
           ),
         },
         {
           name: "Social",
-          component: <Social social={data.userSocialConnectionList} />,
+          component: (
+            <Social
+              social={data.getUserSummary.userSocialConnectionList}
+              networks={data.getSocialNetworkList}
+            />
+          ),
         },
       ]
     : []
 
-  const background = data?.theme?.staticAssets?.find(
+  const background = data?.getUserSummary.theme?.staticAssets?.find(
     (asset) => asset.assetType === "background"
   )
 
@@ -188,7 +195,7 @@ const OneUser = () => {
                 )}
 
                 <Text style={oneGameDetailsStyle.gameTitle}>
-                  {data?.user.name}
+                  {data?.getUserSummary.user.name}
                 </Text>
               </View>
             </ImageBackground>
