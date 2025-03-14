@@ -1,10 +1,5 @@
 import React, { Fragment } from "react"
-import { horaroService } from "@/services/speedhub"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import IsLoading from "@/components/lib/IsLoading"
-import CatchError from "@/components/lib/CatchError"
 import { Live, Lives } from "@/types/speedhub"
-import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, FlatList } from "react-native"
 import { useColorScheme } from "react-native"
 import mainStyle from "@/styles/base/main"
@@ -12,24 +7,8 @@ import { BroadCast } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
 import OneMarathonLive from "../marathon/OneMarathonLive"
 
-const MarathonLives = ({ limit }: { limit: number }) => {
+const MarathonLives = ({ data }: { data: Lives["data"] }) => {
   const theme = useColorScheme() ?? "light"
-
-  const { data, isLoading, error, refetch } = useInfiniteQuery({
-    queryKey: ["getLives", limit],
-    queryFn: async () => {
-      return await horaroService.getLives(
-        limit ? { limit, isLive: true } : null
-      )
-    },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      return lastPage.nextPage || undefined
-    },
-    staleTime: 1000 * 60 * 30,
-  })
-
-  const [lives, setLives] = useState<Lives["data"]>([])
 
   const renderItem = ({ item, index }: { item: Live; index: number }) => {
     if (item.isLive) {
@@ -39,14 +18,14 @@ const MarathonLives = ({ limit }: { limit: number }) => {
   }
 
   const marathonsLive = () => {
-    if (lives.length > 0) {
+    if (data.length > 0) {
       return (
         <Fragment>
           <View style={style.titleAndIcon}>
             <Text style={style.title}>Live Marathons</Text>
             <BroadCast />
           </View>
-          <FlatList data={lives} horizontal={true} renderItem={renderItem} />
+          <FlatList data={data} horizontal={true} renderItem={renderItem} />
         </Fragment>
       )
     }
@@ -54,30 +33,10 @@ const MarathonLives = ({ limit }: { limit: number }) => {
     return null
   }
 
-  useEffect(() => {
-    if (data?.pages) {
-      const mergedData = data.pages.flatMap((page) => page.data)
-      const filteredData = mergedData.filter((item) => item !== undefined)
-      setLives(filteredData)
-    }
-  }, [data])
-
-  if (error) {
-    return <CatchError error={error} />
-  }
-
-  if (lives === undefined && !isLoading) {
-    refetch()
-  }
-
   return (
     <Fragment>
       <View style={mainStyle.container}>
-        {isLoading ? (
-          <IsLoading isLoading={isLoading} />
-        ) : (
-          lives && lives.length > 0 && marathonsLive()
-        )}
+        {!data ? null : data && data.length > 0 && marathonsLive()}
       </View>
     </Fragment>
   )

@@ -79,10 +79,20 @@ class HoraroService implements HoraroServiceInterface {
     const response = await this.http.get(`/horaro/upcoming/${horaroId}`)
     return response.data
   }
+
+  async getMarathons() {
+    const response = await this.http.get(`/marathons`)
+    return response.data
+  }
 }
 
 class AuthService implements AuthServiceInterface {
   private http = http
+
+  async getSession(userId: string | string[]) {
+    const response = await this.http.get(`/auth/session/${userId}`)
+    return response.data
+  }
 
   async verifyToken(refreshToken?: any) {
     const response = await this.http.post("/auth/verify-token", {
@@ -217,7 +227,22 @@ class FavoriteUserService implements FavoriteUserServiceInterface {
   }
 }
 
+class SDCService {
+  private http = http
+
+  async getUser(url: string | string[], userId: string | string[]) {
+    const response = await this.http.get(`/sdc/user/${url}/${userId}`)
+    return response.data
+  }
+
+  async getGame(gameId: string | string[]) {
+    const response = await this.http.get(`/sdc/game/${gameId}`)
+    return response.data
+  }
+}
+
 export const authService = new AuthService()
 export const userService = new UserService()
 export const horaroService = new HoraroService()
 export const favoriteUserService = new FavoriteUserService()
+export const sdcService = new SDCService()
