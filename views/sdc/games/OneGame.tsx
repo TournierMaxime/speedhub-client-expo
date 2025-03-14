@@ -9,8 +9,6 @@ import {
 } from "react-native"
 import { useGlobalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
-import { GetGameData } from "@/types/sdc"
-import { gameService } from "@/services/speedrunDotCom"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import GameDetails from "./GameDetails"
@@ -24,11 +22,12 @@ import { Discord } from "@/components/lib/Icons"
 import SDCSVG from "@/assets/images/SDCSVG"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { useAuth } from "@/contexts/AuthContext"
-import { favoriteUserService } from "@/services/speedhub"
+import { favoriteUserService, sdcService } from "@/services/speedhub"
 import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 import Guides from "./Guides"
 import Ressources from "./Ressources"
+import { GetGame } from "@/types/speedhub"
 
 const OneGame = () => {
   const { id } = useGlobalSearchParams()
@@ -39,27 +38,22 @@ const OneGame = () => {
 
   const userId = user?.userId
 
-  const {
-    data: GetGameData,
-    isLoading: GetGameDataLoading,
-    error: GetGameDataError,
-    refetch: GetGameDataRefetch,
-  } = useQuery<GetGameData>({
-    queryKey: ["getGameData", id],
+  const { data, isLoading, error, refetch } = useQuery<GetGame>({
+    queryKey: ["getGame", id],
     queryFn: async () => {
       if (!id) throw new Error("Missing ID")
-      return await gameService.getGameData(id)
+      return await sdcService.getGame(id)
     },
     enabled: !!id,
   })
 
-  const cover = GetGameData?.game.staticAssets.find((asset) => {
+  const cover = data?.getGameData?.game.staticAssets.find((asset) => {
     if (asset.assetType === "cover") {
       return asset
     }
   })
 
-  const background = GetGameData?.game.staticAssets.find((asset) => {
+  const background = data?.getGameData?.game.staticAssets.find((asset) => {
     if (asset.assetType === "background") {
       return asset
     }
@@ -71,9 +65,9 @@ const OneGame = () => {
         userId,
         type: "Game",
         data: {
-          id: GetGameData?.game.id,
+          id: data?.getGameData?.game.id,
           image: `https://www.speedrun.com${cover?.path}`,
-          name: GetGameData?.game.name,
+          name: data?.getGameData?.game.name,
         },
       },
     })
@@ -92,23 +86,34 @@ const OneGame = () => {
     enabled: !!userId,
   })
 
-  if (GetGameDataError) return <CatchError error={GetGameDataError} />
-  if (!GetGameData) GetGameDataRefetch()
+  if (error) return <CatchError error={error} />
+  if (!data) refetch()
 
-  const tabs = GetGameData
+  const tabs = data
     ? [
-        { name: "Details", component: <GameDetails data={GetGameData} /> },
-        { name: "Categories", component: <CategoriesTab data={GetGameData} /> },
+        { name: "Details", component: <GameDetails data={data.getGameData} /> },
+        {
+          name: "Categories",
+          component: <CategoriesTab data={data.getGameData} />,
+        },
         {
           name: "Guides",
           component: (
-            <Guides url={GetGameData?.game?.url} id={GetGameData.game.id} />
+            <Guides
+              url={data.getGameData?.game?.url}
+              id={data.getGameData.game.id}
+              data={data.getGuides}
+            />
           ),
         },
         {
           name: "Tools",
           component: (
-            <Ressources url={GetGameData?.game?.url} id={GetGameData.game.id} />
+            <Ressources
+              url={data.getGameData?.game?.url}
+              id={data.getGameData.game.id}
+              data={data.getResourceList}
+            />
           ),
         },
       ]
@@ -116,8 +121,8 @@ const OneGame = () => {
 
   return (
     <View style={oneGameStyle.container}>
-      {GetGameDataLoading ? (
-        <IsLoading isLoading={GetGameDataLoading} />
+      {isLoading ? (
+        <IsLoading isLoading={isLoading} />
       ) : (
         <Fragment>
           <View style={oneGameDetailsStyle.gameContainer}>
@@ -168,7 +173,7 @@ const OneGame = () => {
                     </TouchableOpacity>
                   )}
 
-                  {GetGameData?.game.url && (
+                  {data && data.getGameData && data.getGameData.game.url && (
                     <TouchableOpacity
                       style={{
                         padding: Utils.moderateScale(10),
@@ -182,18 +187,20 @@ const OneGame = () => {
                       <SDCSVG />
                     </TouchableOpacity>
                   )}
-                  {GetGameData?.game.discordUrl && (
-                    <TouchableOpacity
-                      style={{
-                        padding: Utils.moderateScale(10),
-                      }}
-                      onPress={() =>
-                        Linking.openURL(GetGameData?.game.discordUrl)
-                      }
-                    >
-                      <Discord />
-                    </TouchableOpacity>
-                  )}
+                  {data &&
+                    data.getGameData &&
+                    data.getGameData.game.discordUrl && (
+                      <TouchableOpacity
+                        style={{
+                          padding: Utils.moderateScale(10),
+                        }}
+                        onPress={() =>
+                          Linking.openURL(data.getGameData.game.discordUrl)
+                        }
+                      >
+                        <Discord />
+                      </TouchableOpacity>
+                    )}
                 </View>
               </TouchableOpacity>
 
@@ -214,7 +221,7 @@ const OneGame = () => {
                 />
 
                 <Text style={oneGameDetailsStyle.gameTitle}>
-                  {GetGameData?.game.name}
+                  {data?.getGameData?.game.name}
                 </Text>
               </View>
             </ImageBackground>

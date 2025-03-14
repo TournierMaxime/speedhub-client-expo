@@ -30,21 +30,15 @@ const GetRessource = ({
   )
 }
 
-const Ressources = ({ id, url }: { id: string; url: string | undefined }) => {
-  const {
-    data: getRessources,
-    isLoading,
-    error,
-    refetch,
-  } = useQuery<GetResourceList>({
-    queryKey: ["getRessources", id],
-    queryFn: async () => {
-      if (!id) throw new Error("Missing ID")
-      return await gameService.getResourceList(id)
-    },
-    enabled: !!id,
-  })
-
+const Ressources = ({
+  id,
+  url,
+  data,
+}: {
+  id: string
+  url: string | undefined
+  data: GetResourceList
+}) => {
   const getAuthor = (data: ResourceList) => {
     return <UserName data={data.authorNames} />
   }
@@ -63,17 +57,11 @@ const Ressources = ({ id, url }: { id: string; url: string | undefined }) => {
     )
   }
 
-  if (error) {
-    return <CatchError error={error} />
-  }
-
   return (
     <Fragment>
-      {isLoading ? (
-        <IsLoading isLoading={isLoading} />
-      ) : (
+      {!data ? null : (
         <FlatList
-          data={getRessources?.resourceList}
+          data={data?.resourceList}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           nestedScrollEnabled={true}
