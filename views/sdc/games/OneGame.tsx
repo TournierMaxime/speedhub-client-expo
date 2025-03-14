@@ -180,7 +180,7 @@ const OneGame = () => {
                       }}
                       onPress={() =>
                         Linking.openURL(
-                          `https://www.speedrun.com/${GetGameData?.game.url}`
+                          `https://www.speedrun.com/${data.getGameData?.game.url}`
                         )
                       }
                     >
