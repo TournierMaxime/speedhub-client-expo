@@ -1,8 +1,9 @@
 import useHandleToast from "@/hooks/utils/useHandleToast"
 import { useState } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query"
 import { useAuth } from "@/contexts/AuthContext"
-import { favoriteUserService } from "@/services/speedhub"
+import { favoriteUserService, authService } from "@/services/speedhub"
+import { GetSession } from "@/types/speedhub"
 
 const useHandleFavorite = ({
   data,
@@ -26,6 +27,15 @@ const useHandleFavorite = ({
   const [isFollowing, setIsFollowing] = useState<boolean>(false)
 
   const queryClient = useQueryClient()
+
+  const { data: sessionData } = useQuery<GetSession>({
+    queryKey: ["getSession", userId],
+    queryFn: async () => {
+      if (!userId) throw new Error("No user ID")
+      return await authService.getSession(userId)
+    },
+    enabled: !!userId,
+  })
 
   const addFavorite = useMutation({
     mutationFn: async () => {
@@ -86,11 +96,51 @@ const useHandleFavorite = ({
       }
     },
   })
+
+  const handleGameFavorite = useMutation({
+    mutationFn: async (gameId: string | string[]) => {
+      if (sessionData) {
+        const game = sessionData?.favorites.data.games.find(
+          (r: any) => r.id === gameId
+        )
+        setIsFollowing(!!game)
+        return sessionData.favorites.data.games ?? []
+      }
+    },
+  })
+
+  const handleMarathonFavorite = useMutation({
+    mutationFn: async (gameId: string | string[]) => {
+      if (sessionData) {
+        const marathon = sessionData.favorites?.data?.marathons?.find(
+          (r: any) => r.id === gameId
+        )
+        setIsFollowing(!!marathon)
+        return sessionData.favorites.data.marathons ?? []
+      }
+    },
+  })
+
+  const handleRunnerFavorite = useMutation({
+    mutationFn: async (gameId: string | string[]) => {
+      if (sessionData) {
+        const runner = sessionData.favorites?.data?.runners?.find(
+          (r: any) => r.id === gameId
+        )
+        setIsFollowing(!!runner)
+        return sessionData.favorites.data.runners ?? []
+      }
+    },
+  })
+
   return {
     addFavorite,
     removeFavorite,
     isFollowing,
     setIsFollowing,
+    handleGameFavorite,
+    handleMarathonFavorite,
+    handleRunnerFavorite,
   }
 }
 

@@ -4,8 +4,8 @@ import React, { useState } from "react"
 import { Image, Text, TouchableOpacity, View } from "react-native"
 import { useAuth } from "@/contexts/AuthContext"
 import { useQuery } from "@tanstack/react-query"
-import { Favorite, Favorites } from "@/types/speedhub"
-import { favoriteUserService } from "@/services/speedhub"
+import { Favorite, Favorites, GetSession } from "@/types/speedhub"
+import { authService, favoriteUserService } from "@/services/speedhub"
 import CatchError from "@/components/lib/CatchError"
 import { Chevron, Dots } from "@/components/lib/Icons"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
@@ -71,13 +71,14 @@ const RunnerItem = ({
       >
         <Dots />
       </TouchableOpacity>
-      {selectedRunner?.url === runner.url && (
+      {selectedRunner && selectedRunner?.url === runner.url && (
         <BottomModal title={runner.name}>
           <TouchableOpacity
             style={favoriteStyle.modalContainer}
             onPress={() => {
               handleRedirect(ROUTES.ONE_USER, {
-                url: selectedRunner?.url,
+                url: selectedRunner.url,
+                id: selectedRunner.id,
               }).then(() => {
                 closeModal()
               })
@@ -108,11 +109,13 @@ export default function Runners() {
 
   const userId = user?.userId
 
-  const { data, isLoading, error, refetch } = useQuery<Favorites>({
-    queryKey: ["searchFavorites", userId],
+  const { data, isLoading, error, refetch } = useQuery<GetSession>({
+    queryKey: ["getSession", userId],
     queryFn: async () => {
-      if (userId) return await favoriteUserService.searchFavorites(userId)
-      return { favorites: { data: { runners: [] } } }
+      if (!userId) throw new Error("Missing ID")
+      if (userId) {
+        return await authService.getSession(userId)
+      }
     },
     enabled: !!userId,
   })
@@ -127,7 +130,7 @@ export default function Runners() {
     refetch()
   }
 
-  const runners = data?.favorites.data.runners ?? []
+  const runners = data?.favorites?.data?.runners ?? []
 
   return (
     <View style={mainStyle.container}>

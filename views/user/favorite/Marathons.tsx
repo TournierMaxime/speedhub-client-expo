@@ -4,8 +4,8 @@ import React, { useState } from "react"
 import { Image, Text, TouchableOpacity, View } from "react-native"
 import { useAuth } from "@/contexts/AuthContext"
 import { useQuery } from "@tanstack/react-query"
-import { Favorite, Favorites } from "@/types/speedhub"
-import { favoriteUserService } from "@/services/speedhub"
+import { Favorite, GetSession } from "@/types/speedhub"
+import { authService } from "@/services/speedhub"
 import CatchError from "@/components/lib/CatchError"
 import AlertMessage from "@/components/lib/AlertMessage"
 import BottomModal from "@/components/lib/Modal"
@@ -131,10 +131,13 @@ export default function Marathons() {
 
   const userId = user?.userId
 
-  const { data, isLoading, error, refetch } = useQuery<Favorites>({
-    queryKey: ["searchFavorites", userId],
+  const { data, isLoading, error, refetch } = useQuery<GetSession>({
+    queryKey: ["getSession", userId],
     queryFn: async () => {
-      return await favoriteUserService.searchFavorites(userId ?? "")
+      if (!userId) throw new Error("Missing ID")
+      if (userId) {
+        return await authService.getSession(userId)
+      }
     },
     enabled: !!userId,
   })
@@ -151,7 +154,7 @@ export default function Marathons() {
     refetch()
   }
 
-  const marathons = data?.favorites.data.marathons
+  const marathons = data?.favorites?.data?.marathons
 
   return (
     <View style={mainStyle.container}>

@@ -131,12 +131,10 @@ interface PrivacyPolicyProps {
 // Favorites
 
 interface Favorites {
-  favorites: {
-    data: {
-      games: Favorite[]
-      marathons: Favorite[]
-      runners: Favorite[]
-    }
+  data: {
+    games: Favorite[]
+    marathons: Favorite[]
+    runners: Favorite[]
   }
 }
 
@@ -190,7 +188,21 @@ interface GetMarathon {
   getUpcomings: Upcomings
 }
 
+interface User {
+  userId: string
+  pseudo: string
+  image: string
+  provider: string
+}
+
+interface GetSession {
+  user: User
+  favorites: Favorites
+}
+
 export {
+  GetSession,
+  User,
   GetGame,
   GetUser,
   GetMarathon,

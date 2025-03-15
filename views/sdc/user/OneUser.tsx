@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useEffect } from "react"
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import PersonalBestsUser from "./PersonalBestsUser"
 import CatchError from "@/components/lib/CatchError"
 import IsLoading from "@/components/lib/IsLoading"
 import { oneUserStyle } from "@/styles/views/oneUser"
-import { favoriteUserService, sdcService } from "@/services/speedhub"
+import { sdcService } from "@/services/speedhub"
 import { useAuth } from "@/contexts/AuthContext"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { oneGameStyle, oneGameDetailsStyle } from "@/styles/views/oneGame"
@@ -25,7 +25,7 @@ import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 import Social from "./Social"
 import Stats from "./Stats"
-import { Favorite, GetUser } from "@/types/speedhub"
+import { GetUser } from "@/types/speedhub"
 
 const OneUser = () => {
   const { url, id } = useGlobalSearchParams()
@@ -51,12 +51,13 @@ const OneUser = () => {
     (asset) => asset.assetType === "image"
   )
 
-  const { addFavorite, removeFavorite, isFollowing, setIsFollowing } =
+  const { addFavorite, removeFavorite, isFollowing, handleRunnerFavorite } =
     useHandleFavorite({
       data: {
         userId,
         type: "Runner",
         data: {
+          id: data?.getUserSummary.user.id,
           url: data?.getUserSummary.user.url,
           image: image ? `https://www.speedrun.com${image.path}` : undefined,
           name: data?.getUserSummary.user.name,
@@ -64,19 +65,11 @@ const OneUser = () => {
       },
     })
 
-  const { data: favorites } = useQuery({
-    queryKey: ["favorites", userId],
-    queryFn: async () => {
-      if (!userId) return null
-      const response = await favoriteUserService.searchFavorites(userId)
-      const runner = response?.favorites?.data?.runners?.find(
-        (r: Favorite) => r.url === data?.getUserSummary.user.url
-      )
-      setIsFollowing(!!runner)
-      return response.favorites.data.runners ?? []
-    },
-    enabled: !!userId,
-  })
+  useEffect(() => {
+    if (id && !isFollowing) {
+      handleRunnerFavorite.mutate(id)
+    }
+  }, [id])
 
   if (error) {
     return <CatchError error={error} />

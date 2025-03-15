@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useEffect } from "react"
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ import { Discord } from "@/components/lib/Icons"
 import SDCSVG from "@/assets/images/SDCSVG"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { useAuth } from "@/contexts/AuthContext"
-import { favoriteUserService, sdcService } from "@/services/speedhub"
+import { sdcService } from "@/services/speedhub"
 import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 import Guides from "./Guides"
@@ -59,7 +59,7 @@ const OneGame = () => {
     }
   })
 
-  const { addFavorite, removeFavorite, isFollowing, setIsFollowing } =
+  const { addFavorite, removeFavorite, isFollowing, handleGameFavorite } =
     useHandleFavorite({
       data: {
         userId,
@@ -72,19 +72,11 @@ const OneGame = () => {
       },
     })
 
-  const { data: favorites } = useQuery({
-    queryKey: ["favorites", userId],
-    queryFn: async () => {
-      if (!userId) return null
-      const response = await favoriteUserService.searchFavorites(userId)
-      const runner = response?.favorites?.data?.games?.find(
-        (r: any) => r.id === id
-      )
-      setIsFollowing(!!runner)
-      return response.favorites.data.games ?? []
-    },
-    enabled: !!userId,
-  })
+  useEffect(() => {
+    if (id && !isFollowing) {
+      handleGameFavorite.mutate(id)
+    }
+  }, [id])
 
   if (error) return <CatchError error={error} />
   if (!data) refetch()

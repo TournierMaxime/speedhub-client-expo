@@ -3,8 +3,8 @@ import mainStyle from "@/styles/base/main"
 import React, { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useQuery } from "@tanstack/react-query"
-import { Favorite, Favorites } from "@/types/speedhub"
-import { favoriteUserService } from "@/services/speedhub"
+import { Favorite, GetSession } from "@/types/speedhub"
+import { authService } from "@/services/speedhub"
 import CatchError from "@/components/lib/CatchError"
 import { useModalAction } from "@/contexts/ModalContext"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
@@ -109,11 +109,13 @@ export default function Games() {
 
   const userId = user?.userId
 
-  const { data, isLoading, error, refetch } = useQuery<Favorites>({
-    queryKey: ["searchFavorites", userId],
+  const { data, isLoading, error, refetch } = useQuery<GetSession>({
+    queryKey: ["getSession", userId],
     queryFn: async () => {
-      if (userId) return await favoriteUserService.searchFavorites(userId)
-      return { favorites: { data: { games: [] } } }
+      if (!userId) throw new Error("Missing ID")
+      if (userId) {
+        return await authService.getSession(userId)
+      }
     },
     enabled: !!userId,
   })
@@ -128,7 +130,7 @@ export default function Games() {
     refetch()
   }
 
-  const games = data?.favorites.data.games ?? []
+  const games = data?.favorites?.data?.games ?? []
 
   return (
     <View style={mainStyle.container}>

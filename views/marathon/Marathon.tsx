@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useEffect } from "react"
 import { ScrollView, Text, View, TouchableOpacity } from "react-native"
 import { Live } from "@/types/speedhub"
 import TwitchIframe from "@/components/lib/TwitchIframe"
@@ -16,7 +16,6 @@ import { Heart, HeartFill, LeftArrow } from "@/components/lib/Icons"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { useAuth } from "@/contexts/AuthContext"
-import { favoriteUserService } from "@/services/speedhub"
 import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 
@@ -38,7 +37,7 @@ const Marathon = () => {
     enabled: !!horaroId,
   })
 
-  const { addFavorite, removeFavorite, isFollowing, setIsFollowing } =
+  const { addFavorite, removeFavorite, isFollowing, handleMarathonFavorite } =
     useHandleFavorite({
       data: {
         userId,
@@ -52,19 +51,11 @@ const Marathon = () => {
       },
     })
 
-  const { data: favorites } = useQuery({
-    queryKey: ["favorites", userId],
-    queryFn: async () => {
-      if (!userId) return null
-      const response = await favoriteUserService.searchFavorites(userId)
-      const runner = response?.favorites?.data?.marathons?.find(
-        (r: any) => r.id === horaroId
-      )
-      setIsFollowing(!!runner)
-      return response.favorites.data.marathons ?? []
-    },
-    enabled: !!userId,
-  })
+  useEffect(() => {
+    if (horaroId && !isFollowing) {
+      handleMarathonFavorite.mutate(horaroId)
+    }
+  }, [horaroId])
 
   const oneMarathonLive = () => {
     if (data && data.scheduleId && data?.schedule?.twitch) {
