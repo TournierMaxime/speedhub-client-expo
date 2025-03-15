@@ -9,6 +9,8 @@ export default function MainLayout() {
       <Stack.Screen name="update-username" options={{ headerShown: false }} />
       <Stack.Screen name="update-avatar" options={{ headerShown: false }} />
       <Stack.Screen name="favorites" options={{ headerShown: false }} />
+      <Stack.Screen name="settings" options={{ headerShown: false }} />
+      <Stack.Screen name="notifications" options={{ headerShown: false }} />
       <Stack.Screen name="(favorites)" options={{ headerShown: false }} />
     </Stack>
   )

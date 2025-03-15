@@ -17,21 +17,23 @@ const UpdateUsername = () => {
     <View style={mainStyle.container}>
       <Header backButton={true} lastPath={{ pathname: ROUTES.PROFILE }} />
       <View style={style.container}>
-        <FormInputText
-          data={data}
-          setData={setData}
-          label={user?.pseudo ?? "Pseudo"}
-          name="pseudo"
-          value={data.pseudo ?? ""}
-          secure={false}
-          readOnly={false}
-        />
-        <FormButtonSubmit
-          type="primary"
-          label={"Confirm"}
-          fct={() => handleUpdateUsername()}
-          disabled={!data.pseudo}
-        />
+        <View style={{ width: "90%" }}>
+          <FormInputText
+            data={data}
+            setData={setData}
+            label={user?.pseudo ?? "Pseudo"}
+            name="pseudo"
+            value={data.pseudo ?? ""}
+            secure={false}
+            readOnly={false}
+          />
+          <FormButtonSubmit
+            type="primary"
+            label={"Confirm"}
+            fct={() => handleUpdateUsername()}
+            disabled={!data.pseudo}
+          />
+        </View>
       </View>
     </View>
   )
@@ -42,6 +44,8 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    backgroundColor: "white",
+    height: "100%",
   },
 })
 

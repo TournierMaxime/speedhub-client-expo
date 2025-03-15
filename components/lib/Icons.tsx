@@ -211,7 +211,12 @@ const Dots = () => {
   return <MaterialCommunityIcons name="dots-vertical" size={40} />
 }
 
+const Notifications = () => {
+  return <Ionicons name="notifications-outline" size={24} color="black" />
+}
+
 export {
+  Notifications,
   HeartFill,
   Dots,
   Delete,

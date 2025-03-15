@@ -30,6 +30,9 @@ const ROUTES = {
   // Utils
   SEARCH: "/(tabs)/(main)/(search)/search" as RelativePathString,
 
+  // Settings
+  NOTIFICATIONS: "/(tabs)/(main)/(profile)/notifications" as RelativePathString,
+
   //Tabs
   HOME: "/(tabs)/home" as RelativePathString,
   REDDITS: "/(tabs)/reddits" as RelativePathString,

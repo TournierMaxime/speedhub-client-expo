@@ -228,6 +228,10 @@ const FormUploadFile = ({
   return (
     <View>
       <TouchableOpacity
+        style={[
+          style.btnContainer,
+          { backgroundColor: "black", padding: Utils.moderateScale(10) },
+        ]}
         onPress={async () => {
           try {
             const result = await DocumentPicker.getDocumentAsync({
@@ -245,7 +249,15 @@ const FormUploadFile = ({
           }
         }}
       >
-        <Text style={""}>Change avatar</Text>
+        <Text
+          style={{
+            fontSize: Utils.moderateScale(18),
+            color: "white",
+            fontWeight: "bold",
+          }}
+        >
+          Change avatar
+        </Text>
       </TouchableOpacity>
       <Text style={{ color: "red", fontSize: Utils.moderateScale(14) }}>
         {error}
