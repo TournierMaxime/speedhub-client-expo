@@ -26,7 +26,14 @@
         "GOOGLE_AUTH_CLIENT_ID_IOS": "GOOGLE_AUTH_CLIENT_ID_IOS",
         "GOOGLE_REDIRECT_URI_IOS": "GOOGLE_REDIRECT_URI_IOS",
         "TWITCH_TOKEN": "TWITCH_TOKEN",
-        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID"
+        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID",
+        "EXPO_PUBLIC_SPEEDHUB_API": "http://192.168.1.57:3560/api/v1",
+        "EXPO_PUBLIC_SPEEDRUNDOTCOM_API": "https://www.speedrun.com/api/v1",
+        "EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2": "https://www.speedrun.com/api/v2",
+        "EXPO_PUBLIC_SPLITIO_API": "https://splits.io/api/v3",
+        "EXPO_PUBLIC_REDDIT_API": "https://www.reddit.com/r/speedrun",
+        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunfrance.fr",
+        "EXPO_PUBLIC_TWITCH_API": "https://api.twitch.tv/helix"
       },
       "distribution": "internal",
       "android": {
