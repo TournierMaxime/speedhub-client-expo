@@ -68,16 +68,18 @@ const StepAuth = () => {
         if (existingUser) {
           return (
             <Fragment>
-              <FormInputText
-                data={data}
-                setData={setData}
-                label="Password"
-                name="password"
-                value={data.password ?? ""}
-                secure={true}
-                readOnly={false}
-                type="password"
-              />
+              <View style={{ width: "90%" }}>
+                <FormInputText
+                  data={data}
+                  setData={setData}
+                  label="Password"
+                  name="password"
+                  value={data.password ?? ""}
+                  secure={true}
+                  readOnly={false}
+                  type="password"
+                />
+              </View>
               <View style={{ width: "90%" }}>
                 <FormButtonSubmit
                   type="info"
@@ -95,15 +97,17 @@ const StepAuth = () => {
         } else {
           return (
             <Fragment>
-              <FormInputText
-                data={data}
-                setData={setData}
-                label="Username"
-                name="pseudo"
-                value={data.pseudo ?? ""}
-                secure={false}
-                readOnly={false}
-              />
+              <View style={{ width: "90%" }}>
+                <FormInputText
+                  data={data}
+                  setData={setData}
+                  label="Username"
+                  name="pseudo"
+                  value={data.pseudo ?? ""}
+                  secure={false}
+                  readOnly={false}
+                />
+              </View>
 
               {loading ? (
                 <ActivityIndicator size="small" color="blue" />
@@ -127,16 +131,18 @@ const StepAuth = () => {
         if (!existingUser) {
           return (
             <Fragment>
-              <FormInputText
-                data={data}
-                setData={setData}
-                label="Password"
-                name="password"
-                value={data.password ?? ""}
-                secure={true}
-                readOnly={false}
-                type="password"
-              />
+              <View style={{ width: "90%" }}>
+                <FormInputText
+                  data={data}
+                  setData={setData}
+                  label="Password"
+                  name="password"
+                  value={data.password ?? ""}
+                  secure={true}
+                  readOnly={false}
+                  type="password"
+                />
+              </View>
               <View style={{ width: "90%" }}>
                 <FormButtonSubmit
                   type="info"
@@ -155,16 +161,18 @@ const StepAuth = () => {
       default:
         return (
           <Fragment>
-            <FormInputText
-              data={data}
-              setData={setData}
-              label="Email"
-              name="email"
-              value={data.email ?? ""}
-              secure={false}
-              readOnly={false}
-              type="email"
-            />
+            <View style={{ width: "90%" }}>
+              <FormInputText
+                data={data}
+                setData={setData}
+                label="Email"
+                name="email"
+                value={data.email ?? ""}
+                secure={false}
+                readOnly={false}
+                type="email"
+              />
+            </View>
             <View style={{ width: "90%" }}>
               <FormButtonSubmit
                 type="info"

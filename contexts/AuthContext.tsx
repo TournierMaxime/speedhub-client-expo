@@ -8,6 +8,8 @@ import React, {
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { authService } from "@/services/speedhub"
 import { authService as authSdc } from "@/services/speedrunDotCom"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
 
 interface Data {
   email?: string
@@ -38,6 +40,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  const { handleReplace } = useHandleRouter()
+
   useEffect(() => {
     const loadUserFromStorage = async () => {
       setIsLoading(true)
@@ -62,13 +66,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const verifySession = async () => {
       setIsLoading(true)
       try {
-        const newToken = await authService.verifyToken()
-        console.log("✅ Session restaurée avec succès !", newToken)
+        await authService.verifyToken()
       } catch (error: any) {
         console.log(
           "🔴 Session expirée, redirection vers la connexion.",
           error.message
         )
+        await handleReplace(ROUTES.AUTH)
+        await logout()
       }
       setIsLoading(false)
     }
