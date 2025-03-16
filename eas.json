@@ -20,6 +20,14 @@
       "channel": "development"
     },
     "preview": {
+      "env": {
+        "GOOGLE_AUTH_CLIENT_ID": "GOOGLE_AUTH_CLIENT_ID",
+        "GOOGLE_REDIRECT_URI": "GOOGLE_REDIRECT_URI",
+        "GOOGLE_AUTH_CLIENT_ID_IOS": "GOOGLE_AUTH_CLIENT_ID_IOS",
+        "GOOGLE_REDIRECT_URI_IOS": "GOOGLE_REDIRECT_URI_IOS",
+        "TWITCH_TOKEN": "TWITCH_TOKEN",
+        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID"
+      },
       "distribution": "internal",
       "android": {
         "buildType": "apk"
