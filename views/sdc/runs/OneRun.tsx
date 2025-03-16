@@ -132,7 +132,7 @@ const OneRun = ({
           break
 
         default:
-          return <Text>Unsupported video platform</Text>
+          return null
       }
 
       return (
