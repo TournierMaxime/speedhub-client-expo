@@ -4,16 +4,13 @@ const { expoConfig } = Constants
 
 const TWITCH_TOKEN = expoConfig?.extra?.TWITCH_TOKEN
 const TWITCH_CLIENT_ID = expoConfig?.extra?.TWITCH_CLIENT_ID
-const EXPO_PUBLIC_SPEEDHUB_API = expoConfig?.extra?.EXPO_PUBLIC_SPEEDHUB_API
-const EXPO_PUBLIC_SPEEDRUNDOTCOM_API =
-  expoConfig?.extra?.EXPO_PUBLIC_SPEEDRUNDOTCOM_API
-const EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2 =
-  expoConfig?.extra?.EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2
-const EXPO_PUBLIC_SPLITIO_API = expoConfig?.extra?.EXPO_PUBLIC_SPLITIO_API
-const EXPO_PUBLIC_REDDIT_API = expoConfig?.extra?.EXPO_PUBLIC_REDDIT_API
-const EXPO_PUBLIC_TWITCH_PARENT_DOMAIN =
-  expoConfig?.extra?.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN
-const EXPO_PUBLIC_TWITCH_API = expoConfig?.extra?.EXPO_PUBLIC_TWITCH_API
+const EXPO_PUBLIC_SPEEDHUB_API = "http://192.168.1.57:3560/api/v1"
+const EXPO_PUBLIC_SPEEDRUNDOTCOM_API = "https://www.speedrun.com/api/v1"
+const EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2 = "https://www.speedrun.com/api/v2"
+const EXPO_PUBLIC_SPLITIO_API = "https://splits.io/api/v3"
+const EXPO_PUBLIC_REDDIT_API = "https://www.reddit.com/r/speedrun"
+const EXPO_PUBLIC_TWITCH_PARENT_DOMAIN = "speedrunfrance.fr"
+const EXPO_PUBLIC_TWITCH_API = "https://api.twitch.tv/helix"
 
 export {
   TWITCH_TOKEN,
