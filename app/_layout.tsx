@@ -7,16 +7,17 @@ import { useFonts } from "expo-font"
 import { Stack, useRouter } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { StatusBar } from "expo-status-bar"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import "react-native-reanimated"
 import { AuthProvider, useAuth } from "../contexts/AuthContext"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useColorScheme } from "@/hooks/useColorScheme"
 import ToastManager from "toastify-react-native"
 import Utils from "@/components/lib/Utils"
-import { ActivityIndicator } from "react-native"
+import { ActivityIndicator, Alert, Button } from "react-native"
 import { Colors } from "@/constants/Colors"
 import { ModalProvider } from "@/contexts/ModalContext"
+import * as Updates from "expo-updates"
 
 SplashScreen.preventAutoHideAsync()
 
@@ -64,6 +65,40 @@ function Navigation() {
   const router = useRouter()
   const theme = useColorScheme()
 
+  const [isAvailable, setIsAvailable] = useState<boolean>(false)
+
+  async function onFetchUpdateAsync() {
+    try {
+      setIsAvailable(false)
+      const update = await Updates.checkForUpdateAsync()
+
+      if (update.isAvailable) {
+        setIsAvailable(true)
+        await Updates.fetchUpdateAsync()
+        await Updates.reloadAsync()
+        Alert.alert(
+          "Mise à jour disponible",
+          "Une nouvelle version est prête. Redémarrer l'application ?",
+          [
+            { text: "Annuler", style: "cancel" },
+            {
+              text: "Redémarrer",
+              onPress: async () => await Updates.reloadAsync(),
+            },
+          ]
+        )
+      }
+    } catch (error: any) {
+      // You can also add an alert() to see the error message in case of an error when fetching updates.
+      Alert.alert(`Erreur lors de la mise à jour : ${error}`)
+      setIsAvailable(false)
+    }
+  }
+
+  useEffect(() => {
+    onFetchUpdateAsync()
+  }, [])
+
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
       router.push("/(tabs)/home")
@@ -74,6 +109,12 @@ function Navigation() {
 
   if (isLoading) {
     return <ActivityIndicator />
+  }
+
+  if (isAvailable) {
+    return (
+      <Button title="Télécharger la mise à jour" onPress={onFetchUpdateAsync} />
+    )
   }
 
   return (
