@@ -193,6 +193,8 @@ interface User {
   pseudo: string
   image: string
   provider: string
+  expoPushToken: string
+  isEmailActive: boolean
 }
 
 interface GetSession {
