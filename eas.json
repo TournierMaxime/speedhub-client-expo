@@ -27,6 +27,10 @@
       "channel": "preview"
     },
     "production": {
+      "env": {
+        "TWITCH_TOKEN": "TWITCH_TOKEN",
+        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID"
+      },
       "android": {
         "buildType": "apk"
       },

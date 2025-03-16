@@ -1,3 +1,5 @@
+import app from "./package.json"
+
 export default {
   expo: {
     name: "SpeedHub",
@@ -27,6 +29,7 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.hoggy.speedhubclientexpo",
+      allowCleartextTraffic: true,
     },
     web: {
       bundler: "metro",
@@ -43,6 +46,18 @@ export default {
           imageWidth: 200,
           resizeMode: "contain",
           backgroundColor: "#ffffff",
+        },
+      ],
+      [
+        "expo-build-properties",
+        {
+          android: {
+            permissions: [
+              "android.permission.INTERNET",
+              "android.permission.ACCESS_NETWORK_STATE",
+            ],
+            allowCleartextTraffic: true,
+          },
         },
       ],
       "expo-video",
@@ -64,6 +79,11 @@ export default {
     owner: "hoggy",
     updates: {
       url: "https://u.expo.dev/0e664686-7e65-4e34-a038-5bac954dbde2",
+      requestHeaders: {
+        "expo-runtime-version": app.version,
+        "expo-channel-name": "preview",
+        "expo-platform": "android",
+      },
     },
     runtimeVersion: {
       policy: "appVersion",
