@@ -45,6 +45,7 @@ export default {
           backgroundColor: "#ffffff",
         },
       ],
+      "expo-video",
     ],
     experiments: {
       typedRoutes: true,
