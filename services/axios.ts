@@ -1,28 +1,36 @@
 import axios from "axios"
+import {
+  EXPO_PUBLIC_SPEEDHUB_API,
+  EXPO_PUBLIC_SPEEDRUNDOTCOM_API,
+  EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2,
+  EXPO_PUBLIC_SPLITIO_API,
+  EXPO_PUBLIC_REDDIT_API,
+  EXPO_PUBLIC_TWITCH_API,
+} from "@/constants/Utils"
 
 const speedHubApi = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_SPEEDHUB_API,
+  baseURL: EXPO_PUBLIC_SPEEDHUB_API,
   withCredentials: true,
 })
 
 const speedRunDotComApi = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_SPEEDRUNDOTCOM_API,
+  baseURL: EXPO_PUBLIC_SPEEDRUNDOTCOM_API,
 })
 
 const speedRunDotComApiV2 = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2,
+  baseURL: EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2,
 })
 
 const splitIOApi = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_SPLITIO_API,
+  baseURL: EXPO_PUBLIC_SPLITIO_API,
 })
 
 const redditApi = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_REDDIT_API,
+  baseURL: EXPO_PUBLIC_REDDIT_API,
 })
 
 const twitchApi = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_TWITCH_API,
+  baseURL: EXPO_PUBLIC_TWITCH_API,
 })
 
 export {

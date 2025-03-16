@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native"
 import WebView from "react-native-webview"
 import Utils from "./Utils"
 import { Video } from "@/types/speedhub"
+import { EXPO_PUBLIC_TWITCH_PARENT_DOMAIN } from "../../constants/Utils"
 
 const TwitchIframe: React.FC<Video> = ({
   videoUri,
@@ -23,9 +24,9 @@ const TwitchIframe: React.FC<Video> = ({
   }
 
   const twitchEmbedUrl = videoUri
-    ? `https://player.twitch.tv/?video=${videoUri}&parent=${process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`
+    ? `https://player.twitch.tv/?video=${videoUri}&parent=${EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`
     : channel
-    ? `https://player.twitch.tv/?channel=${channel}&parent=${process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`
+    ? `https://player.twitch.tv/?channel=${channel}&parent=${EXPO_PUBLIC_TWITCH_PARENT_DOMAIN}&muted=true&autoplay=false`
     : ""
   return (
     <View style={style.card}>
