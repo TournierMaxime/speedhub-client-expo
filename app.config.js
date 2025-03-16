@@ -1,6 +1,6 @@
 export default {
   expo: {
-    name: "speedhub-client-expo",
+    name: "SpeedHub",
     slug: "speedhub-client-expo",
     version: "1.0.0",
     orientation: "portrait",
@@ -51,22 +51,8 @@ export default {
       typedRoutes: true,
     },
     extra: {
-      GOOGLE_AUTH_CLIENT_ID: process.env.GOOGLE_AUTH_CLIENT_ID,
-      GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
-      GOOGLE_AUTH_CLIENT_ID_IOS: process.env.GOOGLE_AUTH_CLIENT_ID_IOS,
-      GOOGLE_REDIRECT_URI_IOS: process.env.GOOGLE_REDIRECT_URI_IOS,
       TWITCH_TOKEN: process.env.TWITCH_TOKEN,
       TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
-      EXPO_PUBLIC_SPEEDHUB_API: process.env.EXPO_PUBLIC_SPEEDHUB_API,
-      EXPO_PUBLIC_SPEEDRUNDOTCOM_API:
-        process.env.EXPO_PUBLIC_SPEEDRUNDOTCOM_API,
-      EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2:
-        process.env.EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2,
-      EXPO_PUBLIC_SPLITIO_API: process.env.EXPO_PUBLIC_SPLITIO_API,
-      EXPO_PUBLIC_REDDIT_API: process.env.EXPO_PUBLIC_REDDIT_API,
-      EXPO_PUBLIC_TWITCH_PARENT_DOMAIN:
-        process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN,
-      EXPO_PUBLIC_TWITCH_API: process.env.EXPO_PUBLIC_TWITCH_API,
       appAuthRedirectScheme: "com.hoggy.speedhubclientexpo",
       router: {
         origin: false,
