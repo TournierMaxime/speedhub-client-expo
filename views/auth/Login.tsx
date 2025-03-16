@@ -7,7 +7,6 @@ import {
   Platform,
   StyleSheet,
 } from "react-native"
-import GoogleSVG from "../../assets/images/GoogleSVG"
 import AppleSVG from "../../assets/images/AppleSVG"
 import Utils from "@/components/lib/Utils"
 import useHandleAuthApple from "@/hooks/auth/useHandleAuthApple"
@@ -18,6 +17,7 @@ import { Colors } from "@/constants/Colors"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { FormButtonSubmit } from "@/components/lib/FormValidation"
+import SDCSVG from "@/assets/images/SDCSVG"
 
 const LoginScreen = () => {
   const { handleRedirect } = useHandleRouter()
@@ -61,7 +61,7 @@ const LoginScreen = () => {
                 style={style.thirdParty}
                 onPress={() => handleRedirect(ROUTES.AUTH_SDC)}
               >
-                <GoogleSVG />
+                <SDCSVG />
                 <Text
                   style={[
                     style.text,
