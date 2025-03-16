@@ -4,13 +4,11 @@ import MarathonLivesHome from "./MarathonLivesHome"
 import RedditsHome from "./RedditsHome"
 import RunsHome from "./RunsHome"
 import mainStyle from "@/styles/base/main"
-import GetArticleList from "../sdc/articles/GetArticleList"
 
 const Home = () => {
   const sections = [
     { type: "header" },
     { type: "news" },
-    { type: "articles" },
     { type: "runs" },
     { type: "marathons" },
   ]
@@ -21,8 +19,6 @@ const Home = () => {
         return <Header backButton={false} />
       case "news":
         return <RedditsHome limit={5} />
-      case "articles":
-        return <GetArticleList limit={5} />
       case "runs":
         return <RunsHome limit={20} />
       case "marathons":
