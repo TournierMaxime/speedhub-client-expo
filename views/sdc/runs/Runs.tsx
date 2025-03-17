@@ -7,15 +7,11 @@ import CatchError from "@/components/lib/CatchError"
 import mainStyle from "@/styles/base/main"
 import OneRun from "./OneRun"
 
-interface Props {
-  limit?: number
-}
-
-const AllRuns: React.FC<Props> = ({ limit }) => {
+const AllRuns = () => {
   const { data, isLoading, error } = useQuery<GetLatestLeaderboard>({
-    queryKey: ["getRuns", limit],
+    queryKey: ["getRuns"],
     queryFn: async () => {
-      return await runService.getLatestLeaderboard(limit ?? 20)
+      return await runService.getLatestLeaderboard()
     },
     staleTime: 1000 * 60 * 30,
   })

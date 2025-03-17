@@ -20,7 +20,7 @@ const Home = () => {
       case "news":
         return <RedditsHome limit={5} />
       case "runs":
-        return <RunsHome limit={20} />
+        return <RunsHome limit={5} />
       case "marathons":
         return <MarathonLivesHome limit={5} />
       default:
