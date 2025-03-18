@@ -29,18 +29,6 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="runs"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="run"
-              size={Utils.moderateScale(18)}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="marathons"
         options={{
           tabBarIcon: ({ color, size }) => (

@@ -7,7 +7,6 @@ import React, {
 } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { authService } from "@/services/speedhub"
-import { authService as authSdc } from "@/services/speedrunDotCom"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 
@@ -90,9 +89,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     setUser(null)
     await AsyncStorage.removeItem("user")
-    if (user?.provider === "SDC") {
-      await authSdc.putAuthLogout()
-    }
   }
 
   return (

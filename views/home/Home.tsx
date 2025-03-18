@@ -2,16 +2,10 @@ import { FlatList } from "react-native"
 import Header from "@/components/lib/Header"
 import MarathonLivesHome from "./MarathonLivesHome"
 import RedditsHome from "./RedditsHome"
-import RunsHome from "./RunsHome"
 import mainStyle from "@/styles/base/main"
 
 const Home = () => {
-  const sections = [
-    { type: "header" },
-    { type: "news" },
-    { type: "runs" },
-    { type: "marathons" },
-  ]
+  const sections = [{ type: "header" }, { type: "news" }, { type: "marathons" }]
 
   const renderItem = ({ item }: { item: { type: string } }) => {
     switch (item.type) {
@@ -19,8 +13,6 @@ const Home = () => {
         return <Header backButton={false} />
       case "news":
         return <RedditsHome limit={5} />
-      case "runs":
-        return <RunsHome limit={5} />
       case "marathons":
         return <MarathonLivesHome limit={5} />
       default:

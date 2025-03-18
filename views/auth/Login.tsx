@@ -17,7 +17,6 @@ import { Colors } from "@/constants/Colors"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { FormButtonSubmit } from "@/components/lib/FormValidation"
-import SDCSVG from "@/assets/images/SDCSVG"
 
 const LoginScreen = () => {
   const { handleRedirect } = useHandleRouter()
@@ -54,26 +53,6 @@ const LoginScreen = () => {
                   disabled={false}
                 />
               </View>
-            </View>
-
-            <View style={style.section}>
-              <TouchableOpacity
-                style={style.thirdParty}
-                onPress={() => handleRedirect(ROUTES.AUTH_SDC)}
-              >
-                <SDCSVG />
-                <Text
-                  style={[
-                    style.text,
-                    { marginLeft: Utils.moderateScale(10) },
-                    theme === "dark"
-                      ? { color: Colors.dark.text }
-                      : { color: Colors.light.text },
-                  ]}
-                >
-                  Continue with speedrun.com
-                </Text>
-              </TouchableOpacity>
             </View>
 
             {Platform.OS === "ios" ? (
