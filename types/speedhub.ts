@@ -11,11 +11,6 @@ import {
 
 // Horaro Schedule and Ticker
 
-interface Links {
-  rel: string
-  uri: string
-}
-
 interface Items {
   length: string
   length_t: number
@@ -45,80 +40,77 @@ interface TickerChildren {
 }
 
 interface Schedule {
-  id: string
+  scheduleId: string
+  horaroScheduleId: string
+  marathonId: string
   name: string
-  slug: string
-  timezone: string
-  start: string
-  start_t: number
-  website: string
-  twitter: string
-  twitch: string
-  description: string
-  setup: string
-  setup_t: number
-  updated: string
-  hidden_columns: string[]
   link: string
-  columns: string[]
-  items: Items[]
-  links: Links[]
+  slug: string
+  schedule: {
+    data: string[]
+    length: string
+    length_t: number
+    scheduled: string
+    scheduled_t: number
+  }[]
+  createdAt: string
+  updatedAt: string
+  datetime: string
 }
 
 interface Ticker {
-  ticker: {
-    schedule: TickerSchedule
-    ticker: TickerChildren
-    links: Links[]
-  }
-}
-
-// Marathons Live and Upcoming
-
-interface Upcomings {
-  data: Upcoming[]
-}
-
-interface Upcoming {
-  horaroId: string
-  scheduleId: string
+  tickerId: string
+  horaroTickerId: string
+  marathonId: string
   name: string
   link: string
   slug: string
-  twitchChannel: string
-  datetime: string
-  schedules: {
-    link: string
-    name: string
-  }[]
-  createdAt: string
-  schedule: Schedule
-  ticker: {
-    schedule: TickerSchedule
-    ticker: TickerChildren
-    links: Links[]
+  previous: {
+    data: string[]
+    length: string
+    length_t: number
+    scheduled: string
+    scheduled_t: number
   }
+  current: {
+    data: string[]
+    length: string
+    length_t: number
+    scheduled: string
+    scheduled_t: number
+  }
+  next: {
+    data: string[]
+    length: string
+    length_t: number
+    scheduled: string
+    scheduled_t: number
+  }
+  createdAt: string
+  updatedAt: string
+  datetime: string
 }
 
-interface Lives {
-  data: Live[]
+// Marathons
+
+interface Marathons {
+  data: Marathon[]
 }
 
-interface Live {
-  horaroId: string
-  scheduleId: string
+interface Marathon {
+  marathonId: string
   name: string
   link: string
   slug: string
   isLive: boolean
   twitchChannel: string
   createdAt: string
+  updatedAt: string
+  datetime: string
+  endtime: string
+  type: string
   schedule: Schedule
-  ticker: {
-    schedule: TickerSchedule
-    ticker: TickerChildren
-    links: Links[]
-  }
+  ticker: Ticker
 }
 
 // Privacy Policy
@@ -219,8 +211,6 @@ export {
   Items,
   TickerSchedule,
   TickerChildren,
-  Lives,
-  Upcomings,
-  Live,
-  Upcoming,
+  Marathon,
+  Marathons,
 }

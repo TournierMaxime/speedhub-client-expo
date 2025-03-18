@@ -3,7 +3,7 @@ import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
-import { Live, Lives } from "@/types/speedhub"
+import { Marathon, Marathons } from "@/types/speedhub"
 import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, FlatList } from "react-native"
 import mainStyle from "@/styles/base/main"
@@ -26,17 +26,17 @@ const MarathonLivesHome = ({ limit }: { limit: number }) => {
     staleTime: 1000 * 60 * 30,
   })
 
-  const renderItem = ({ item, index }: { item: Live; index: number }) => {
+  const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
     if (item.isLive) {
       return <OneMarathonLiveHome key={index} data={item} />
     }
     return null
   }
 
-  const [lives, setLives] = useState<Lives["data"]>([])
+  const [lives, setLives] = useState<Marathons["data"]>([])
 
-  const findFirstLiveMarathon = (live: Live) => {
-    if (live.scheduleId) {
+  const findFirstLiveMarathon = (live: Marathon) => {
+    if (live.type === "live") {
       return (
         <View style={style.titleAndIcon}>
           <Text style={style.title}>Live Marathons</Text>

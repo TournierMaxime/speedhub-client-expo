@@ -93,13 +93,13 @@ const MarathonItem = ({
               if (selectedMarathon)
                 if (data?.data.length === 0) {
                   handleRedirect(ROUTES.ONE_MARATHON_UPCOMING, {
-                    horaroId: selectedMarathon.id,
+                    marathonId: selectedMarathon.id,
                   }).then(() => {
                     closeModal()
                   })
                 } else {
                   handleRedirect(ROUTES.ONE_MARATHON_LIVE, {
-                    horaroId: selectedMarathon.id,
+                    marathonId: selectedMarathon.id,
                   }).then(() => {
                     closeModal()
                   })

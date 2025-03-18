@@ -57,8 +57,8 @@ class HoraroService implements HoraroServiceInterface {
     return response.data
   }
 
-  async getLive(horaroId: string | string[]) {
-    const response = await this.http.get(`/horaro/lives/${horaroId}`)
+  async getLive(marathonId: string | string[]) {
+    const response = await this.http.get(`/horaro/lives/${marathonId}`)
     return response.data
   }
 
@@ -75,8 +75,8 @@ class HoraroService implements HoraroServiceInterface {
     return response.data
   }
 
-  async getUpcoming(horaroId: string | string[]) {
-    const response = await this.http.get(`/horaro/upcoming/${horaroId}`)
+  async getUpcoming(marathonId: string | string[]) {
+    const response = await this.http.get(`/horaro/upcoming/${marathonId}`)
     return response.data
   }
 

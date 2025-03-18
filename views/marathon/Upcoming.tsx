@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import { ScrollView, Text, View, TouchableOpacity } from "react-native"
-import { Upcoming } from "@/types/speedhub"
+import { Marathon } from "@/types/speedhub"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import Utils from "@/components/lib/Utils"
 import { useLocalSearchParams } from "expo-router"
@@ -21,7 +21,7 @@ import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 
 const UpcomingMarathon = () => {
-  const { horaroId } = useLocalSearchParams()
+  const { marathonId } = useLocalSearchParams()
   const { handleBack } = useHandleRouter()
   const { user } = useAuth()
 
@@ -29,13 +29,13 @@ const UpcomingMarathon = () => {
 
   const userId = user?.userId
 
-  const { data, isLoading, error, refetch } = useQuery<Upcoming>({
-    queryKey: ["getMarathonUpcoming", horaroId],
+  const { data, isLoading, error, refetch } = useQuery<Marathon>({
+    queryKey: ["getMarathonUpcoming", marathonId],
     queryFn: async () => {
-      if (!horaroId) throw new Error("Missing ID")
-      return await horaroService.getUpcoming(horaroId)
+      if (!marathonId) throw new Error("Missing ID")
+      return await horaroService.getUpcoming(marathonId)
     },
-    enabled: !!horaroId,
+    enabled: !!marathonId,
   })
 
   const { addFavorite, removeFavorite, isFollowing, setIsFollowing } =
@@ -44,7 +44,7 @@ const UpcomingMarathon = () => {
         userId,
         type: "Marathon",
         data: {
-          id: data?.horaroId,
+          id: data?.marathonId,
           image: undefined,
           name: data?.name,
           twitchChannel: data?.twitchChannel,
@@ -58,7 +58,7 @@ const UpcomingMarathon = () => {
       if (!userId) return null
       const response = await favoriteUserService.searchFavorites(userId)
       const runner = response?.favorites?.data?.marathons?.find(
-        (r: any) => r.id === horaroId
+        (r: any) => r.id === marathonId
       )
       setIsFollowing(!!runner)
       return response.favorites.data.marathons ?? []
@@ -67,7 +67,7 @@ const UpcomingMarathon = () => {
   })
 
   const oneMarathonUpcoming = () => {
-    if (data && data.scheduleId && data?.schedule?.twitch) {
+    if (data && data.marathonId && data?.twitchChannel) {
       return (
         <Fragment>
           <View style={oneGameDetailsStyle.gameContainer}>
@@ -115,9 +115,9 @@ const UpcomingMarathon = () => {
                   flex: 1,
                 }}
               >
-                {data?.schedule?.twitch ? (
+                {data?.twitchChannel ? (
                   <TwitchIframe
-                    channel={data.schedule.twitch}
+                    channel={data.twitchChannel}
                     platform="twitch"
                     width={380}
                     height={220}
@@ -165,7 +165,7 @@ const UpcomingMarathon = () => {
     ? [
         {
           name: "Ticker",
-          component: <OneTicker ticker={data.ticker.ticker} />,
+          component: <OneTicker ticker={data.ticker} />,
         },
         {
           name: "Schedule",

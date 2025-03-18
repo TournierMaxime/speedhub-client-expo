@@ -1,6 +1,6 @@
 import React from "react"
 import { Text, View, useColorScheme } from "react-native"
-import { Upcoming } from "@/types/speedhub"
+import { Marathon } from "@/types/speedhub"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import cardStyle from "@/styles/components/card"
@@ -10,7 +10,7 @@ import ROUTES from "@/components/routes"
 import oneRunStyle from "@/styles/views/oneRun"
 import moment from "moment"
 
-const OneMarathonUpcoming = ({ data }: { data: Upcoming }) => {
+const OneMarathonUpcoming = ({ data }: { data: Marathon }) => {
   const theme = useColorScheme() ?? "light"
   const { handleRedirect } = useHandleRouter()
 
@@ -49,7 +49,7 @@ const OneMarathonUpcoming = ({ data }: { data: Upcoming }) => {
                 name="Schedule"
                 redirect={() =>
                   handleRedirect(ROUTES.ONE_MARATHON_UPCOMING, {
-                    horaroId: data.horaroId,
+                    marathonId: data.marathonId,
                   })
                 }
               />

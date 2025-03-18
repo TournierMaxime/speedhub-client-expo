@@ -1,16 +1,16 @@
 import React from "react"
 import { Text, View, useColorScheme } from "react-native"
-import { Upcoming } from "@/types/speedhub"
+import { Marathon } from "@/types/speedhub"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import moment from "moment"
 
-const OneMarathonUpcomingHome = ({ data }: { data: Upcoming }) => {
+const OneMarathonUpcomingHome = ({ data }: { data: Marathon }) => {
   const theme = useColorScheme() ?? "light"
 
   const oneMarathonUpcoming = () => {
     if (data) {
-      const nextEvent = data.ticker?.ticker?.next
+      const nextEvent = data.ticker.next
 
       return (
         <View

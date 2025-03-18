@@ -3,7 +3,7 @@ import { horaroService } from "@/services/speedhub"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
-import { Upcoming, Upcomings } from "@/types/speedhub"
+import { Marathon, Marathons } from "@/types/speedhub"
 import { useState, useEffect } from "react"
 import { FlatList, View } from "react-native"
 import mainStyle from "@/styles/base/main"
@@ -22,13 +22,13 @@ const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
     staleTime: 1000 * 60 * 30,
   })
 
-  const [upcomings, setUpcomings] = useState<Upcomings["data"]>([])
+  const [upcomings, setUpcomings] = useState<Marathons["data"]>([])
 
   if (error) {
     return <CatchError error={error} />
   }
 
-  const renderItem = ({ item, index }: { item: Upcoming; index: number }) => {
+  const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
     return <OneMarathonUpcomingHome key={index} data={item} />
   }
 

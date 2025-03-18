@@ -1,12 +1,12 @@
 import React, { Fragment } from "react"
-import { Upcomings } from "@/types/speedhub"
+import { Marathons } from "@/types/speedhub"
 import { View, StyleSheet, Text } from "react-native"
 import mainStyle from "@/styles/base/main"
 import OneMarathonUpcoming from "../marathon/OneMarathonUpcoming"
 import Utils from "@/components/lib/Utils"
 import { Calendar } from "@/components/lib/Icons"
 
-const UpcomingMarathons = ({ data }: { data: Upcomings["data"] }) => {
+const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
   const upcomingMarathons = () => {
     if (data && data.length > 0) {
       return (

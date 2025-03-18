@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react"
 import { ScrollView, Text, View, TouchableOpacity } from "react-native"
-import { Live } from "@/types/speedhub"
+import { Marathon } from "@/types/speedhub"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import Utils from "@/components/lib/Utils"
 import { useLocalSearchParams } from "expo-router"
@@ -19,8 +19,8 @@ import { useAuth } from "@/contexts/AuthContext"
 import useHandleTab from "@/hooks/utils/useHandleTab"
 import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 
-const Marathon = () => {
-  const { horaroId } = useLocalSearchParams()
+const OneMarathon = () => {
+  const { marathonId } = useLocalSearchParams()
   const { handleBack } = useHandleRouter()
   const { user } = useAuth()
 
@@ -28,13 +28,13 @@ const Marathon = () => {
 
   const userId = user?.userId
 
-  const { data, isLoading, error, refetch } = useQuery<Live>({
-    queryKey: ["getMarathonLive", horaroId],
+  const { data, isLoading, error, refetch } = useQuery<Marathon>({
+    queryKey: ["getMarathonLive", marathonId],
     queryFn: async () => {
-      if (!horaroId) throw new Error("Missing ID")
-      return await horaroService.getLive(horaroId)
+      if (!marathonId) throw new Error("Missing ID")
+      return await horaroService.getLive(marathonId)
     },
-    enabled: !!horaroId,
+    enabled: !!marathonId,
   })
 
   const { addFavorite, removeFavorite, isFollowing, handleMarathonFavorite } =
@@ -43,7 +43,7 @@ const Marathon = () => {
         userId,
         type: "Marathon",
         data: {
-          id: data?.horaroId,
+          id: data?.marathonId,
           image: undefined,
           name: data?.name,
           twitchChannel: data?.twitchChannel,
@@ -52,13 +52,13 @@ const Marathon = () => {
     })
 
   useEffect(() => {
-    if (horaroId && !isFollowing) {
-      handleMarathonFavorite.mutate(horaroId)
+    if (marathonId && !isFollowing) {
+      handleMarathonFavorite.mutate(marathonId)
     }
-  }, [horaroId])
+  }, [marathonId])
 
   const oneMarathonLive = () => {
-    if (data && data.scheduleId && data?.schedule?.twitch) {
+    if (data && data.marathonId && data.twitchChannel) {
       return (
         <Fragment>
           <View style={oneGameDetailsStyle.gameContainer}>
@@ -106,9 +106,9 @@ const Marathon = () => {
                   flex: 1,
                 }}
               >
-                {data?.schedule?.twitch ? (
+                {data.twitchChannel ? (
                   <TwitchIframe
-                    channel={data.schedule.twitch}
+                    channel={data.twitchChannel}
                     platform="twitch"
                     width={380}
                     height={220}
@@ -155,11 +155,11 @@ const Marathon = () => {
     ? [
         {
           name: "Ticker",
-          component: <OneTicker ticker={data?.ticker?.ticker} />,
+          component: <OneTicker ticker={data.ticker} />,
         },
         {
           name: "Schedule",
-          component: <OneSchedule schedule={data?.schedule} />,
+          component: <OneSchedule schedule={data.schedule} />,
         },
       ]
     : []
@@ -171,4 +171,4 @@ const Marathon = () => {
   )
 }
 
-export default Marathon
+export default OneMarathon

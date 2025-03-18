@@ -30,7 +30,7 @@ const OneSchedule = ({ schedule }: { schedule: Schedule }) => {
 
   return (
     <View style={scheduleStyle.container}>
-      <View style={scheduleStyle.header}>{renderItems(schedule.items)}</View>
+      <View style={scheduleStyle.header}>{renderItems(schedule.schedule)}</View>
     </View>
   )
 }

@@ -1,6 +1,6 @@
 import React from "react"
 import { Text, View, useColorScheme } from "react-native"
-import { Live } from "@/types/speedhub"
+import { Marathon } from "@/types/speedhub"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
@@ -10,12 +10,12 @@ import Button from "@/components/lib/Button"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 
-const OneMarathonLive = ({ data }: { data: Live }) => {
+const OneMarathonLive = ({ data }: { data: Marathon }) => {
   const theme = useColorScheme() ?? "light"
   const { handleRedirect } = useHandleRouter()
 
   const oneMarathonLive = () => {
-    if (data.scheduleId && data?.schedule?.twitch) {
+    if (data.twitchChannel) {
       return (
         <View
           style={[
@@ -25,9 +25,9 @@ const OneMarathonLive = ({ data }: { data: Live }) => {
         >
           <View style={oneRunStyle.cardInfo}>
             <View style={oneRunStyle.cardInfoItems}>
-              {data?.schedule?.twitch ? (
+              {data.twitchChannel ? (
                 <TwitchIframe
-                  channel={data.schedule.twitch}
+                  channel={data.twitchChannel}
                   platform="twitch"
                   width={360}
                   height={210}
@@ -48,7 +48,7 @@ const OneMarathonLive = ({ data }: { data: Live }) => {
                 name="Schedule"
                 redirect={() =>
                   handleRedirect(ROUTES.ONE_MARATHON_LIVE, {
-                    horaroId: data.horaroId,
+                    marathonId: data.marathonId,
                   })
                 }
               />

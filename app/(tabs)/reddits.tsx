@@ -6,7 +6,7 @@ const Tab = () => {
   return (
     <View style={style.container}>
       <Header backButton={true} />
-      <AllReddits />
+      <AllReddits limit={20} />
     </View>
   )
 }

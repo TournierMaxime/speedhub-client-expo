@@ -1,5 +1,5 @@
 import React, { Fragment } from "react"
-import { Live, Lives } from "@/types/speedhub"
+import { Marathons, Marathon } from "@/types/speedhub"
 import { View, Text, StyleSheet, FlatList } from "react-native"
 import { useColorScheme } from "react-native"
 import mainStyle from "@/styles/base/main"
@@ -7,10 +7,10 @@ import { BroadCast } from "@/components/lib/Icons"
 import Utils from "@/components/lib/Utils"
 import OneMarathonLive from "../marathon/OneMarathonLive"
 
-const MarathonLives = ({ data }: { data: Lives["data"] }) => {
+const MarathonLives = ({ data }: { data: Marathons["data"] }) => {
   const theme = useColorScheme() ?? "light"
 
-  const renderItem = ({ item, index }: { item: Live; index: number }) => {
+  const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
     if (item.isLive) {
       return <OneMarathonLive key={index} data={item} />
     }
