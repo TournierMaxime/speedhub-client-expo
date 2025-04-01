@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView } from "react-native"
+import { StyleSheet, View, ScrollView } from "react-native"
 import Header from "@/components/lib/Header"
 import Marathons from "@/views/marathon/Marathons"
 

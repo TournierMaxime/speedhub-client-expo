@@ -1,13 +1,4 @@
 import { Pathname } from "@/hooks/utils/useHandleRouter"
-import {
-  GetGameData,
-  GetResourceList,
-  GetGuideList,
-  GetGameSummary,
-  SocialNetworkList,
-  GetUserSummary,
-  GetUserLeaderboard,
-} from "./sdc"
 
 // Horaro Schedule and Ticker
 
@@ -113,6 +104,21 @@ interface Marathon {
   ticker: Ticker
 }
 
+interface GetMarathon {
+  marathonId: string
+  name: string
+  link: string
+  slug: string
+  twitchChannel: string
+  isLive: boolean
+  type: string
+  datetime: string
+  endTime: string
+  isTweeted: boolean
+  createdAt: string
+  updatedAt: string
+}
+
 // Privacy Policy
 
 interface PrivacyPolicyProps {
@@ -162,24 +168,6 @@ interface Video {
   isReddit?: boolean
 }
 
-interface GetGame {
-  getGameData: GetGameData
-  getResourceList: GetResourceList
-  getGuides: GetGuideList
-  getGameSummary: GetGameSummary
-}
-
-interface GetUser {
-  getUserSummary: GetUserSummary
-  getUserLeaderboard: GetUserLeaderboard
-  getSocialNetworkList: SocialNetworkList[]
-}
-
-interface GetMarathon {
-  getLives: Lives
-  getUpcomings: Upcomings
-}
-
 interface User {
   userId: string
   pseudo: string
@@ -195,11 +183,9 @@ interface GetSession {
 }
 
 export {
+  GetMarathon,
   GetSession,
   User,
-  GetGame,
-  GetUser,
-  GetMarathon,
   VideoPlatform,
   Video,
   ProfilePath,

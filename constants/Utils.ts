@@ -4,7 +4,7 @@ const { expoConfig } = Constants
 
 const TWITCH_TOKEN = expoConfig?.extra?.TWITCH_TOKEN
 const TWITCH_CLIENT_ID = expoConfig?.extra?.TWITCH_CLIENT_ID
-const EXPO_PUBLIC_SPEEDHUB_API = "http://192.168.1.75:3560/api/v1"
+const EXPO_PUBLIC_SPEEDHUB_API = "https://api.speedrunfrance.fr/api/v1"
 const EXPO_PUBLIC_SPEEDRUNDOTCOM_API = "https://www.speedrun.com/api/v1"
 const EXPO_PUBLIC_SPEEDRUNDOTCOM_API_V2 = "https://www.speedrun.com/api/v2"
 const EXPO_PUBLIC_SPLITIO_API = "https://splits.io/api/v3"

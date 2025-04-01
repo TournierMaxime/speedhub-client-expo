@@ -26,6 +26,7 @@ interface HoraroServiceInterface {
   getLive(horaroId: string | string[]): Promise<any>
   getUpcomings(params?: any): Promise<any>
   getUpcoming(horaroId: string | string[]): Promise<any>
+  getMarathons(params?: any): Promise<any>
 }
 
 interface FavoriteUserServiceInterface {
@@ -80,8 +81,16 @@ class HoraroService implements HoraroServiceInterface {
     return response.data
   }
 
-  async getMarathons() {
-    const response = await this.http.get(`/marathons`)
+  async getMarathons(params?: any) {
+    const response = await this.http.post(
+      `/marathons`,
+      {},
+      {
+        params: {
+          ...params,
+        },
+      }
+    )
     return response.data
   }
 }

@@ -1,12 +1,19 @@
 import React, { Fragment } from "react"
-import { Marathons } from "@/types/speedhub"
-import { View, StyleSheet, Text } from "react-native"
+import { Marathons, Marathon } from "@/types/speedhub"
+import { View, StyleSheet, Text, FlatList } from "react-native"
 import mainStyle from "@/styles/base/main"
 import OneMarathonUpcoming from "../marathon/OneMarathonUpcoming"
 import Utils from "@/components/lib/Utils"
 import { Calendar } from "@/components/lib/Icons"
 
 const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
+  const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
+    if (item.type === "upcoming") {
+      return <OneMarathonUpcoming key={index} data={item} />
+    }
+    return null
+  }
+
   const upcomingMarathons = () => {
     if (data && data.length > 0) {
       return (
@@ -16,10 +23,12 @@ const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
             <Calendar />
           </View>
 
-          {data.map((upcoming, idx) => {
-            if (!upcoming.ticker) return null
-            return <OneMarathonUpcoming key={idx} data={upcoming} />
-          })}
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.marathonId.toString()}
+            horizontal={true}
+          />
         </Fragment>
       )
     }
@@ -30,7 +39,7 @@ const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
   return (
     <Fragment>
       <View style={mainStyle.container}>
-        {!data ? null : data && data.length > 0 && upcomingMarathons()}
+        {!data ? null : upcomingMarathons()}
       </View>
     </Fragment>
   )

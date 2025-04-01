@@ -24,13 +24,20 @@ const OneMarathonUpcoming = ({ data }: { data: Marathon }) => {
           ]}
         >
           <View style={oneRunStyle.cardInfo}>
-            <View style={oneRunStyle.cardInfoItems}>
+            <View
+              style={[
+                oneRunStyle.cardInfoItems,
+                {
+                  width: Utils.moderateScale(320),
+                },
+              ]}
+            >
               <Text
                 style={{
                   fontSize: Utils.moderateScale(18),
                   fontWeight: "bold",
-                  marginLeft: Utils.moderateScale(10),
-                  marginVertical: Utils.moderateScale(10),
+                  marginTop: Utils.moderateScale(20),
+                  marginBottom: Utils.moderateScale(10),
                 }}
               >
                 {data.name}
@@ -39,11 +46,10 @@ const OneMarathonUpcoming = ({ data }: { data: Marathon }) => {
               <Text
                 style={{
                   fontSize: Utils.moderateScale(18),
-                  marginLeft: Utils.moderateScale(10),
                   marginVertical: Utils.moderateScale(10),
                 }}
               >
-                {moment(data.datetime).format("YYYY-MM-DD h:mm a")}
+                {moment(data.datetime).format("MMMM Do h:mm a")}
               </Text>
               <Button
                 name="Schedule"
