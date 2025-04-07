@@ -1,5 +1,6 @@
 import * as Device from "expo-device"
 import * as Notifications from "expo-notifications"
+import { PROJECT_ID } from "@/constants/Utils"
 
 const registerForPushNotificationsAsync = async () => {
   let token
@@ -15,7 +16,7 @@ const registerForPushNotificationsAsync = async () => {
     }
     token = (
       await Notifications.getExpoPushTokenAsync({
-        projectId: "0e664686-7e65-4e34-a038-5bac954dbde2",
+        projectId: PROJECT_ID,
       })
     ).data
   } else {

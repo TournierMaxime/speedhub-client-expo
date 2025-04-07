@@ -2,6 +2,7 @@ import Constants from "expo-constants"
 
 const { expoConfig } = Constants
 
+const PROJECT_ID = Constants.expoConfig?.extra?.eas?.projectId
 const TWITCH_TOKEN = expoConfig?.extra?.TWITCH_TOKEN
 const TWITCH_CLIENT_ID = expoConfig?.extra?.TWITCH_CLIENT_ID
 const EXPO_PUBLIC_SPEEDHUB_API = "https://api.speedrunfrance.fr/api/v1"
@@ -13,6 +14,7 @@ const EXPO_PUBLIC_TWITCH_PARENT_DOMAIN = "speedrunfrance.fr"
 const EXPO_PUBLIC_TWITCH_API = "https://api.twitch.tv/helix"
 
 export {
+  PROJECT_ID,
   TWITCH_TOKEN,
   TWITCH_CLIENT_ID,
   EXPO_PUBLIC_SPEEDHUB_API,
