@@ -33,7 +33,7 @@ const useHandleAuth = () => {
         }
       )
 
-      if (response && response.users.length > 0) setExistingUser(true)
+      if (response && response.length > 0) setExistingUser(true)
     } catch (error: any) {
       handleError(error)
     }

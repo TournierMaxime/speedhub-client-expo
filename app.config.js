@@ -24,8 +24,6 @@ export default {
       },
     },
     android: {
-      googleServicesFile:
-        process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
@@ -70,7 +68,6 @@ export default {
     extra: {
       TWITCH_TOKEN: process.env.TWITCH_TOKEN,
       TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
-      GOOGLE_SERVICES_JSON: process.env.GOOGLE_SERVICES_JSON,
       appAuthRedirectScheme: "com.hoggy.speedhubclientexpo",
       router: {
         origin: false,
