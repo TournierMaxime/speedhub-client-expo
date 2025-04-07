@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { authService } from "@/services/speedhub"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
-import { speedHubApi } from "@/services/axios"
+/* import { speedHubApi } from "@/services/axios" */
 
 interface Data {
   email?: string
@@ -81,7 +81,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     verifySession()
   }, [])
 
-  speedHubApi.interceptors.response.use(
+  /*   speedHubApi.interceptors.response.use(
     (res) => res,
     async (error) => {
       const originalRequest = error.config
@@ -100,7 +100,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       return Promise.reject(error)
     }
-  )
+  ) */
 
   const login = async (data: Data) => {
     const connection = await authService.login(data)
