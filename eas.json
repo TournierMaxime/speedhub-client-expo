@@ -18,7 +18,8 @@
     "preview": {
       "env": {
         "TWITCH_TOKEN": "TWITCH_TOKEN",
-        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID"
+        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID",
+        "GOOGLE_SERVICES_JSON": "GOOGLE_SERVICES_JSON"
       },
       "distribution": "internal",
       "android": {
