@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { authService } from "@/services/speedhub"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
+import { speedHubApi } from "@/services/axios"
 
 interface Data {
   email?: string
@@ -79,6 +80,27 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     verifySession()
   }, [])
+
+  speedHubApi.interceptors.response.use(
+    (res) => res,
+    async (error) => {
+      const originalRequest = error.config
+
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true
+
+        try {
+          await speedHubApi.post("/auth/refresh-token")
+          return speedHubApi(originalRequest)
+        } catch (refreshErr) {
+          console.log("🔒 Session expirée totalement")
+          // Redirect user to login page or reset auth state
+        }
+      }
+
+      return Promise.reject(error)
+    }
+  )
 
   const login = async (data: Data) => {
     const connection = await authService.login(data)

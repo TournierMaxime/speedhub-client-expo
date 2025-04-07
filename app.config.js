@@ -7,7 +7,7 @@ export default {
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "com.hoggy.videotekclientexpo",
+    scheme: "com.hoggy.speedhubclientexpo",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
@@ -24,6 +24,7 @@ export default {
       },
     },
     android: {
+      googleServicesFile: "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
