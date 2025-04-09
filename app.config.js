@@ -15,7 +15,8 @@ export default {
       bundleIdentifier: "com.hoggy.speedhubclientexpo",
     },
     android: {
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+      googleServicesFile:
+        process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
