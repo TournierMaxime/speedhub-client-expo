@@ -61,13 +61,20 @@ export default {
         },
       ],
       "expo-video",
+      "expo-notifications",
     ],
     experiments: {
       typedRoutes: true,
     },
     extra: {
+      EXPO_PUBLIC_REDDIT_API: process.env.EXPO_PUBLIC_REDDIT_API,
+      EXPO_PUBLIC_SPEEDHUB_API: process.env.EXPO_PUBLIC_SPEEDHUB_API,
+      EXPO_PUBLIC_TWITCH_API: process.env.EXPO_PUBLIC_TWITCH_API,
+      EXPO_PUBLIC_TWITCH_PARENT_DOMAIN:
+        process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN,
       TWITCH_TOKEN: process.env.TWITCH_TOKEN,
       TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
+      GOOGLE_SERVICES_JSON: process.env.GOOGLE_SERVICES_JSON,
       appAuthRedirectScheme: "com.hoggy.speedhubclientexpo",
       router: {
         origin: false,

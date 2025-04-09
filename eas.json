@@ -5,9 +5,10 @@
   "build": {
     "development": {
       "env": {
-        "TWITCH_TOKEN": "TWITCH_TOKEN",
-        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID",
-        "GOOGLE_SERVICES_JSON": "GOOGLE_SERVICES_JSON"
+        "EXPO_PUBLIC_SPEEDHUB_API": "http://192.168.1.75:3560/api/v1",
+        "EXPO_PUBLIC_REDDIT_API": "https://www.reddit.com/r/speedrun",
+        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunfrance.fr",
+        "EXPO_PUBLIC_TWITCH_API": "https://api.twitch.tv/helix"
       },
       "developmentClient": true,
       "distribution": "internal",
@@ -18,9 +19,10 @@
     },
     "preview": {
       "env": {
-        "TWITCH_TOKEN": "TWITCH_TOKEN",
-        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID",
-        "GOOGLE_SERVICES_JSON": "GOOGLE_SERVICES_JSON"
+        "EXPO_PUBLIC_SPEEDHUB_API": "https://api.speedrunfrance.fr/api/v1",
+        "EXPO_PUBLIC_REDDIT_API": "https://www.reddit.com/r/speedrun",
+        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunfrance.fr",
+        "EXPO_PUBLIC_TWITCH_API": "https://api.twitch.tv/helix"
       },
       "distribution": "internal",
       "android": {
@@ -30,9 +32,10 @@
     },
     "production": {
       "env": {
-        "TWITCH_TOKEN": "TWITCH_TOKEN",
-        "TWITCH_CLIENT_ID": "TWITCH_CLIENT_ID",
-        "GOOGLE_SERVICES_JSON": "GOOGLE_SERVICES_JSON"
+        "EXPO_PUBLIC_SPEEDHUB_API": "https://api.speedrunfrance.fr/api/v1",
+        "EXPO_PUBLIC_REDDIT_API": "https://www.reddit.com/r/speedrun",
+        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunfrance.fr",
+        "EXPO_PUBLIC_TWITCH_API": "https://api.twitch.tv/helix"
       },
       "android": {
         "buildType": "apk"

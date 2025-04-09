@@ -39,6 +39,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [accessToken, setAccessToken] = useState<string>("")
 
   const { handleReplace } = useHandleRouter()
 
@@ -49,6 +50,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         const storedUser = await AsyncStorage.getItem("user")
         if (storedUser) {
           setUser(JSON.parse(storedUser))
+        }
+        const storedToken = await AsyncStorage.getItem("access_token")
+        if (storedToken) {
+          setAccessToken(JSON.parse(storedToken))
         }
       } catch (error: any) {
         console.log("loadUserFromStorage", error)
@@ -66,7 +71,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const verifySession = async () => {
       setIsLoading(true)
       try {
-        await authService.verifyToken()
+        await authService.verifyToken(accessToken)
       } catch (error: any) {
         console.log(
           "🔴 Session expirée, redirection vers la connexion.",
@@ -105,12 +110,16 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (data: Data) => {
     const connection = await authService.login(data)
     setUser(connection.user)
+    setAccessToken(connection.token)
     await AsyncStorage.setItem("user", JSON.stringify(connection.user))
+    await AsyncStorage.setItem("access_token", JSON.stringify(connection.token))
   }
 
   const logout = async () => {
     setUser(null)
+    await authService.logout()
     await AsyncStorage.removeItem("user")
+    await AsyncStorage.removeItem("access_token")
   }
 
   return (

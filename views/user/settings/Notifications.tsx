@@ -26,12 +26,12 @@ export default function Notifications() {
   })
 
   const [isEmailActive, setIsEmailActive] = useState(false)
-  const [expoPushToken, setExpoPushToken] = useState(false)
+  const [expoPushToken, setExpoPushToken] = useState<string | null>(null)
 
   useEffect(() => {
     if (data?.user) {
       setIsEmailActive(!!data.user.isEmailActive)
-      setExpoPushToken(!!data.user.expoPushToken)
+      setExpoPushToken(data.user.expoPushToken ?? null)
     }
   }, [data])
 
@@ -41,7 +41,10 @@ export default function Notifications() {
       expoPushToken?: string
     }) => {
       if (!userId) throw new Error("Missing UserId")
-      return await userService.updateUser(userId, updates)
+      return await userService.updateUser(userId, {
+        isEmailActive: updates.isEmailActive,
+        expoPushToken: updates.expoPushToken,
+      })
     },
     onSuccess: () => {
       if (userId) {
@@ -56,13 +59,21 @@ export default function Notifications() {
   }
 
   const toggleNotificationSwitch = async (newValue: boolean) => {
-    let newToken = ""
-    console.log(newToken)
     if (newValue) {
-      newToken = await registerForPushNotificationsAsync()
+      const newToken = await registerForPushNotificationsAsync()
+      console.log("📦 Token returned to switch:", newToken)
+
+      if (!newToken) {
+        alert("Impossible d'obtenir le token de notifications.")
+        return
+      }
+
+      setExpoPushToken(newToken)
+      updatePreferencesMutation.mutate({ expoPushToken: newToken })
+    } else {
+      setExpoPushToken(null)
+      updatePreferencesMutation.mutate({ expoPushToken: "" })
     }
-    setExpoPushToken(!!newToken)
-    updatePreferencesMutation.mutate({ expoPushToken: newToken })
   }
 
   return (
@@ -90,7 +101,7 @@ export default function Notifications() {
           <Text style={profileStyle.itemText}>Notifications</Text>
           <Switch
             onValueChange={toggleNotificationSwitch}
-            value={expoPushToken}
+            value={!!expoPushToken}
           />
         </TouchableOpacity>
       </View>
