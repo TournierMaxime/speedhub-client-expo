@@ -24,6 +24,7 @@ export default {
       },
     },
     android: {
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
@@ -62,6 +63,7 @@ export default {
       ],
       "expo-video",
       "expo-notifications",
+      "@react-native-google-signin/google-signin",
     ],
     experiments: {
       typedRoutes: true,

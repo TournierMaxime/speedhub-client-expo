@@ -17,6 +17,7 @@ import { Colors } from "@/constants/Colors"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
 import { FormButtonSubmit } from "@/components/lib/FormValidation"
+import useHandleAuthGoogle from "@/hooks/auth/useHandleAuthGoogle"
 
 const LoginScreen = () => {
   const { handleRedirect } = useHandleRouter()
@@ -24,6 +25,7 @@ const LoginScreen = () => {
   const theme = useColorScheme() ?? "light"
 
   const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()
+  const { signIn, data } = useHandleAuthGoogle()
 
   return (
     <View
