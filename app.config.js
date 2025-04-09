@@ -13,15 +13,6 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.hoggy.speedhubclientexpo",
-      infoPlist: {
-        CFBundleURLTypes: [
-          {
-            CFBundleURLSchemes: [
-              "com.googleusercontent.apps.725923225701-o7lln8hsuklrhofcrh4qh2752unhfhah",
-            ],
-          },
-        ],
-      },
     },
     android: {
       googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
@@ -76,6 +67,8 @@ export default {
         process.env.EXPO_PUBLIC_TWITCH_PARENT_DOMAIN,
       TWITCH_TOKEN: process.env.TWITCH_TOKEN,
       TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
+      GOOGLE_AUTH_CLIENT_ID_WEB: process.env.GOOGLE_AUTH_CLIENT_ID_WEB,
+      GOOGLE_AUTH_CLIENT_ID_IOS: process.env.GOOGLE_AUTH_CLIENT_ID_IOS,
       appAuthRedirectScheme: "com.hoggy.speedhubclientexpo",
       router: {
         origin: false,

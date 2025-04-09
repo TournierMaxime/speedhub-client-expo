@@ -18,6 +18,11 @@ import { ActivityIndicator, Alert, Button } from "react-native"
 import { Colors } from "@/constants/Colors"
 import { ModalProvider } from "@/contexts/ModalContext"
 import * as Updates from "expo-updates"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import {
+  GOOGLE_AUTH_CLIENT_ID_WEB,
+  GOOGLE_AUTH_CLIENT_ID_IOS,
+} from "@/constants/Utils"
 
 SplashScreen.preventAutoHideAsync()
 
@@ -38,6 +43,12 @@ export default function RootLayout() {
   if (!loaded) {
     return null
   }
+
+  GoogleSignin.configure({
+    webClientId: GOOGLE_AUTH_CLIENT_ID_WEB,
+    iosClientId: GOOGLE_AUTH_CLIENT_ID_IOS,
+    offlineAccess: true,
+  })
 
   return (
     <QueryClientProvider client={queryClient}>
