@@ -54,7 +54,13 @@ export default {
       ],
       "expo-video",
       "expo-notifications",
-      "@react-native-google-signin/google-signin",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          iosUrlScheme:
+            "com.googleusercontent.apps.725923225701-o7lln8hsuklrhofcrh4qh2752unhfhah",
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,

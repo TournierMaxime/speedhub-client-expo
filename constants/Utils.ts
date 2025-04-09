@@ -20,10 +20,6 @@ const GOOGLE_AUTH_CLIENT_ID_WEB = expoConfig?.extra?.GOOGLE_AUTH_CLIENT_ID_WEB
 
 const GOOGLE_AUTH_CLIENT_ID_IOS = expoConfig?.extra?.GOOGLE_AUTH_CLIENT_ID_IOS
 
-console.log(
-  "EXPO_PUBLIC_SPEEDHUB_API",
-  expoConfig?.extra?.EXPO_PUBLIC_SPEEDHUB_API
-)
 export {
   PROJECT_ID,
   TWITCH_TOKEN,

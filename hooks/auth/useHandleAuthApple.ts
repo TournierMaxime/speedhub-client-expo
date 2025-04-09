@@ -44,8 +44,8 @@ const useHandleAuthApple = () => {
         )
       }
 
-      if (users.users && users.users.length > 0) {
-        const userId = users.users[0].userId
+      if (users && users.length > 0) {
+        const userId = users[0].userId
 
         await authService.login({ userId })
         await login({ userId })

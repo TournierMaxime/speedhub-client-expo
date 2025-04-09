@@ -5,39 +5,96 @@ import {
   isErrorWithCode,
 } from "@react-native-google-signin/google-signin"
 import { useState } from "react"
+import useHandleRouter from "../utils/useHandleRouter"
+import { useAuth } from "@/contexts/AuthContext"
+import { userService, authService } from "@/services/speedhub"
+import ROUTES from "@/components/routes"
+import registerForPushNotificationsAsync from "@/components/lib/Notifications"
 
 const useHandleAuthGoogle = () => {
-  const [data, setData] = useState({})
+  const { handleRedirect } = useHandleRouter()
+  const { login } = useAuth()
+
+  const [isProcessingGoogle, setIsProcessingGoogle] = useState<boolean>(false)
 
   const signIn = async () => {
+    setIsProcessingGoogle(true)
+    let users
+
     try {
       await GoogleSignin.hasPlayServices()
       const response = await GoogleSignin.signIn()
       if (isSuccessResponse(response)) {
-        setData({ userInfo: response.data })
+        users = await userService.searchUsers(
+          { email: response.data.user.email },
+          {
+            page: 1,
+            size: 1,
+          }
+        )
+
+        if (users && users.length > 0) {
+          const userId = users[0].userId
+
+          await authService.login({ userId })
+          await login({ userId })
+
+          await handleRedirect(ROUTES.HOME)
+
+          setIsProcessingGoogle(false)
+        } else {
+          let token
+
+          if (token) {
+            token = await registerForPushNotificationsAsync()
+          }
+
+          const register = await authService.register({
+            pseudo: response.data.user.name,
+            email: response.data.user.email,
+            password: response.data.user.id,
+            provider: "Google",
+            verified: true,
+            expoPushToken: token ?? "",
+            lang: "en",
+            image: response.data.user.photo,
+          })
+
+          authService.login({ userId: register.user.userId })
+          await login({ userId: register.user.userId })
+
+          await handleRedirect(ROUTES.HOME)
+
+          setIsProcessingGoogle(false)
+        }
       } else {
         // sign in was cancelled by user
+        console.warn("Google sign-in annulé")
       }
     } catch (error) {
+      console.error("Erreur Google sign-in :", error)
+
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
-            // operation (eg. sign in) already in progress
+            console.warn("Connexion déjà en cours")
             break
           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            // Android only, play services not available or outdated
+            console.warn("Google Play Services non dispo")
             break
           default:
-          // some other error happened
+            console.warn("Erreur inconnue", error)
         }
       } else {
-        // an error that's not related to google sign in occurred
+        console.warn("Erreur non liée à Google Signin")
       }
+    } finally {
+      setIsProcessingGoogle(false) // ✅ TOUJOURS à la fin
     }
   }
   return {
     signIn,
-    data,
+    isProcessingGoogle,
   }
 }
 

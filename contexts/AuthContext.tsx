@@ -73,10 +73,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         await authService.verifyToken(accessToken)
       } catch (error: any) {
-        console.log(
-          "🔴 Session expirée, redirection vers la connexion.",
-          error.message
-        )
         await handleReplace(ROUTES.AUTH)
         await logout()
       }

@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native"
 import AppleSVG from "../../assets/images/AppleSVG"
+import GoogleSVG from "../../assets/images/GoogleSVG"
 import Utils from "@/components/lib/Utils"
 import useHandleAuthApple from "@/hooks/auth/useHandleAuthApple"
 import StepAuth from "./StepAuth"
@@ -25,7 +26,7 @@ const LoginScreen = () => {
   const theme = useColorScheme() ?? "light"
 
   const { onAppleButtonPress, isProcessingApple } = useHandleAuthApple()
-  const { signIn, data } = useHandleAuthGoogle()
+  const { signIn, isProcessingGoogle } = useHandleAuthGoogle()
 
   return (
     <View
@@ -36,7 +37,7 @@ const LoginScreen = () => {
           : { backgroundColor: Colors.light.background },
       ]}
     >
-      {isProcessingApple ? (
+      {isProcessingApple || isProcessingGoogle ? (
         <View style={""}>
           <ActivityIndicator size={"large"} />
         </View>
@@ -56,6 +57,27 @@ const LoginScreen = () => {
                 />
               </View>
             </View>
+
+            {Platform.OS === "android" ? (
+              <View style={style.section}>
+                <TouchableOpacity
+                  style={style.thirdParty}
+                  onPress={() => signIn()}
+                >
+                  <GoogleSVG />
+                  <Text
+                    style={[
+                      style.text,
+                      theme === "dark"
+                        ? { color: Colors.dark.text }
+                        : { color: Colors.light.text },
+                    ]}
+                  >
+                    Continue with Google
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
 
             {Platform.OS === "ios" ? (
               <View style={style.section}>

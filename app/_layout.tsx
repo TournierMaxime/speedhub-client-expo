@@ -45,11 +45,10 @@ export default function RootLayout() {
   }
 
   GoogleSignin.configure({
-    webClientId: GOOGLE_AUTH_CLIENT_ID_WEB,
-    iosClientId: GOOGLE_AUTH_CLIENT_ID_IOS,
+    webClientId:
+      "725923225701-m2nejmr6c26kbslbr9vpgoplt0mok483.apps.googleusercontent.com",
     offlineAccess: true,
   })
-
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
