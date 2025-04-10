@@ -28,6 +28,7 @@ interface User {
 
 interface AuthContextProps {
   user: User | null
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
   login: (data: Data) => void
   logout: () => void
   isAuthenticated: boolean
@@ -122,6 +123,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         login,
         logout,
         isAuthenticated: !!user,

@@ -12,7 +12,6 @@ import { useAuth } from "@/contexts/AuthContext"
 
 const UpdateAvatar = () => {
   const { user } = useAuth()
-  console.log("user", user)
   const { handleUpdateAvatar, data, setData } = useHandleUpdate()
   return (
     <View style={mainStyle.container}>

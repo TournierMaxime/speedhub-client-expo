@@ -5,7 +5,7 @@ import { DataState } from "../auth/interface"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const useHandleUpdate = () => {
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
   const [data, setData] = useState<DataState>({
     pseudo: "",
     email: "",
@@ -16,6 +16,15 @@ const useHandleUpdate = () => {
     try {
       if (user?.userId) {
         await userService.updateUser(user?.userId, { email: data.email })
+
+        const updatedUser = {
+          ...user,
+          email: data.email ?? "",
+        }
+
+        await AsyncStorage.setItem("user", JSON.stringify(updatedUser))
+
+        setUser(updatedUser)
       }
     } catch (error: any) {
       console.error(error.message)
@@ -31,6 +40,14 @@ const useHandleUpdate = () => {
     try {
       if (user?.userId) {
         await userService.updateUser(user?.userId, { pseudo: data.pseudo })
+        const updatedUser = {
+          ...user,
+          pseudo: data.pseudo ?? "",
+        }
+
+        await AsyncStorage.setItem("user", JSON.stringify(updatedUser))
+
+        setUser(updatedUser)
       }
     } catch (error: any) {
       console.error(error.message)
@@ -68,13 +85,15 @@ const useHandleUpdate = () => {
       }
       if (user?.userId) {
         await userService.updateUser(user?.userId, formData, data.image)
-        await AsyncStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...user,
-            image: data.image,
-          })
-        )
+
+        const updatedUser = {
+          ...user,
+          image: data.image ?? "",
+        }
+
+        await AsyncStorage.setItem("user", JSON.stringify(updatedUser))
+
+        setUser(updatedUser)
       }
     } catch (error: any) {
       console.error(error.message)

@@ -30,7 +30,7 @@ const AllFavorites = () => {
 
   const items: ProfilePath[] = []
 
-  if (data?.favorites.data.games) {
+  if (data && data?.favorites?.data?.games?.length > 0) {
     items.push({
       path: ROUTES.FAVORITES_GAMES,
       params: undefined,
@@ -39,7 +39,7 @@ const AllFavorites = () => {
     })
   }
 
-  if (data?.favorites.data.runners) {
+  if (data && data?.favorites?.data?.runners?.length > 0) {
     items.push({
       path: ROUTES.FAVORITES_RUNNERS,
       params: undefined,
@@ -48,7 +48,7 @@ const AllFavorites = () => {
     })
   }
 
-  if (data?.favorites.data.marathons) {
+  if (data && data?.favorites?.data?.marathons?.length > 0) {
     items.push({
       path: ROUTES.FAVORITES_MARATHONS,
       params: undefined,
@@ -63,7 +63,7 @@ const AllFavorites = () => {
         backButton={true}
         lastPath={{ pathname: ROUTES.ONE_USER_PROFILE }}
       />
-      {error || data === undefined ? (
+      {error || (data && data.favorites === null) ? (
         <CatchError error={error} message="No Favorites founded" />
       ) : null}
       <ScrollView style={profileStyle.container}>
