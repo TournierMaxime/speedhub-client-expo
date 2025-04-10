@@ -6,9 +6,10 @@ import React, {
   ReactNode,
 } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { authService } from "@/services/speedhub"
+import { authService, userService } from "@/services/speedhub"
 import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import ROUTES from "@/components/routes"
+import moment from "moment"
 /* import { speedHubApi } from "@/services/axios" */
 
 interface Data {
@@ -72,7 +73,35 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const verifySession = async () => {
       setIsLoading(true)
       try {
-        await authService.verifyToken(accessToken)
+        console.log("AuthContext verifySession")
+        if (user) {
+          const getOneAccessToken = await userService.getOneAccessToken(
+            user.userId,
+            accessToken
+          )
+
+          if (getOneAccessToken.token !== accessToken) {
+            await handleReplace(ROUTES.AUTH)
+            await logout()
+          }
+
+          if (
+            getOneAccessToken.revoked === true ||
+            getOneAccessToken.isExpired === true
+          ) {
+            await handleReplace(ROUTES.AUTH)
+            await logout()
+          }
+
+          const now = moment()
+          const expiresIn = moment(getOneAccessToken.expiresIn)
+
+          const diffInMinutes = expiresIn.diff(now, "minutes")
+
+          if (diffInMinutes <= 5) {
+            await authService.verifyToken(accessToken)
+          }
+        }
       } catch (error: any) {
         await handleReplace(ROUTES.AUTH)
         await logout()
@@ -82,27 +111,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     verifySession()
   }, [])
-
-  /*   speedHubApi.interceptors.response.use(
-    (res) => res,
-    async (error) => {
-      const originalRequest = error.config
-
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true
-
-        try {
-          await speedHubApi.post("/auth/refresh-token")
-          return speedHubApi(originalRequest)
-        } catch (refreshErr) {
-          console.log("🔒 Session expirée totalement")
-          // Redirect user to login page or reset auth state
-        }
-      }
-
-      return Promise.reject(error)
-    }
-  ) */
 
   const login = async (data: Data) => {
     const connection = await authService.login(data)

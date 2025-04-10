@@ -27,7 +27,11 @@ const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
             data={data}
             renderItem={renderItem}
             keyExtractor={(item) => item.marathonId.toString()}
-            horizontal={true}
+            nestedScrollEnabled={true}
+            initialNumToRender={data.length}
+            maxToRenderPerBatch={data.length}
+            removeClippedSubviews={true}
+            windowSize={data.length}
           />
         </Fragment>
       )

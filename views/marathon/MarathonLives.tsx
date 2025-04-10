@@ -22,7 +22,16 @@ const MarathonLives = ({ data }: { data: Marathons["data"] }) => {
             <Text style={style.title}>Live Marathons</Text>
             <BroadCast />
           </View>
-          <FlatList data={data} horizontal={true} renderItem={renderItem} />
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.marathonId.toString()}
+            nestedScrollEnabled={true}
+            initialNumToRender={data.length}
+            maxToRenderPerBatch={data.length}
+            removeClippedSubviews={true}
+            windowSize={data.length}
+          />
         </Fragment>
       )
     }

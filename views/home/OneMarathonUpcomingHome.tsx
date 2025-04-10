@@ -4,9 +4,16 @@ import { Marathon } from "@/types/speedhub"
 import mainStyle from "@/styles/base/main"
 import Utils from "@/components/lib/Utils"
 import moment from "moment"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
+import Button from "@/components/lib/Button"
+import cardStyle from "@/styles/components/card"
+import oneRunStyle from "@/styles/views/oneRun"
 
 const OneMarathonUpcomingHome = ({ data }: { data: Marathon }) => {
   const theme = useColorScheme() ?? "light"
+
+  const { handleRedirect } = useHandleRouter()
 
   const oneMarathonUpcoming = () => {
     if (data) {
@@ -15,55 +22,52 @@ const OneMarathonUpcomingHome = ({ data }: { data: Marathon }) => {
       return (
         <View
           style={[
-            {
-              display: "flex",
-              flexDirection: "column",
-              width: Utils.moderateScale(360),
-              height: Utils.moderateScale(150),
-              marginHorizontal: Utils.moderateScale(10),
-              alignSelf: "auto",
-              marginVertical: Utils.moderateScale(10),
-              borderRadius: Utils.moderateScale(5),
-              shadowOffset: {
-                width: Utils.moderateScale(0),
-                height: Utils.moderateScale(2),
-              },
-              shadowOpacity: Utils.moderateScale(0.25),
-              shadowRadius: Utils.moderateScale(3.5),
-              elevation: Utils.moderateScale(5),
-              paddingVertical: Utils.moderateScale(10),
-            },
+            cardStyle.card,
             theme === "dark" ? mainStyle.themeDark : mainStyle.themeLight,
           ]}
         >
-          <Text
-            style={{
-              fontSize: Utils.moderateScale(18),
-              fontWeight: "bold",
-              textAlign: "center",
-              marginBottom: Utils.moderateScale(10),
-            }}
-          >
-            {data.name}
-          </Text>
-          <Text
-            style={{
-              paddingHorizontal: Utils.moderateScale(14),
-              fontSize: Utils.moderateScale(16),
-              marginBottom: Utils.moderateScale(10),
-            }}
-          >
-            Starting {moment(data.datetime).fromNow()}{" "}
-            {nextEvent && `(${moment(nextEvent.scheduled).format("h:m a")})`}
-          </Text>
-          <Text
-            style={{
-              paddingHorizontal: Utils.moderateScale(14),
-              fontSize: Utils.moderateScale(16),
-            }}
-          >
-            {nextEvent && nextEvent.data.join(" ")}
-          </Text>
+          <View style={oneRunStyle.cardInfo}>
+            <View style={oneRunStyle.cardInfoItems}>
+              <Text
+                style={{
+                  fontSize: Utils.moderateScale(18),
+                  fontWeight: "bold",
+                  marginBottom: Utils.moderateScale(10),
+                  marginLeft: Utils.moderateScale(10),
+                }}
+              >
+                {data.name}
+              </Text>
+              <Text
+                style={{
+                  paddingHorizontal: Utils.moderateScale(14),
+                  fontSize: Utils.moderateScale(16),
+                  marginBottom: Utils.moderateScale(10),
+                }}
+              >
+                Starting {moment(data.datetime).fromNow()}{" "}
+                {nextEvent &&
+                  `(${moment(nextEvent.scheduled).format("h:m a")})`}
+              </Text>
+              <Text
+                style={{
+                  paddingHorizontal: Utils.moderateScale(14),
+                  fontSize: Utils.moderateScale(16),
+                  marginBottom: Utils.moderateScale(10),
+                }}
+              >
+                {nextEvent && nextEvent.data.join(" ")}
+              </Text>
+              <Button
+                name="Schedule"
+                redirect={() =>
+                  handleRedirect(ROUTES.ONE_MARATHON_UPCOMING, {
+                    marathonId: data.marathonId,
+                  })
+                }
+              />
+            </View>
+          </View>
         </View>
       )
     }

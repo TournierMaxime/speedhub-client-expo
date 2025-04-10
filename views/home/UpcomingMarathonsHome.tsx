@@ -5,9 +5,11 @@ import IsLoading from "@/components/lib/IsLoading"
 import CatchError from "@/components/lib/CatchError"
 import { Marathon, Marathons } from "@/types/speedhub"
 import { useState, useEffect } from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, View, StyleSheet, Text } from "react-native"
 import mainStyle from "@/styles/base/main"
 import OneMarathonUpcomingHome from "./OneMarathonUpcomingHome"
+import Utils from "@/components/lib/Utils"
+import { Calendar } from "@/components/lib/Icons"
 
 const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
   const { data, isLoading, error, refetch } = useInfiniteQuery({
@@ -22,20 +24,41 @@ const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
     staleTime: 1000 * 60 * 30,
   })
 
-  const [upcomings, setUpcomings] = useState<Marathons["data"]>([])
-
-  if (error) {
-    return <CatchError error={error} />
-  }
-
   const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
     return <OneMarathonUpcomingHome key={index} data={item} />
+  }
+
+  const [upcomings, setUpcomings] = useState<Marathons["data"]>([])
+
+  const findFirstUpcomingMarathon = (upcoming: Marathon) => {
+    if (upcoming.type === "upcoming") {
+      return (
+        <View style={style.titleAndIcon}>
+          <Text style={style.title}>Upcoming Marathons</Text>
+          <Calendar />
+        </View>
+      )
+    }
+    return null
   }
 
   const upcomingMarathons = () => {
     if (upcomings && upcomings.length > 0) {
       return (
-        <FlatList horizontal={true} data={upcomings} renderItem={renderItem} />
+        <Fragment>
+          {findFirstUpcomingMarathon(upcomings[0])}
+
+          <FlatList
+            data={upcomings}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.marathonId.toString()}
+            nestedScrollEnabled={true}
+            initialNumToRender={limit}
+            maxToRenderPerBatch={limit}
+            removeClippedSubviews={true}
+            windowSize={limit}
+          />
+        </Fragment>
       )
     }
 
@@ -49,6 +72,10 @@ const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
       setUpcomings(filteredData)
     }
   }, [data])
+
+  if (error) {
+    return <CatchError error={error} />
+  }
 
   if (upcomings === undefined && !isLoading) {
     refetch()
@@ -66,5 +93,19 @@ const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
     </Fragment>
   )
 }
+
+const style = StyleSheet.create({
+  title: {
+    fontSize: Utils.moderateScale(20),
+    fontWeight: "bold",
+  },
+  titleAndIcon: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: Utils.moderateScale(10),
+  },
+})
 
 export default UpcomingMarathonsHome

@@ -53,7 +53,16 @@ const MarathonLivesHome = ({ limit }: { limit: number }) => {
         <Fragment>
           {findFirstLiveMarathon(lives[0])}
 
-          <FlatList horizontal={true} data={lives} renderItem={renderItem} />
+          <FlatList
+            data={lives}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.marathonId.toString()}
+            nestedScrollEnabled={true}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            removeClippedSubviews={true}
+            windowSize={5}
+          />
         </Fragment>
       )
     }

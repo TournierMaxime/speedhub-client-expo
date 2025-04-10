@@ -3,33 +3,38 @@ import Header from "@/components/lib/Header"
 import MarathonLivesHome from "./MarathonLivesHome"
 import RedditsHome from "./RedditsHome"
 import mainStyle from "@/styles/base/main"
+import UpcomingMarathonsHome from "./UpcomingMarathonsHome"
+import { Fragment } from "react"
 
 const Home = () => {
-  const sections = [{ type: "header" }, { type: "news" }, { type: "marathons" }]
+  const sections = [{ type: "news" }, { type: "live" }, { type: "upcoming" }]
 
   const renderItem = ({ item }: { item: { type: string } }) => {
     switch (item.type) {
-      case "header":
-        return <Header backButton={false} />
       case "news":
         return <RedditsHome limit={5} />
-      case "marathons":
+      case "live":
         return <MarathonLivesHome limit={5} />
+      case "upcoming":
+        return <UpcomingMarathonsHome limit={5} />
       default:
         return null
     }
   }
 
   return (
-    <FlatList
-      data={sections}
-      keyExtractor={(item) => item.type}
-      renderItem={renderItem}
-      contentContainerStyle={[
-        mainStyle.container,
-        { backgroundColor: "white" },
-      ]}
-    />
+    <Fragment>
+      <Header backButton={false} />
+      <FlatList
+        data={sections}
+        keyExtractor={(item) => item.type}
+        renderItem={renderItem}
+        contentContainerStyle={[
+          mainStyle.container,
+          { backgroundColor: "white" },
+        ]}
+      />
+    </Fragment>
   )
 }
 

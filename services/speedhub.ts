@@ -200,6 +200,30 @@ class UserService implements UserServiceInterface {
     )
     return response.data
   }
+
+  async getOneAccessToken(
+    userId: string,
+    token: string
+  ): Promise<{
+    authAccessTokenId: string
+    userId: string
+    token: string
+    deviceName: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    lastUsedAt: string
+    expiresIn: string
+    isExpired: boolean
+    revoked: boolean
+    updatedAt: string
+    createdAt: string
+  }> {
+    const response = await this.http.get(
+      `/auth/user/${userId}/access-token/${token}`,
+      this.defaultOptions
+    )
+    return response.data
+  }
 }
 
 class FavoriteUserService implements FavoriteUserServiceInterface {
