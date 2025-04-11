@@ -6,6 +6,8 @@ import { DataState } from "./interface"
 import useHandleToast from "../utils/useHandleToast"
 import ROUTES from "@/components/routes"
 import useHandleRouter from "../utils/useHandleRouter"
+import * as Device from "expo-device"
+import { getDeviceType } from "@/utils/getDeviceType"
 
 const useHandleAuth = () => {
   const { handleRedirect } = useHandleRouter()
@@ -45,9 +47,30 @@ const useHandleAuth = () => {
         handleError("Email/Password missing or invalid")
       }
 
-      await authService.login({ email: data.email, password: data.password })
+      await authService
+        .login({
+          email: data.email,
+          password: data.password,
+        })
+        .then(async (l) => {
+          await authService.createDevice(l.authAccessTokenId, {
+            authAccessTokenId: l.authAccessTokenId,
+            brand: Device.brand,
+            deviceType: getDeviceType(Device.deviceType ?? 0),
+            manufacturer: Device.manufacturer,
+            modelName: Device.modelName,
+            osName: Device.osName,
+            osVersion: Device.osVersion,
+            osBuildId: Device.osBuildId,
+            osInternalBuildId: Device.osInternalBuildId,
+          })
+          return l
+        })
+
       await login({ email: data.email ?? "", password: data.password ?? "" })
+
       handleSuccess("Successfully connected")
+
       setData({
         email: "",
         password: "",

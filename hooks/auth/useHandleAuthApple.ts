@@ -6,6 +6,8 @@ import { userService } from "@/services/speedhub"
 import ROUTES from "@/components/routes"
 import useHandleRouter from "../utils/useHandleRouter"
 import { useAuth } from "@/contexts/AuthContext"
+import * as Device from "expo-device"
+import { getDeviceType } from "@/utils/getDeviceType"
 
 const useHandleAuthApple = () => {
   const [isProcessingApple, setIsProcessingApple] = useState<boolean>(false)
@@ -32,8 +34,6 @@ const useHandleAuthApple = () => {
         identityToken: credential.identityToken,
       })
 
-      console.log(appleToken)
-
       if (appleToken) {
         users = await userService.searchUsers(
           { email: appleToken.decodedToken.email },
@@ -47,7 +47,21 @@ const useHandleAuthApple = () => {
       if (users && users.length > 0) {
         const userId = users[0].userId
 
-        await authService.login({ userId })
+        await authService.login({ userId }).then(async (l) => {
+          await authService.createDevice(l.authAccessTokenId, {
+            authAccessTokenId: l.authAccessTokenId,
+            brand: Device.brand,
+            deviceType: getDeviceType(Device.deviceType ?? 0),
+            manufacturer: Device.manufacturer,
+            modelName: Device.modelName,
+            osName: Device.osName,
+            osVersion: Device.osVersion,
+            osBuildId: Device.osBuildId,
+            osInternalBuildId: Device.osInternalBuildId,
+          })
+          return l
+        })
+
         await login({ userId })
 
         await handleRedirect(ROUTES.HOME)
@@ -60,7 +74,7 @@ const useHandleAuthApple = () => {
           token = await registerForPushNotificationsAsync()
         }
 
-        const response = await authService.register({
+        const register = await authService.register({
           pseudo: `${credential.fullName?.givenName ?? ""} ${
             credential.fullName?.familyName ?? ""
           }`,
@@ -72,8 +86,26 @@ const useHandleAuthApple = () => {
           lang: "en",
         })
 
-        authService.login({ userId: response.user.userId })
-        await login({ userId: response.user.userId })
+        await authService
+          .login({
+            userId: register.user.userId,
+          })
+          .then(async (l) => {
+            await authService.createDevice(l.authAccessTokenId, {
+              authAccessTokenId: l.authAccessTokenId,
+              brand: Device.brand,
+              deviceType: getDeviceType(Device.deviceType ?? 0),
+              manufacturer: Device.manufacturer,
+              modelName: Device.modelName,
+              osName: Device.osName,
+              osVersion: Device.osVersion,
+              osBuildId: Device.osBuildId,
+              osInternalBuildId: Device.osInternalBuildId,
+            })
+            return l
+          })
+
+        await login({ userId: register.user.userId })
 
         await handleRedirect(ROUTES.HOME)
 

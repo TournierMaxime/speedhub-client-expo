@@ -98,6 +98,14 @@ class HoraroService implements HoraroServiceInterface {
 class AuthService implements AuthServiceInterface {
   private http = http
 
+  async createDevice(authAccessTokenId: string | string[], data: any) {
+    const response = await this.http.post(
+      `/auth/access-token/${authAccessTokenId}`,
+      data
+    )
+    return response.data
+  }
+
   async getSession(userId: string | string[]) {
     const response = await this.http.get(`/auth/session/${userId}`)
     return response.data

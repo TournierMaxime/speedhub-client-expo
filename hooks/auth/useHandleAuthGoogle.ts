@@ -10,6 +10,8 @@ import { useAuth } from "@/contexts/AuthContext"
 import { userService, authService } from "@/services/speedhub"
 import ROUTES from "@/components/routes"
 import registerForPushNotificationsAsync from "@/components/lib/Notifications"
+import * as Device from "expo-device"
+import { getDeviceType } from "@/utils/getDeviceType"
 
 const useHandleAuthGoogle = () => {
   const { handleRedirect } = useHandleRouter()
@@ -36,7 +38,21 @@ const useHandleAuthGoogle = () => {
         if (users && users.length > 0) {
           const userId = users[0].userId
 
-          await authService.login({ userId })
+          await authService.login({ userId }).then(async (l) => {
+            await authService.createDevice(l.authAccessTokenId, {
+              authAccessTokenId: l.authAccessTokenId,
+              brand: Device.brand,
+              deviceType: getDeviceType(Device.deviceType ?? 0),
+              manufacturer: Device.manufacturer,
+              modelName: Device.modelName,
+              osName: Device.osName,
+              osVersion: Device.osVersion,
+              osBuildId: Device.osBuildId,
+              osInternalBuildId: Device.osInternalBuildId,
+            })
+            return l
+          })
+
           await login({ userId })
 
           await handleRedirect(ROUTES.HOME)
@@ -60,7 +76,25 @@ const useHandleAuthGoogle = () => {
             image: response.data.user.photo,
           })
 
-          authService.login({ userId: register.user.userId })
+          await authService
+            .login({
+              userId: register.user.userId,
+            })
+            .then(async (l) => {
+              await authService.createDevice(l.authAccessTokenId, {
+                authAccessTokenId: l.authAccessTokenId,
+                brand: Device.brand,
+                deviceType: getDeviceType(Device.deviceType ?? 0),
+                manufacturer: Device.manufacturer,
+                modelName: Device.modelName,
+                osName: Device.osName,
+                osVersion: Device.osVersion,
+                osBuildId: Device.osBuildId,
+                osInternalBuildId: Device.osInternalBuildId,
+              })
+              return l
+            })
+
           await login({ userId: register.user.userId })
 
           await handleRedirect(ROUTES.HOME)
