@@ -232,6 +232,23 @@ class UserService implements UserServiceInterface {
     )
     return response.data
   }
+
+  async createNotification(userId: string, data: any) {
+    const response = await this.http.post(
+      `/notifications/users/${userId}`,
+      data,
+      this.defaultOptions
+    )
+    return response.data
+  }
+
+  async deleteNotification(notificationId: string, userId: string) {
+    const response = await this.http.delete(
+      `/notifications/${notificationId}/users/${userId}`,
+      this.defaultOptions
+    )
+    return response.data
+  }
 }
 
 class FavoriteUserService implements FavoriteUserServiceInterface {

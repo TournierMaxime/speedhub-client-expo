@@ -175,6 +175,17 @@ interface User {
   provider: string
   expoPushToken: string
   isEmailActive: boolean
+  Notification: Notification[]
+}
+
+interface Notification {
+  notificationId: string
+  userId: string
+  type: "email" | "push"
+  category: "reddit" | "live" | "upcoming"
+  enabled: boolean
+  createdAt: Date
+  updatedAt: Date
 }
 
 interface GetSession {

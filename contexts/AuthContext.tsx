@@ -73,7 +73,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const verifySession = async () => {
       setIsLoading(true)
       try {
-        console.log("AuthContext verifySession")
         if (user) {
           const getOneAccessToken = await userService.getOneAccessToken(
             user.userId,

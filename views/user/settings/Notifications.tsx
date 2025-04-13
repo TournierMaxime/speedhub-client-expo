@@ -25,24 +25,38 @@ export default function Notifications() {
     enabled: !!userId,
   })
 
-  const [isEmailActive, setIsEmailActive] = useState(false)
+  const [isEmailActive, setIsEmailActive] = useState({
+    live: false,
+    upcoming: false,
+    reddit: false,
+  })
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null)
 
   useEffect(() => {
-    if (data?.user) {
-      setIsEmailActive(!!data.user.isEmailActive)
-      setExpoPushToken(data.user.expoPushToken ?? null)
+    if (data && data.user.Notification.length > 0) {
+      const notif = data.user.Notification
+      setIsEmailActive({
+        live:
+          notif.find((n) => n.category === "live" && n.type === "email")
+            ?.enabled ?? false,
+        upcoming:
+          notif.find((n) => n.category === "upcoming" && n.type === "email")
+            ?.enabled ?? false,
+        reddit:
+          notif.find((n) => n.category === "reddit" && n.type === "email")
+            ?.enabled ?? false,
+      })
+    }
+
+    if (data?.user?.expoPushToken) {
+      setExpoPushToken(data.user.expoPushToken)
     }
   }, [data])
 
   const updatePreferencesMutation = useMutation({
-    mutationFn: async (updates: {
-      isEmailActive?: boolean
-      expoPushToken?: string
-    }) => {
+    mutationFn: async (updates: { expoPushToken?: string }) => {
       if (!userId) throw new Error("Missing UserId")
       return await userService.updateUser(userId, {
-        isEmailActive: updates.isEmailActive,
         expoPushToken: updates.expoPushToken,
       })
     },
@@ -53,10 +67,74 @@ export default function Notifications() {
     },
   })
 
-  const toggleEmailSwitch = (newValue: boolean) => {
-    setIsEmailActive(newValue)
-    updatePreferencesMutation.mutate({ isEmailActive: newValue })
-  }
+  const updateNotificationEmailMutation = useMutation({
+    mutationFn: async ({
+      type,
+      category,
+      enabled,
+    }: {
+      type: "email"
+      category: "live" | "upcoming" | "reddit"
+      enabled: boolean
+    }) => {
+      if (!userId) throw new Error("Missing UserId")
+      return await userService.createNotification(userId, {
+        type,
+        category,
+        enabled,
+      })
+    },
+    onSuccess: () => {
+      if (userId) {
+        queryClient.invalidateQueries({ queryKey: ["getSession", userId] })
+      }
+    },
+  })
+
+  const deleteNotificationMutation = useMutation({
+    mutationFn: async ({
+      userId,
+      notificationId,
+    }: {
+      userId: string
+      notificationId: string
+    }) => {
+      return await userService.deleteNotification(notificationId, userId)
+    },
+    onSuccess: () => {
+      if (userId) {
+        queryClient.invalidateQueries({ queryKey: ["getSession", userId] })
+      }
+    },
+  })
+
+  const toggleEmailCategory =
+    (category: keyof typeof isEmailActive) => (newValue: boolean) => {
+      const updatedState = {
+        ...isEmailActive,
+        [category]: newValue,
+      }
+      setIsEmailActive(updatedState)
+
+      const existingNotification = data?.user.Notification.find(
+        (n) => n.category === category && n.type === "email"
+      )
+
+      if (newValue === true) {
+        // Activation => créer la notif
+        updateNotificationEmailMutation.mutate({
+          type: "email",
+          category,
+          enabled: true,
+        })
+      } else if (existingNotification) {
+        // Désactivation => supprimer la notif si elle existe
+        deleteNotificationMutation.mutate({
+          userId: userId ?? "",
+          notificationId: existingNotification.notificationId,
+        })
+      }
+    }
 
   const toggleNotificationSwitch = async (newValue: boolean) => {
     if (newValue) {
@@ -85,20 +163,63 @@ export default function Notifications() {
             profileStyle.item,
             {
               borderTopWidth: Utils.moderateScale(2),
-              borderBottomWidth: Utils.moderateScale(2),
             },
           ]}
         >
-          <Text style={profileStyle.itemText}>Email</Text>
-          <Switch onValueChange={toggleEmailSwitch} value={isEmailActive} />
+          <Text style={profileStyle.itemText}>Notified by email</Text>
         </TouchableOpacity>
+        <View
+          style={[
+            profileStyle.item,
+            {
+              borderBottomWidth: Utils.moderateScale(2),
+              marginLeft: Utils.moderateScale(10),
+            },
+          ]}
+        >
+          <Text style={profileStyle.itemText}>Upcoming marathon</Text>
+          <Switch
+            onValueChange={toggleEmailCategory("upcoming")}
+            value={isEmailActive.upcoming}
+          />
+        </View>
+        <View
+          style={[
+            profileStyle.item,
+            {
+              borderBottomWidth: Utils.moderateScale(2),
+              marginLeft: Utils.moderateScale(10),
+            },
+          ]}
+        >
+          <Text style={profileStyle.itemText}>Live marathon</Text>
+          <Switch
+            onValueChange={toggleEmailCategory("live")}
+            value={isEmailActive.live}
+          />
+        </View>
+        <View
+          style={[
+            profileStyle.item,
+            {
+              borderBottomWidth: Utils.moderateScale(2),
+              marginLeft: Utils.moderateScale(10),
+            },
+          ]}
+        >
+          <Text style={profileStyle.itemText}>News</Text>
+          <Switch
+            onValueChange={toggleEmailCategory("reddit")}
+            value={isEmailActive.reddit}
+          />
+        </View>
         <TouchableOpacity
           style={[
             profileStyle.item,
             { borderBottomWidth: Utils.moderateScale(2) },
           ]}
         >
-          <Text style={profileStyle.itemText}>Notifications</Text>
+          <Text style={profileStyle.itemText}>Enable notifications</Text>
           <Switch
             onValueChange={toggleNotificationSwitch}
             value={!!expoPushToken}
