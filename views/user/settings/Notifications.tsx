@@ -73,7 +73,7 @@ export default function Notifications() {
       category,
       enabled,
     }: {
-      type: "email"
+      type: "email" | "push"
       category: "live" | "upcoming" | "reddit"
       enabled: boolean
     }) => {
@@ -137,6 +137,8 @@ export default function Notifications() {
     }
 
   const toggleNotificationSwitch = async (newValue: boolean) => {
+    if (!userId) return
+
     if (newValue) {
       const newToken = await registerForPushNotificationsAsync()
       console.log("📦 Token returned to switch:", newToken)
@@ -149,10 +151,45 @@ export default function Notifications() {
       setExpoPushToken(newToken)
       updatePreferencesMutation.mutate({ expoPushToken: newToken })
     } else {
+      // Supprimer le token
       setExpoPushToken(null)
       updatePreferencesMutation.mutate({ expoPushToken: "" })
+
+      // Supprimer toutes les notifications de type "push"
+      const pushNotifications = data?.user.Notification.filter(
+        (n) => n.type === "push"
+      )
+
+      if (pushNotifications && pushNotifications.length > 0) {
+        pushNotifications.forEach((n) => {
+          deleteNotificationMutation.mutate({
+            userId,
+            notificationId: n.notificationId,
+          })
+        })
+      }
     }
   }
+
+  const togglePushCategory =
+    (category: keyof typeof isEmailActive) => (newValue: boolean) => {
+      const existingNotification = data?.user.Notification.find(
+        (n) => n.category === category && n.type === "push"
+      )
+
+      if (newValue === true) {
+        updateNotificationEmailMutation.mutate({
+          type: "push",
+          category,
+          enabled: true,
+        })
+      } else if (existingNotification) {
+        deleteNotificationMutation.mutate({
+          userId: userId ?? "",
+          notificationId: existingNotification.notificationId,
+        })
+      }
+    }
 
   return (
     <View style={mainStyle.container}>
@@ -216,7 +253,22 @@ export default function Notifications() {
         <TouchableOpacity
           style={[
             profileStyle.item,
-            { borderBottomWidth: Utils.moderateScale(2) },
+            {
+              borderBottomWidth: Utils.moderateScale(2),
+            },
+          ]}
+        >
+          <Text style={profileStyle.itemText}>
+            Notified by push notifications
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            profileStyle.item,
+            {
+              borderBottomWidth: Utils.moderateScale(2),
+              marginLeft: Utils.moderateScale(10),
+            },
           ]}
         >
           <Text style={profileStyle.itemText}>Enable notifications</Text>
@@ -225,6 +277,58 @@ export default function Notifications() {
             value={!!expoPushToken}
           />
         </TouchableOpacity>
+        {expoPushToken && (
+          <>
+            <View
+              style={[
+                profileStyle.item,
+                { marginLeft: Utils.moderateScale(10) },
+              ]}
+            >
+              <Text style={profileStyle.itemText}>Upcoming marathon</Text>
+              <Switch
+                onValueChange={togglePushCategory("upcoming")}
+                value={
+                  !!data?.user.Notification.find(
+                    (n) => n.type === "push" && n.category === "upcoming"
+                  )
+                }
+              />
+            </View>
+            <View
+              style={[
+                profileStyle.item,
+                { marginLeft: Utils.moderateScale(10) },
+              ]}
+            >
+              <Text style={profileStyle.itemText}>Live marathon</Text>
+              <Switch
+                onValueChange={togglePushCategory("live")}
+                value={
+                  !!data?.user.Notification.find(
+                    (n) => n.type === "push" && n.category === "live"
+                  )
+                }
+              />
+            </View>
+            <View
+              style={[
+                profileStyle.item,
+                { marginLeft: Utils.moderateScale(10) },
+              ]}
+            >
+              <Text style={profileStyle.itemText}>News</Text>
+              <Switch
+                onValueChange={togglePushCategory("reddit")}
+                value={
+                  !!data?.user.Notification.find(
+                    (n) => n.type === "push" && n.category === "reddit"
+                  )
+                }
+              />
+            </View>
+          </>
+        )}
       </View>
     </View>
   )
