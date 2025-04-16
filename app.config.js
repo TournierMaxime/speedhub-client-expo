@@ -54,7 +54,10 @@ export default {
         },
       ],
       "expo-video",
-      "expo-notifications",
+      [
+        "expo-notifications",
+        { icon: "./assets/images/notification-icon.png", mode: "production" },
+      ],
       [
         "@react-native-google-signin/google-signin",
         {
