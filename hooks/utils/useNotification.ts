@@ -1,15 +1,18 @@
 import { useEffect } from "react"
 import * as Notifications from "expo-notifications"
-import registerForPushNotificationsAsync from "../../components/lib/Notifications"
+import registerForPushNotificationsAsync from "@/components/lib/Notifications"
 import useHandleRouter from "./useHandleRouter"
 import { useAuth } from "@/contexts/AuthContext"
 
 const useNotification = () => {
   const { handleRedirect } = useHandleRouter()
   const { user } = useAuth()
+
+  // Dernière notif cliquée
   const lastNotificationResponse = Notifications.useLastNotificationResponse()
 
   useEffect(() => {
+    // Handler global des notifs (quand l'app est ouverte)
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: true,
@@ -17,12 +20,17 @@ const useNotification = () => {
         shouldSetBadge: false,
       }),
     })
+  }, [])
 
-    if (!user?.expoPushToken) {
-      // Enregistrer pour les notifications push dès le chargement du composant
+  // Enregistrement du token push si pas encore enregistré
+  useEffect(() => {
+    if (user && !user.expoPushToken) {
       registerForPushNotificationsAsync()
     }
+  }, [user])
 
+  // Gérer la notification reçue en foreground ou via clic
+  useEffect(() => {
     if (
       lastNotificationResponse &&
       lastNotificationResponse.notification.request.content.data &&
@@ -32,12 +40,13 @@ const useNotification = () => {
       const { data } = lastNotificationResponse.notification.request.content
       handleNotificationRedirect(data)
     }
+  }, [lastNotificationResponse])
 
-    // Vérifier si l'app a été ouverte par une notification
+  // Gérer la notification qui aurait ouvert l'app (à froid)
+  useEffect(() => {
     const checkInitialNotification = async () => {
       const initialNotification =
         await Notifications.getLastNotificationResponseAsync()
-
       if (initialNotification) {
         const { data } = initialNotification.notification.request.content
         handleNotificationRedirect(data)
@@ -45,37 +54,38 @@ const useNotification = () => {
     }
 
     checkInitialNotification()
+  }, [])
 
-    // Ajouter un écouteur pour les notifications reçues pendant que l'app est ouverte ou en arrière-plan
-    const subscription = Notifications.addNotificationReceivedListener(
+  useEffect(() => {
+    const receivedSubscription = Notifications.addNotificationReceivedListener(
       (notification) => {
         const data = notification.request.content.data
         handleNotificationRedirect(data)
       }
     )
 
-    // Ajouter un écouteur pour les réponses aux notifications (l'utilisateur appuie sur la notification)
     const responseSubscription =
       Notifications.addNotificationResponseReceivedListener((response) => {
         const data = response.notification.request.content.data
         handleNotificationRedirect(data)
       })
 
-    // Nettoyer les écouteurs lors du démontage du composant
     return () => {
-      Notifications.removeNotificationSubscription(subscription)
-      Notifications.removeNotificationSubscription(responseSubscription)
+      receivedSubscription.remove()
+      responseSubscription.remove()
     }
-  }, [lastNotificationResponse])
+  }, [])
 
+  // Redirection sécurisée (évite erreurs de viewState en Android)
   const handleNotificationRedirect = (data: any) => {
-    if (data) {
-      handleRedirect(data.redirect, {
-        userId: data.userId ?? null,
-        screen: data.screen ?? null,
-        articleId: data.articleId ?? null,
+    console.log("handleNotificationRedirect", data)
+    if (!data?.url) return
+
+    setTimeout(() => {
+      handleRedirect(data.url, {
+        ...(data.params || {}),
       })
-    }
+    }, 250) // Attendre que la view soit prête (évite crashs Surface)
   }
 }
 

@@ -5,8 +5,11 @@ import RedditsHome from "./RedditsHome"
 import mainStyle from "@/styles/base/main"
 import UpcomingMarathonsHome from "./UpcomingMarathonsHome"
 import { Fragment } from "react"
+import useNotification from "@/hooks/utils/useNotification"
 
 const Home = () => {
+  useNotification()
+
   const sections = [{ type: "news" }, { type: "live" }, { type: "upcoming" }]
 
   const renderItem = ({ item }: { item: { type: string } }) => {
