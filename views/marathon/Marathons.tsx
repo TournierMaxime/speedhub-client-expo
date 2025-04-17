@@ -1,43 +1,58 @@
-import React, { Fragment } from "react"
-import MarathonLives from "@/views/marathon/MarathonLives"
-import UpcomingMarathons from "@/views/marathon/UpcomingMarathons"
-import { useQuery } from "@tanstack/react-query"
-import { horaroService } from "@/services/speedhub"
-import { GetMarathon, Marathons } from "@/types/speedhub"
-import CatchError from "@/components/lib/CatchError"
-import IsLoading from "@/components/lib/IsLoading"
+import React from "react"
+import useHandleRouter from "@/hooks/utils/useHandleRouter"
+import ROUTES from "@/components/routes"
+import { BroadCast, Calendar, Chevron } from "@/components/lib/Icons"
+import { ScrollView, TouchableOpacity, Text } from "react-native"
+import Utils from "@/components/lib/Utils"
+import profileStyle from "@/styles/views/profile"
 
 const AllMarathons = () => {
-  const { data, isLoading, error, refetch } = useQuery<Marathons["data"]>({
-    queryKey: ["getMarathons"],
-    queryFn: async () => {
-      return await horaroService.getMarathons()
+  const { handleRedirect } = useHandleRouter()
+
+  const links: any[] = [
+    {
+      path: ROUTES.LIVES,
+      params: undefined,
+      title: "Live",
+      icon: <BroadCast />,
     },
-  })
-
-  if (error) {
-    return <CatchError error={error} />
-  }
-
-  if (data === undefined && isLoading) {
-    refetch()
-  }
-
-  const lives = data && data.filter((marathon) => marathon.type === "live")
-  const upcomings =
-    data && data.filter((marathon) => marathon.type === "upcoming")
+    {
+      path: ROUTES.UPCOMING,
+      params: undefined,
+      title: "Upcoming",
+      icon: <Calendar />,
+    },
+  ]
 
   return (
-    <Fragment>
-      {isLoading ? (
-        <IsLoading isLoading={isLoading} />
-      ) : (
-        <Fragment>
-          {lives && <MarathonLives data={lives} />}
-          {upcomings && <UpcomingMarathons data={upcomings} />}
-        </Fragment>
-      )}
-    </Fragment>
+    <ScrollView style={profileStyle.container}>
+      {links.map((link, idx) => {
+        return (
+          <TouchableOpacity
+            key={idx}
+            style={[
+              profileStyle.item,
+              idx === 0
+                ? {
+                    borderTopWidth: Utils.moderateScale(2),
+                    borderBottomWidth: Utils.moderateScale(2),
+                  }
+                : {
+                    borderBottomWidth: Utils.moderateScale(2),
+                  },
+            ]}
+            onPress={() =>
+              link.path ? handleRedirect(link.path, link.params) : undefined
+            }
+          >
+            <Text style={profileStyle.itemText}>
+              {link.icon} {link.title}
+            </Text>
+            <Chevron />
+          </TouchableOpacity>
+        )
+      })}
+    </ScrollView>
   )
 }
 

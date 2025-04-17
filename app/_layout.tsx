@@ -19,10 +19,7 @@ import { Colors } from "@/constants/Colors"
 import { ModalProvider } from "@/contexts/ModalContext"
 import * as Updates from "expo-updates"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import {
-  GOOGLE_AUTH_CLIENT_ID_WEB,
-  GOOGLE_AUTH_CLIENT_ID_IOS,
-} from "@/constants/Utils"
+import { GOOGLE_AUTH_CLIENT_ID_WEB } from "@/constants/Utils"
 
 SplashScreen.preventAutoHideAsync()
 
@@ -45,8 +42,7 @@ export default function RootLayout() {
   }
 
   GoogleSignin.configure({
-    webClientId:
-      "725923225701-m2nejmr6c26kbslbr9vpgoplt0mok483.apps.googleusercontent.com",
+    webClientId: GOOGLE_AUTH_CLIENT_ID_WEB,
     offlineAccess: true,
   })
   return (
@@ -87,20 +83,19 @@ function Navigation() {
         await Updates.fetchUpdateAsync()
         await Updates.reloadAsync()
         Alert.alert(
-          "Mise à jour disponible",
-          "Une nouvelle version est prête. Redémarrer l'application ?",
+          "Update available",
+          "A new version is ready. Restart the app ?",
           [
-            { text: "Annuler", style: "cancel" },
+            { text: "Cancel", style: "cancel" },
             {
-              text: "Redémarrer",
+              text: "Restart",
               onPress: async () => await Updates.reloadAsync(),
             },
           ]
         )
       }
     } catch (error: any) {
-      // You can also add an alert() to see the error message in case of an error when fetching updates.
-      Alert.alert(`Erreur lors de la mise à jour : ${error}`)
+      console.log(error)
       setIsAvailable(false)
     }
   }

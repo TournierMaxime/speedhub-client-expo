@@ -1,12 +1,31 @@
 import React, { Fragment } from "react"
 import { Marathons, Marathon } from "@/types/speedhub"
-import { View, StyleSheet, Text, FlatList } from "react-native"
+import { View, FlatList } from "react-native"
 import mainStyle from "@/styles/base/main"
 import OneMarathonUpcoming from "../marathon/OneMarathonUpcoming"
-import Utils from "@/components/lib/Utils"
-import { Calendar } from "@/components/lib/Icons"
+import { useQuery } from "@tanstack/react-query"
+import { horaroService } from "@/services/speedhub"
+import CatchError from "@/components/lib/CatchError"
 
-const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
+const UpcomingMarathons = () => {
+  const { data, isLoading, error, refetch } = useQuery<Marathons["data"]>({
+    queryKey: ["getMarathons"],
+    queryFn: async () => {
+      return await horaroService.getMarathons()
+    },
+  })
+
+  if (error) {
+    return <CatchError error={error} />
+  }
+
+  if (data === undefined && isLoading) {
+    refetch()
+  }
+
+  const upcoming =
+    data && data.filter((marathon) => marathon.type === "upcoming")
+
   const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
     if (item.type === "upcoming") {
       return <OneMarathonUpcoming key={index} data={item} />
@@ -15,25 +34,13 @@ const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
   }
 
   const upcomingMarathons = () => {
-    if (data && data.length > 0) {
+    if (upcoming && upcoming.length > 0) {
       return (
-        <Fragment>
-          <View style={style.titleAndIcon}>
-            <Text style={style.title}>Upcoming Marathons</Text>
-            <Calendar />
-          </View>
-
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.marathonId.toString()}
-            nestedScrollEnabled={true}
-            initialNumToRender={data.length}
-            maxToRenderPerBatch={data.length}
-            removeClippedSubviews={true}
-            windowSize={data.length}
-          />
-        </Fragment>
+        <FlatList
+          data={upcoming}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.marathonId.toString()}
+        />
       )
     }
 
@@ -43,24 +50,10 @@ const UpcomingMarathons = ({ data }: { data: Marathons["data"] }) => {
   return (
     <Fragment>
       <View style={mainStyle.container}>
-        {!data ? null : upcomingMarathons()}
+        {!upcoming ? null : upcomingMarathons()}
       </View>
     </Fragment>
   )
 }
-
-const style = StyleSheet.create({
-  title: {
-    fontSize: Utils.moderateScale(20),
-    fontWeight: "bold",
-  },
-  titleAndIcon: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: Utils.moderateScale(10),
-  },
-})
 
 export default UpcomingMarathons
