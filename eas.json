@@ -7,7 +7,7 @@
       "env": {
         "EXPO_PUBLIC_SPEEDHUB_API": "http://192.168.1.75:3560/api/v1",
         "EXPO_PUBLIC_REDDIT_API": "https://www.reddit.com/r/speedrun",
-        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunfrance.fr",
+        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunhub.com",
         "EXPO_PUBLIC_TWITCH_API": "https://api.twitch.tv/helix"
       },
       "developmentClient": true,
@@ -15,13 +15,16 @@
       "android": {
         "buildType": "apk"
       },
+      "ios": {
+        "simulator": true
+      },
       "channel": "development"
     },
     "preview": {
       "env": {
-        "EXPO_PUBLIC_SPEEDHUB_API": "https://api.speedrunfrance.fr/api/v1",
+        "EXPO_PUBLIC_SPEEDHUB_API": "https://api.speedrunhub.com/api/v1",
         "EXPO_PUBLIC_REDDIT_API": "https://www.reddit.com/r/speedrun",
-        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunfrance.fr",
+        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunhub.com",
         "EXPO_PUBLIC_TWITCH_API": "https://api.twitch.tv/helix"
       },
       "distribution": "internal",
@@ -32,9 +35,9 @@
     },
     "production": {
       "env": {
-        "EXPO_PUBLIC_SPEEDHUB_API": "https://api.speedrunfrance.fr/api/v1",
+        "EXPO_PUBLIC_SPEEDHUB_API": "https://api.speedrunhub.com/api/v1",
         "EXPO_PUBLIC_REDDIT_API": "https://www.reddit.com/r/speedrun",
-        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunfrance.fr",
+        "EXPO_PUBLIC_TWITCH_PARENT_DOMAIN": "speedrunhub.com",
         "EXPO_PUBLIC_TWITCH_API": "https://api.twitch.tv/helix"
       },
       "android": {

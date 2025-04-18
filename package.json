@@ -18,7 +18,8 @@
     "devClient": "expo start --dev-client",
     "localDev": "eas build --local --platform android --profile development",
     "localProd": "eas build --local --platform android --profile production",
-    "update": "eas update --branch preview --platform android"
+    "update": "eas update --branch preview --platform android",
+    "iosDev": "eas build --platform ios --profile development"
   },
   "jest": {
     "preset": "jest-expo"
