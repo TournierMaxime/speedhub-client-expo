@@ -8,6 +8,7 @@ import { LeftArrow, Search, User } from "./Icons"
 import headerStyle from "@/styles/base/header"
 import mainStyle from "@/styles/base/main"
 import Utils from "./Utils"
+import { router } from "expo-router"
 
 interface HeaderProps {
   backButton: boolean
@@ -22,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title, lastPath }) => {
 
   const logo = require("../../assets/images/speedhub.webp")
 
-  const { handleRedirect, handleBack } = useHandleRouter()
+  const { handleRedirect } = useHandleRouter()
 
   const NotAuthenticatedUser = () => {
     if (isAuthenticated === false) {
@@ -38,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title, lastPath }) => {
         >
           {backButton ? (
             <View style={headerStyle.backButton}>
-              <TouchableOpacity onPress={async () => await handleBack()}>
+              <TouchableOpacity onPress={() => router.back()}>
                 <LeftArrow />
               </TouchableOpacity>
             </View>
@@ -68,14 +69,7 @@ const Header: React.FC<HeaderProps> = ({ backButton, title, lastPath }) => {
         >
           {backButton ? (
             <View style={headerStyle.backButton}>
-              <TouchableOpacity
-                onPress={async () => {
-                  await handleBack(
-                    lastPath?.pathname ?? undefined,
-                    lastPath?.params ?? undefined
-                  )
-                }}
-              >
+              <TouchableOpacity onPress={() => router.back()}>
                 <LeftArrow />
               </TouchableOpacity>
             </View>

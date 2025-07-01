@@ -1,23 +1,21 @@
 import { AlertButton, Alert, AlertOptions, Linking } from "react-native"
 
-export const redirectAlertMessage = async (url: string) => {
-  const canOpenUrl = await Linking.canOpenURL(url)
+export const redirectAlertMessage = (url: string) => {
   let message
-  if (canOpenUrl === true) {
-    message = Alert.alert(
-      "Redirection link",
-      "You will be redirect to " + url + " are you sure to continue ?",
-      [
-        {
-          text: "Yes",
-          onPress: () => Linking.openURL(url),
-        },
-        {
-          text: "No",
-        },
-      ]
-    )
-  }
+
+  message = Alert.alert(
+    "Redirection link",
+    "You will be redirect to " + url + " are you sure to continue ?",
+    [
+      {
+        text: "Yes",
+        onPress: () => Linking.openURL(url),
+      },
+      {
+        text: "No",
+      },
+    ]
+  )
 }
 
 const AlertMessage = ({

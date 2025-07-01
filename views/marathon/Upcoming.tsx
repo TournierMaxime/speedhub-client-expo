@@ -3,7 +3,7 @@ import { ScrollView, Text, View, TouchableOpacity } from "react-native"
 import { Marathon } from "@/types/speedhub"
 import TwitchIframe from "@/components/lib/TwitchIframe"
 import Utils from "@/components/lib/Utils"
-import { useLocalSearchParams } from "expo-router"
+import { router, useLocalSearchParams } from "expo-router"
 import { useQuery } from "@tanstack/react-query"
 import { horaroService } from "@/services/speedhub"
 import CatchError from "@/components/lib/CatchError"
@@ -11,9 +11,7 @@ import IsLoading from "@/components/lib/IsLoading"
 import OneTicker from "./OneTicker"
 import OneSchedule from "./OneSchedule"
 import { oneGameDetailsStyle, oneGameStyle } from "@/styles/views/oneGame"
-import ROUTES from "@/components/routes"
 import { Heart, HeartFill, LeftArrow } from "@/components/lib/Icons"
-import useHandleRouter from "@/hooks/utils/useHandleRouter"
 import useHandleFavorite from "@/hooks/user/useHandleFavorite"
 import { useAuth } from "@/contexts/AuthContext"
 import { favoriteUserService } from "@/services/speedhub"
@@ -22,7 +20,6 @@ import ScrollViewAndTabs, { TabName } from "@/components/lib/ScrollViewAndTabs"
 
 const UpcomingMarathon = () => {
   const { marathonId } = useLocalSearchParams()
-  const { handleBack } = useHandleRouter()
   const { user } = useAuth()
 
   const { activeTab, changeTab, scrollViewRef } = useHandleTab()
@@ -73,7 +70,7 @@ const UpcomingMarathon = () => {
           <View style={oneGameDetailsStyle.gameContainer}>
             <View style={oneGameDetailsStyle.backgroungImg}>
               <TouchableOpacity
-                onPress={() => handleBack(ROUTES.ALL_MARATHONS)}
+                onPress={() => router.back()}
                 style={{
                   display: "flex",
                   flexDirection: "row",

@@ -24,8 +24,8 @@ const UpcomingMarathonsHome = ({ limit }: { limit: number }) => {
     staleTime: 1000 * 60 * 30,
   })
 
-  const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
-    return <OneMarathonUpcomingHome key={index} data={item} />
+  const renderItem = ({ item }: { item: Marathon; index: number }) => {
+    return <OneMarathonUpcomingHome key={item.marathonId} data={item} />
   }
 
   const [upcomings, setUpcomings] = useState<Marathons["data"]>([])

@@ -123,9 +123,7 @@ const OneReddit = ({ data }: { data: Reddit }) => {
 
             <TouchableOpacity
               style={oneRedditStyle.btnContainer}
-              onPress={async () => {
-                await redirectAlertMessage(url)
-              }}
+              onPress={() => redirectAlertMessage(url)}
             >
               <Text style={oneRedditStyle.btnLabel}>More</Text>
             </TouchableOpacity>

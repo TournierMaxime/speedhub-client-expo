@@ -26,9 +26,9 @@ const MarathonLivesHome = ({ limit }: { limit: number }) => {
     staleTime: 1000 * 60 * 30,
   })
 
-  const renderItem = ({ item, index }: { item: Marathon; index: number }) => {
+  const renderItem = ({ item }: { item: Marathon; index: number }) => {
     if (item.isLive) {
-      return <OneMarathonLiveHome key={index} data={item} />
+      return <OneMarathonLiveHome key={item.marathonId} data={item} />
     }
     return null
   }
